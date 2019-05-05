@@ -4,12 +4,15 @@ function Player(game, key) {
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
 	
 	this.anchor.set(0.5);
-	this.DRAG = 25;
-	this.MAX_VELOCITY = 250;
-	this.ACCELERATION = 125;
+	this.DRAG = 1000;
+	this.MAX_VELOCITY = 400;
+	this.ACCELERATION = 1500;
 
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
+	this.body.drag.setTo(this.DRAG, this.DRAG);
+	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
+	//this.acceleration = this.ACCELERATION;
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {
 		up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -31,36 +34,33 @@ Player.prototype.create = function() {
 		// right: game.input.keyboard.addKey(Phaser.Keyboard.D)
 	// }
 	
-	console.log(this.cursors);
+	//console.log(this.cursors);
 }
 
 Player.prototype.update = function() {
 	
-	//X and Y Axis Movement
-	if (this.cursors.right.isDown && this.body.velocity.x < this.MAX_VELOCITY) {
-		this.body.velocity.x += this.ACCELERATION;
+	//this.body.velocity.setTo(0,0);
+	this.body.acceleration.setTo(0,0);
+	
+	if(this.cursors.left.isDown){
+		//this.body.velocity.x = -this.MAX_VELOCITY;
+		this.body.acceleration.x = -this.ACCELERATION;
 	}
-	else if (this.cursors.left.isDown && this.body.velocity.x > -this.MAX_VELOCITY) {
-		this.body.velocity.x -= this.ACCELERATION;
-	}
-	else if(this.body.velocity.x < 0 ){
-		this.body.velocity.x += this.DRAG;
-	}
-	else if(this.body.velocity.x > 0){
-		this.body.velocity.x -= this.DRAG;
+	else if(this.cursors.right.isDown){
+		//this.body.velocity.x = this.MAX_VELOCITY;
+		this.body.acceleration.x = this.ACCELERATION;
 	}
 	
-	if (this.cursors.up.isDown && this.body.velocity.y > -this.MAX_VELOCITY) {
-		this.body.velocity.y -= this.ACCELERATION;
+	if(this.cursors.up.isDown){
+		//this.body.velocity.y = -this.MAX_VELOCITY;
+		this.body.acceleration.y = -this.ACCELERATION;
 	}
-	else if (this.cursors.down.isDown && this.body.velocity.y < this.MAX_VELOCITY) {
-		this.body.velocity.y += this.ACCELERATION;
-	}
-	else if(this.body.velocity.y < 0){
-		this.body.velocity.y += this.DRAG;
-	}
-	else if(this.body.velocity.y > 0){
-		this.body.velocity.y -= this.DRAG;
+	else if(this.cursors.down.isDown){
+		//this.body.velocity.y = this.MAX_VELOCITY;
+		this.body.acceleration.y = this.ACCELERATION;
 	}
 	
+	if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
+		console.log("Fire!");
+	}
 }
