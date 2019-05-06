@@ -62,5 +62,6 @@ Player.prototype.update = function() {
 	
 	if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
 		console.log("Fire!");
+        this.shot = new SingleShot(game, this.body.x, this.body.y, 1, )
 	}
 }
