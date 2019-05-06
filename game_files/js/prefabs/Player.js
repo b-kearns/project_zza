@@ -4,9 +4,9 @@ function Player(game, key) {
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
 	
 	this.anchor.set(0.5);
-	this.DRAG = 1000;
-	this.MAX_VELOCITY = 400;
-	this.ACCELERATION = 1500;
+	this.DRAG = 2500;
+	this.MAX_VELOCITY = 600;
+	this.ACCELERATION = 1700;
 
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -20,7 +20,11 @@ function Player(game, key) {
 		left: game.input.keyboard.addKey(Phaser.Keyboard.A),
 		right: game.input.keyboard.addKey(Phaser.Keyboard.D)
 	}
-	console.log(this.cursors);
+	//console.log(this.cursors);
+	
+	game.input.gamepad.start();
+	this.gamepad = game.input.gamepad.pad1;
+	console.log(this.gamepad.active);
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -35,6 +39,7 @@ Player.prototype.create = function() {
 	// }
 	
 	//console.log(this.cursors);
+	
 }
 
 Player.prototype.update = function() {
@@ -46,7 +51,7 @@ Player.prototype.update = function() {
 		//this.body.velocity.x = -this.MAX_VELOCITY;
 		this.body.acceleration.x = -this.ACCELERATION;
 	}
-	else if(this.cursors.right.isDown){
+	else if(this.cursors.right.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.5){
 		//this.body.velocity.x = this.MAX_VELOCITY;
 		this.body.acceleration.x = this.ACCELERATION;
 	}
