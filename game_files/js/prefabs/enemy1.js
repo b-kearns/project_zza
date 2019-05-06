@@ -1,10 +1,10 @@
-function Enemy1(game, key) {
-	Phaser.Sprite.call(this,game, game.world.width - 64, game.world.centerY, key);
+function Enemy1(game, posX, posY, key) {
+	Phaser.Sprite.call(this,game, posX, posY, key);
 	
 	this.anchor.set(0.5);
     this.scale.setTo(-1, 1);
-	this.DRAG = 1000;
-	this.MAX_VELOCITY = 400;
+	this.DRAG = 8000;
+	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
 
 	game.physics.enable(this);
@@ -17,13 +17,13 @@ Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy1.prototype.constructor = Enemy1;
 
 Enemy1.prototype.create = function() {
-  //this.body.velocity.x = -100;
 }
 
 Enemy1.prototype.update = function() {
-	
-	this.body.velocity.setTo(-200,0);
-	//this.body.acceleration.setTo(0,0);
-	
-
+	if(this.position.y < 310){
+	  this.body.acceleration.setTo(-400,500);
+    }
+    else if(this.position.y > 320 ){
+      this.body.acceleration.setTo(-400,-500); 
+    }
 }
