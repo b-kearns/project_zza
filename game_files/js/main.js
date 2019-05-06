@@ -6,6 +6,7 @@ var MainMenu = function(game){};
 MainMenu.prototype = {
 	preload: function() {
 		game.load.image("player_side", "assets/imgs/player_side.png");
+        game.load.image("P-shot","assets/imgs/projectile-blue.png");
 	},
 	create: function() {
 		game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});

@@ -11,7 +11,6 @@ function Enemy1(game, key) {
 	this.body.collideWorldBounds = false;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
-	console.log(this.cursors);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);

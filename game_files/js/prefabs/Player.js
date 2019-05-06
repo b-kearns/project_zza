@@ -26,6 +26,9 @@ function Player(game, key) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
+Player.prototype.preload = function(){
+}
+
 Player.prototype.create = function() {
 	// this.MOVEMENT = {
 		// up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -61,7 +64,8 @@ Player.prototype.update = function() {
 	}
 	
 	if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
-		console.log("Fire!");
-        this.shot = new SingleShot(game, this.body.x, this.body.y, 1, )
+		//console.log("Fire!");
+        this.shot = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot");
+        game.add.existing(this.shot);
 	}
 }
