@@ -27,10 +27,14 @@ GamePlay.prototype = {
 		console.log("GamePlay: create");
 		this.player = new Player(game, "player_side");
 		game.add.existing(this.player);
-        this.enemy1 = new Enemy1(game, "player_side");
-        game.add.existing(this.enemy1);
+        //making the event timer
+        var timer = game.time.create(false);
+        timer.loop(2000, makeEnemy, this);
+        timer.start();
 	},
 	update: function() {
+        //this.enemy1 = new Enemy1(game, game.world.width, game.world.height, "player_side");
+        //game.add.existing(this.enemy1);
 	}
 }
 
@@ -52,3 +56,9 @@ game.state.add("MainMenu", MainMenu);
 game.state.add("GamePlay", GamePlay);
 game.state.add("GameOver", GameOver);
 game.state.start("MainMenu");
+function makeEnemy(){
+    this.enemy1 = new Enemy1(game, game.world.width, 200, "player_side");
+    game.add.existing(this.enemy1);
+    this.enemy1 = new Enemy1(game, game.world.width, 400, "player_side");
+    game.add.existing(this.enemy1);
+}

@@ -2,13 +2,12 @@
 
 function SingleShot(game, posX, posY, direction, key) {
 	Phaser.Sprite.call(this,game, posX, posY, key);
-    console.log("we out here");
     this.anchor.set(0.5);
 	game.physics.enable(this);
 
     this.checkWorldBounds = true;
     this.outOfBoundsKill = true;
-    this.exists = true;
+    this.exists = false;
     
     this.tracking = false;
     this.scaleSpeed = 0;
