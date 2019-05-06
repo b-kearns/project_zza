@@ -26,6 +26,8 @@ GamePlay.prototype = {
 		console.log("GamePlay: create");
 		this.player = new Player(game, "player_side");
 		game.add.existing(this.player);
+        this.enemy1 = new Enemy1(game, "player_side");
+        game.add.existing(this.enemy1);
 	},
 	update: function() {
 	}
