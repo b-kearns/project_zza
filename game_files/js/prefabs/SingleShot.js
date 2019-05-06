@@ -1,7 +1,6 @@
 "use strict";
 
 function SingleShot(game, posX, posY, direction, key) {
-<<<<<<< HEAD
 	Phaser.Group.call(this, game, game.world, "SingleShot", false, true, Phaser.Physics.ARCADE);
 	
 	//console.log(direction);
@@ -47,18 +46,6 @@ function SingleShot(game, posX, posY, direction, key) {
 		this.add(new Bullet(game, "P-shot"), true);
 		console.log("Creating Ammo!");
 	}
-=======
-	Phaser.Sprite.call(this,game, posX, posY, key);
-    this.anchor.set(0.5);
-	game.physics.enable(this);
-
-    this.checkWorldBounds = true;
-    this.outOfBoundsKill = true;
-    this.exists = false;
-    
-    this.tracking = false;
-    this.scaleSpeed = 0;
->>>>>>> 4df16c4a0f8b4470646ed645d07eef7f31ea665c
 }
 
 SingleShot.prototype = Object.create(Phaser.Group.prototype);

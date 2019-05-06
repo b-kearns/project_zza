@@ -54,15 +54,9 @@ Player.prototype.update = function() {
 	else if(this.cursors.down.isDown){
 		this.body.acceleration.y = this.ACCELERATION;
 	}
-<<<<<<< HEAD
 	
 	if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
 		this.weapon.fire(this);
-=======
-	//handling weapon fire
-	if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
-        this.shot = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot");
-        game.add.existing(this.shot);
->>>>>>> 4df16c4a0f8b4470646ed645d07eef7f31ea665c
 	}
+	
 }

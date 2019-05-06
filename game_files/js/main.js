@@ -33,14 +33,9 @@ GamePlay.prototype = {
         timer.start();
 	},
 	update: function() {
-<<<<<<< HEAD
 	},
 	render: function() {
 		game.debug.body(this.player);
-=======
-        //this.enemy1 = new Enemy1(game, game.world.width, game.world.height, "player_side");
-        //game.add.existing(this.enemy1);
->>>>>>> 4df16c4a0f8b4470646ed645d07eef7f31ea665c
 	}
 }
 
