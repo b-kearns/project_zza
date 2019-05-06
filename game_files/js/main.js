@@ -31,6 +31,9 @@ GamePlay.prototype = {
         game.add.existing(this.enemy1);
 	},
 	update: function() {
+	},
+	render: function() {
+		game.debug.body(this.player);
 	}
 }
 
