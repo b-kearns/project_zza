@@ -4,6 +4,7 @@ function Bullet(game, key){
 	Phaser.Sprite.call(this, game, 0, 0, key);
 	this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 	this.anchor.set(0.5);
+	
 	this.checkWorldBounds = true;
 	this.outOfBoundsKill = true;
 	this.exists = false;
@@ -22,7 +23,6 @@ Bullet.prototype.fire = function (direction, x, y, angle, speed, gx, gy) {
 
 	this.reset(x, y);
 	this.scale.set(1 * direction);
-	//console.log(direction);
 
 	this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
 
