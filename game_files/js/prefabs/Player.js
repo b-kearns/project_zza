@@ -7,6 +7,7 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
+	this.HEALTH = 10000;
 
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -22,7 +23,7 @@ function Player(game, key) {
 	}
 	
 	this.weapons = [];
-	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot");
+	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot", 16);
 	
 	this.weapon = this.weapons[0];
 }
@@ -38,7 +39,7 @@ Player.prototype.create = function() {
 }
 
 Player.prototype.update = function() {
-	
+	//game.physics.arcade.overlap(this.weapon, GamePlay.enemies, GamePlay.collisionHandle, null, this);
 	this.body.acceleration.setTo(0,0);
 	
 	if(this.cursors.left.isDown){
