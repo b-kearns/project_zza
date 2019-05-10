@@ -8,6 +8,7 @@ function Player(game, key) {
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
 	this.HEALTH = 10000;
+	this.EQUIP = 0;
 
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -24,8 +25,12 @@ function Player(game, key) {
 	
 	this.weapons = [];
 	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot", 16);
+	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
+	this.weapons[2] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
 	
-	this.weapon = this.weapons[0];
+	this.weapon = this.weapons[this.EQUIP];
+	
+	this.blinkDrive = new BlinkDrive(game);
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -40,6 +45,8 @@ Player.prototype.create = function() {
 
 Player.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.enemies, GamePlay.collisionHandle, null, this);
+	this.weapon = this.weapons[this.EQUIP];
+
 	this.body.acceleration.setTo(0,0);
 	
 	if(this.cursors.left.isDown){
@@ -60,4 +67,31 @@ Player.prototype.update = function() {
 		this.weapon.fire(this);
 	}
 	
+	if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
+		this.blinkDrive.jump(this);
+	}
+	
+	if(game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT)){
+		this.swap(false);
+	}
+	else if(game.input.keyboard.justPressed(Phaser.Keyboard.LEFT)) {
+		this.swap(true);
+	}
 }
+
+Player.prototype.swap = function(direction) {
+	//SWAP LEFT
+	if(direction){
+		this.EQUIP--;
+		if(this.EQUIP < 0){this.EQUIP = this.weapons.length - 1;}
+	}
+	else {
+		this.EQUIP++;
+		if(this.EQUIP >= this.weapons.length){this.EQUIP = 0;}
+	}
+}
+
+
+
+
+
