@@ -3,6 +3,7 @@
 function SingleShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "SingleShot", false, true, Phaser.Physics.ARCADE);
 	
+	this.NAME = "Single";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
@@ -36,16 +37,17 @@ SingleShot.prototype.fire = function(source) {
 function Shotgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Shotgun", false, true, Phaser.Physics.ARCADE);
 	
+	this.NAME = "Shotgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 800;
 	this.fireRate = 1000;
-    this.SFX = game.add.audio("PShot");
+    this.SFX = game.add.audio("shotgun_fx");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "P-shot"), true);
+		this.add(new Bullet(game, "weapon1"), true);
 		//console.log("Creating Ammo!");
 	}
 }
@@ -72,6 +74,7 @@ Shotgun.prototype.fire = function(source) {
 function Railgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Railgun", false, true, Phaser.Physics.ARCADE);
 	
+	this.NAME = "Railgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = true;
 	this.DAMAGE = 5;
@@ -82,7 +85,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2 = game.add.audio("rail_shot");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "P-shot"), true);
+		this.add(new Bullet(game, "weapon1"), true);
 		//console.log("Creating Ammo!");
 	}
 }
@@ -114,6 +117,7 @@ Railgun.prototype.fireRail = function(source, bullet) {
 function BlinkDrive(game) {
 	Phaser.Group.call(this, game, game.world, "BlinkDrive", false, true, Phaser.Physics.ARCADE);
 	
+	this.NAME = "Blink Drive";
 	this.fireRate = 5000;
 	this.nextFire = 0;
 }

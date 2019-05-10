@@ -19,10 +19,14 @@ function GamePlay(game) {}
 			var timer = game.time.create(false);
 			timer.loop(1800, this.makeEnemy, this);
 			timer.start();
+			
+			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
 		},
 		update: function(){
 			game.physics.arcade.overlap(this.enemies, this.player.weapon, this.collisionHandle, null, this);
 			this.enemies.forEachExists(this.checkCollision, this);
+			
+			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				game.state.start("GameOver", true, false);
