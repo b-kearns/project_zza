@@ -8,6 +8,7 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
     this.nextFire = 0;
 	this.bulletSpeed = 600;
 	this.fireRate = 200;
+    this.SFX = game.add.audio("PShot");
 	
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "P-shot"), true);
@@ -25,6 +26,7 @@ SingleShot.prototype.fire = function(source) {
 	}
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
+    this.SFX.play();
 	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
