@@ -8,10 +8,10 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
     this.nextFire = 0;
 	this.bulletSpeed = 600;
 	this.fireRate = 200;
-    this.SFX = game.add.audio("PShot");
+    this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "P-shot"), true);
+		this.add(new Bullet(game, "weapon1"), true);
 		console.log("Creating Ammo!");
 	}
 }

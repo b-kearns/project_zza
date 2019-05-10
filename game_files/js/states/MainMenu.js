@@ -6,9 +6,10 @@ function MainMenu(game) {}
 		init: function(){},
 		preload: function(){
 			game.load.image("player_side", "assets/imgs/player_side.png");
-			game.load.image("P-shot","assets/imgs/projectile-blue.png");
+			game.load.image("weapon1","assets/imgs/projectile-blue.png");
+            game.load.image("enemy1", "assets/imgs/Red-02.png")
             game.load.audio("MainTrack","assets/audio/Captain Shmup.wav");
-            game.load.audio("PShot", "assets/audio/PShot.wav");
+            game.load.audio("weapon_fx_1", "assets/audio/PShot.wav");
 		},
 		create: function(){
 			game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});

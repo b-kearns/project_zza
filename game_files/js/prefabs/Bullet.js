@@ -25,6 +25,7 @@ Bullet.prototype.fire = function (direction, x, y, angle, speed, gx, gy) {
 	this.scale.set(1 * direction);
 
 	this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
+    this.body.setSize(22, 8, 5, 10);
 
 	this.angle = angle;
 
