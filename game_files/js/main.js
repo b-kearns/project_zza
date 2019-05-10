@@ -11,8 +11,10 @@ var game = new Phaser.Game(960, 640, Phaser.AUTO);
 // this.GameOver = new GameOver(game);
 // game.add.existing(this.GameOver);
 
+game.state.add("Boot", Boot);
 game.state.add("MainMenu", MainMenu);
+game.state.add("Intro", Intro);
 game.state.add("GamePlay", GamePlay);
 game.state.add("GameOver", GameOver);
-game.state.start("MainMenu");
+game.state.start("Boot");
 

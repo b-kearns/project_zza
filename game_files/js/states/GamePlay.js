@@ -3,6 +3,7 @@
 function GamePlay(game) {}
 	
 	GamePlay.prototype = {
+		init: function(){},
 		preload: function(){},
 		create: function(){
 			//Create Player
@@ -54,7 +55,7 @@ function GamePlay(game) {}
 					if(this.enemy != null){
 						this.enemy.outOfCameraBoundsKill = false;
 						this.enemy.HEALTH = 2;
-						this.enemy.reset(game.world.width + 64 * i, 200 * i);
+						this.enemy.reset(game.world.width + 64 * i, game.rnd.integerInRange(150, 250) * i + game.rnd.integerInRange(100,300));
 					}
 				}
 			}
@@ -66,8 +67,8 @@ function GamePlay(game) {}
 			// game.add.existing(this.enemy1);
 		},
 		collisionHandle: function(target, weapon){
-			target.HEALTH--;
-			if(!weapon.PENETRATE){weapon.kill();}
+			target.HEALTH -= this.player.weapon.DAMAGE;
+			if(!this.player.weapon.PENETRATE){weapon.kill();}
 			console.log("Handled");
 		},
 		checkCollision: function(enemy){
