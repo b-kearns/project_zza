@@ -14,8 +14,9 @@ function Enemy1(game, posX, posY, key) {
 	this.autoCull = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
+    this.body.setSize(20, 20, 5, 10);
 	
-	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "P-shot", 1);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "weapon1", 1);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);

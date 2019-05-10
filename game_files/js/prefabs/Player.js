@@ -13,6 +13,7 @@ function Player(game, key) {
 	this.body.collideWorldBounds = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
+    this.body.setSize(10, 10, 5, 10);
 
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {
