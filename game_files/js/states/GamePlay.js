@@ -27,11 +27,22 @@ function GamePlay(game) {}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				game.state.start("GameOver", true, false);
 			}
-		},
+            if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
+              this.debug = !this.debug;
+            }
+        },
+        render: function(){
+           if(this.debug){
+              game.debug.body(this.player);
+              //game.debug.body(this.makeEnemy);
+              this.enemies.forEachAlive(this.renderGroup, this);
+              this.player.weapon.forEachAlive(this.renderGroup, this);
+           }
+       },
 		makeEnemy: function(player){
 			if(this.enemies.length === 0){
 				for(var i = 0; i < 10; i++){
-					this.enemy = new Enemy1(game, 1000, 1000, "player_side", this.player);
+					this.enemy = new Enemy1(game, 1000, 1000, "enemy1", this.player);
 					game.add.existing(this.enemy);
 					this.enemies.add(this.enemy);
 					this.enemy.exists = false;
@@ -64,5 +75,8 @@ function GamePlay(game) {}
 			this.enemy = enemy;
 			//console.log(this.weapon.PENETRATE);
 			game.physics.arcade.overlap(this.enemy.weapon, this.player, this.collisionHandle, null, this);
+		},
+		renderGroup: function(member){
+			game.debug.body(member);
 		}
 	}
