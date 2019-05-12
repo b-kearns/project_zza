@@ -47,7 +47,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("shotgun_fx");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon1"), true);
+		this.add(new Bullet(game, "weapon2"), true);
 		//console.log("Creating Ammo!");
 	}
 }
@@ -85,7 +85,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2 = game.add.audio("rail_shot");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon1"), true);
+		this.add(new Bullet(game, "weapon4"), true);
 		//console.log("Creating Ammo!");
 	}
 }
