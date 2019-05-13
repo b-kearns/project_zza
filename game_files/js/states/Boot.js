@@ -12,6 +12,8 @@ function Boot(game) {}
             game.load.image("enemy1", "assets/imgs/Red-02.png")
             game.load.image("weapon2", "assets/imgs/ScatterShot.png");
             game.load.image("weapon4", "assets/imgs/RailShot.png");
+            game.load.image("EarthBackground", "assets/imgs/earth.png");
+            game.load.image("StarsBackground", "assets/imgs/stars.png");
 			game.load.audio("MainTrack","assets/audio/Captain Shmup.wav");
             game.load.audio("weapon_fx_1", "assets/audio/PShot.wav");
             game.load.audio("shotgun_fx", "assets/audio/shotblast.wav");
