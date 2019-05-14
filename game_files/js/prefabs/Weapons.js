@@ -1,5 +1,7 @@
 "use strict";
+// all of the posible weapons are their own objects
 
+//set p shooter specfic data for bullets
 function SingleShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "SingleShot", false, true, Phaser.Physics.ARCADE);
 	
@@ -19,7 +21,7 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
 
 SingleShot.prototype = Object.create(Phaser.Group.prototype);
 SingleShot.prototype.constructor = SingleShot;
-
+// handle p shooter fire event
 SingleShot.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
@@ -33,7 +35,7 @@ SingleShot.prototype.fire = function(source) {
 	this.nextFire = game.time.time + this.fireRate;
 	
 }
-
+// add specific data to shotgun bullets
 function Shotgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Shotgun", false, true, Phaser.Physics.ARCADE);
 	
@@ -54,7 +56,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
 
 Shotgun.prototype = Object.create(Phaser.Group.prototype);
 Shotgun.prototype.constructor = Shotgun;
-
+// handle shotgun fire event
 Shotgun.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
@@ -73,7 +75,7 @@ Shotgun.prototype.fire = function(source) {
 
 function Railgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Railgun", false, true, Phaser.Physics.ARCADE);
-	
+	//set all the variables unique to the railgun
 	this.NAME = "Railgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = true;
@@ -92,7 +94,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
 
 Railgun.prototype = Object.create(Phaser.Group.prototype);
 Railgun.prototype.constructor = Railgun;
-
+// handle the railguun spinup of its fire event
 Railgun.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
@@ -105,7 +107,7 @@ Railgun.prototype.fire = function(source) {
 	game.time.events.add(Phaser.Timer.SECOND * 1, this.fireRail, this, source, this.bullet);
 	
 }
-
+// handle bullet firing of it's fire event
 Railgun.prototype.fireRail = function(source, bullet) {
 
 	this.SFX_2.play();
@@ -114,7 +116,7 @@ Railgun.prototype.fireRail = function(source, bullet) {
 	this.nextFire = game.time.time + this.fireRate;
 	
 }
-
+// handles the teleporting of the PC
 function BlinkDrive(game) {
 	Phaser.Group.call(this, game, game.world, "BlinkDrive", false, true, Phaser.Physics.ARCADE);
 	
