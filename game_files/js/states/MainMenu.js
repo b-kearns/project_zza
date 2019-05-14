@@ -8,19 +8,23 @@ function MainMenu(game) {}
 			
 		},
 		create: function(){
-            this.backdrop = game.add.tileSprite(0,0,800,640,"StarsBackground");
-            this.earth = game.add.sprite(0,100,"EarthBackground");
-            this.earth.scale.setTo(3.5, 3.5);
-			game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});
+            
+			this.background = [];
+			this.background[0] = game.add.tileSprite(0,0,800,640,"StarsBackground");
+            this.background[1] = game.add.sprite(0,100,"EarthBackground");
+            this.background[1].scale.setTo(3.5, 3.5);
+			this.text = game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});
             this.BGM = game.add.audio("MainTrack");
             this.BGM.loop = true;
 		},
 		update: function(){
-            this.backdrop.tilePosition.x -= 0.05;
-            this.earth.position.x -= 0.1;
+            for(var i = 1; i < this.background.length + 1; i++){
+				this.background[i - 1].position.x -= 0.01 * i;
+			}
 			if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
                 this.BGM.play();
-				game.state.start("GamePlay", true, false);
+				this.text.kill();
+				game.state.start("GamePlay", false, false, this.background, this.BGM);
 			}
 		},
 		render: function(){}

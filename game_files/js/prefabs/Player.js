@@ -7,7 +7,7 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 10000;
+	this.HEALTH = 2;
 	this.EQUIP = 0;
 
 	game.physics.enable(this);
@@ -49,35 +49,41 @@ Player.prototype.update = function() {
 	this.weapon = this.weapons[this.EQUIP];
 
 	this.body.acceleration.setTo(0,0);
-	
-	if(this.cursors.left.isDown){
-		this.body.acceleration.x = -this.ACCELERATION;
+	if(this.alive) {
+		if(this.cursors.left.isDown){
+			this.body.acceleration.x = -this.ACCELERATION;
+		}
+		else if(this.cursors.right.isDown){
+			this.body.acceleration.x = this.ACCELERATION;
+		}
+		
+		if(this.cursors.up.isDown){
+			this.body.acceleration.y = -this.ACCELERATION;
+		}
+		else if(this.cursors.down.isDown){
+			this.body.acceleration.y = this.ACCELERATION;
+		}
+		
+		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+			this.weapon.fire(this);
+		}
+		
+		if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
+			this.blinkDrive.jump(this);
+		}
+		
+		if(game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT)){
+			this.swap(false);
+		}
+		else if(game.input.keyboard.justPressed(Phaser.Keyboard.LEFT)) {
+			this.swap(true);
+		}
 	}
-	else if(this.cursors.right.isDown){
-		this.body.acceleration.x = this.ACCELERATION;
-	}
-	
-	if(this.cursors.up.isDown){
-		this.body.acceleration.y = -this.ACCELERATION;
-	}
-	else if(this.cursors.down.isDown){
-		this.body.acceleration.y = this.ACCELERATION;
-	}
-	
-	if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-		this.weapon.fire(this);
-	}
-	
-	if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
-		this.blinkDrive.jump(this);
-	}
-	
-	if(game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT)){
-		this.swap(false);
-	}
-	else if(game.input.keyboard.justPressed(Phaser.Keyboard.LEFT)) {
-		this.swap(true);
-	}
+	// if(this.HEALTH <= 0){
+		// this.kill();
+		// //GamePlay.equipped.kill();
+		// game.state.start("GameOver", false, false, this.background);
+	// }
 }
 
 Player.prototype.swap = function(direction) {
