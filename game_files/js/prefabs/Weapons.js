@@ -101,6 +101,7 @@ Railgun.prototype.fire = function(source) {
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX_1.play();
+	this.nextFire = game.time.time + this.fireRate;
 	game.time.events.add(Phaser.Timer.SECOND * 1, this.fireRail, this, source, this.bullet);
 	
 }

@@ -3,8 +3,13 @@
 function GamePlay(game) {}
 	
 	GamePlay.prototype = {
-		init: function(){},
-		preload: function(){},
+		init: function(background, BGM){
+			this.background = background;
+			this.BGM = BGM;
+		},
+		preload: function(){
+			console.log("GamePlay: Preload");
+		},
 		create: function(){
 			//Create Player
 			this.player = new Player(game, "player_side");
@@ -26,14 +31,21 @@ function GamePlay(game) {}
 			game.physics.arcade.overlap(this.enemies, this.player.weapon, this.collisionHandle, null, this);
 			this.enemies.forEachExists(this.checkCollision, this);
 			
+			for(var i = 1; i < this.background.length + 1; i++){
+				this.background[i - 1].position.x -= 0.01 * i;
+			}
+			
 			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
-				game.state.start("GameOver", true, false);
+				this.sendToGameOver();
 			}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
+			if(this.player.HEALTH <= 0) {
+				this.sendToGameOver();
+			}
         },
         render: function(){
            if(this.debug){
@@ -82,5 +94,11 @@ function GamePlay(game) {}
 		},
 		renderGroup: function(member){
 			game.debug.body(member);
+		},
+		sendToGameOver: function(){
+			this.equipped.kill();
+			this.BGM.stop();
+			this.player.kill();
+			game.state.start("GameOver", false, false, this.background);
 		}
 	}
