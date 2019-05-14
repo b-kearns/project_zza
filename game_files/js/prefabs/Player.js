@@ -1,21 +1,21 @@
 "use strict";
-
+// player controller
 function Player(game, key) {
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
-	
+	//PC variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
-
+    //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(10, 10, 5, 10);
-
+    //PC controls
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {
 		up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -23,7 +23,7 @@ function Player(game, key) {
 		left: game.input.keyboard.addKey(Phaser.Keyboard.A),
 		right: game.input.keyboard.addKey(Phaser.Keyboard.D)
 	}
-	
+	//swappable weapons for PC
 	this.weapons = [];
 	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot", 16);
 	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
@@ -47,7 +47,7 @@ Player.prototype.create = function() {
 Player.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.enemies, GamePlay.collisionHandle, null, this);
 	this.weapon = this.weapons[this.EQUIP];
-
+    // movement data
 	this.body.acceleration.setTo(0,0);
 	if(this.alive) {
 		if(this.cursors.left.isDown){
