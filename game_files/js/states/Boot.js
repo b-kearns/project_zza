@@ -11,7 +11,10 @@ function Boot(game) {}
 			game.load.image("player_side", "assets/imgs/player_side.png"); 
 			game.load.image("weapon1","assets/imgs/projectile-blue.png");
             game.load.image("enemy1", "assets/imgs/Red-02.png")
+            game.load.image("enemyWeapon", "assets/imgs/projectile-red.png")
+
             game.load.image("weapon2", "assets/imgs/ScatterShot.png");
+            //game.load.image("weapon3", "assets/imgs/SplitShot.png");
             game.load.image("weapon4", "assets/imgs/RailShot.png");
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
