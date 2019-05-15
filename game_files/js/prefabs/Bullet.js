@@ -1,5 +1,5 @@
 "use strict";
-
+// prefab for all of the bullets
 function Bullet(game, key){
 	Phaser.Sprite.call(this, game, 0, 0, key);
 	this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
