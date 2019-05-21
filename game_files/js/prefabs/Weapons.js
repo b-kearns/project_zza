@@ -118,7 +118,7 @@ function SplitShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "weapon1"), true);
+	this.add(new Bullet(game, "weapon3"), true);
 	}
 }
 
