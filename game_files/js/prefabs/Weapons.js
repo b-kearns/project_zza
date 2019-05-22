@@ -5,6 +5,7 @@
 function SingleShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "SingleShot", false, true, Phaser.Physics.ARCADE);
 	
+	this.UNLOCK = true;
 	this.NAME = "Single";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
@@ -36,16 +37,59 @@ SingleShot.prototype.fire = function(source) {
 	
 }
 
+<<<<<<< HEAD
 function ScatterShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "ScatterShot", false, true, Phaser.Physics.ARCADE);
 	
 	this.NAME = "Scatter";
+=======
+// function SingleShotE(game, posX, posY, direction, key, ammo) {
+	// Phaser.Group.call(this, game, game.world, "SingleShotE", false, true, Phaser.Physics.ARCADE);
+	
+	// this.NAME = "Single";
+	// this.DIRECTION = direction;
+	// this.PENETRATE = false;
+	// this.DAMAGE = 1;
+    // this.nextFire = 0;
+	// this.bulletSpeed = 600;
+	// this.fireRate = 200;
+    // this.SFX = game.add.audio("weapon_fx_1");
+	
+	// for(var i = 0; i < ammo; i++){
+	// this.add(new Bullet(game, "enemyWeapon"), true);
+	// }
+// }
+
+// SingleShotE.prototype = Object.create(Phaser.Group.prototype);
+// SingleShotE.prototype.constructor = SingleShotE;
+
+// SingleShotE.prototype.fire = function(source) {
+	// if(!source){return;}
+	// if(game.time.time < this.nextFire){
+		// return;
+	// }
+	// this.bullet = this.getFirstExists(false);
+	// if(this.bullet === null){return;}
+    // this.SFX.play();
+	// this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+
+	// this.nextFire = game.time.time + this.fireRate;
+	
+// }
+
+function DoubleShot(game, posX, posY, direction, key, ammo) {
+	Phaser.Group.call(this, game, game.world, "DoubleShot", false, true, Phaser.Physics.ARCADE);
+	
+	this.UNLOCK = false;
+	this.NAME = "Double";
+>>>>>>> f3a6ba6579c672fc9cb548de4ee1aba533e6d574
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 600;
 	this.fireRate = 100;
+	this.ALT = 1;
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
@@ -53,10 +97,10 @@ function ScatterShot(game, posX, posY, direction, key, ammo) {
 	}
 }
 
-ScatterShot.prototype = Object.create(Phaser.Group.prototype);
-ScatterShot.prototype.constructor = ScatterShot;
+DoubleShot.prototype = Object.create(Phaser.Group.prototype);
+DoubleShot.prototype.constructor = DoubleShot;
 
-ScatterShot.prototype.fire = function(source) {
+DoubleShot.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
 		return;
@@ -64,16 +108,17 @@ ScatterShot.prototype.fire = function(source) {
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX.play();
-	var y = (source.y + source.height / 2) + this.game.rnd.between(-20, 20);
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, y - 20, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+	
+	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
-	
+	this.ALT *= -1;
 }
 
 function SplitShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "SplitShot", false, true, Phaser.Physics.ARCADE);
 	
+	this.UNLOCK = false;
 	this.NAME = "Split";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
@@ -111,6 +156,7 @@ SplitShot.prototype.fire = function(source) {
 function Shotgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Shotgun", false, true, Phaser.Physics.ARCADE);
 	
+	this.UNLOCK = false;
 	this.NAME = "Shotgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
@@ -148,6 +194,7 @@ Shotgun.prototype.fire = function(source) {
 function Railgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Railgun", false, true, Phaser.Physics.ARCADE);
 	//set all the variables unique to the railgun
+	this.UNLOCK = false;
 	this.NAME = "Railgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = true;
