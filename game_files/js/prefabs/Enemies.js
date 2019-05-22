@@ -18,7 +18,7 @@ function Enemy1(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(20, 20, 5, 10);
 	
-	this.weapon = new SingleShotE(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
