@@ -37,6 +37,7 @@ SingleShot.prototype.fire = function(source) {
 	
 }
 
+
 // function SingleShotE(game, posX, posY, direction, key, ammo) {
 	// Phaser.Group.call(this, game, game.world, "SingleShotE", false, true, Phaser.Physics.ARCADE);
 	
@@ -76,6 +77,7 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
 	
 	this.UNLOCK = false;
 	this.NAME = "Double";
+
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;

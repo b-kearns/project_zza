@@ -32,8 +32,8 @@ function Boot(game) {}
             game.load.image("TentieTop", "assets/imgs/tentacle top.png");
             game.load.image("TentieMid", "assets/imgs/Tentacle mid.png");
             game.load.image("TentieBot", "assets/imgs/Tentacle bot.png");
-            game.load.image("weapon2", "assets/imgs/ScatterShot.png");
-            game.load.image("weapon3", "assets/imgs/SplitShot.png");
+            game.load.image("weapon2", "assets/imgs/ShotgunShot.png");
+            game.load.image("weapon3", "assets/imgs/TriShot.png");
             game.load.image("weapon4", "assets/imgs/RailShot.png");
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
