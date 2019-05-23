@@ -42,6 +42,7 @@ function Boot(game) {}
             game.load.audio("shotgun_fx", "assets/audio/shotblast.wav");
 			game.load.audio("rail_charge", "assets/audio/railSpinup.wav");
             game.load.audio("rail_shot", "assets/audio/railShot.wav");
+            game.load.audio("tri_shot", "assets/audio/triShot.wav");
 		},
 		create: function(){
 			

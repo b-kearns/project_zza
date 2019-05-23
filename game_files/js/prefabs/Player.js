@@ -28,7 +28,7 @@ function Player(game, key) {
 	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot", 16);
 	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
 	this.weapons[2] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
-	this.weapons[3] = new SplitShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
+	this.weapons[3] = new TriShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
 	this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
 
 	this.weapon = this.weapons[this.EQUIP];

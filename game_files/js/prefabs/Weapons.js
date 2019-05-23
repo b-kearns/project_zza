@@ -76,28 +76,29 @@ DoubleShot.prototype.fire = function(source) {
 	this.ALT *= -1;
 }
 
-function SplitShot(game, posX, posY, direction, key, ammo) {
-	Phaser.Group.call(this, game, game.world, "SplitShot", false, true, Phaser.Physics.ARCADE);
+function TriShot(game, posX, posY, direction, key, ammo) {
+	Phaser.Group.call(this, game, game.world, "TriShot", false, true, Phaser.Physics.ARCADE);
 	
 	this.UNLOCK = false;
-	this.NAME = "Split";
+	this.NAME = "Tri";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 600;
 	this.fireRate = 200;
-    this.SFX = game.add.audio("weapon_fx_1");
+    this.SFX = game.add.audio("tri_shot");
+    //this.SFX.
 	
 	for(var i = 0; i < ammo; i++){
 	this.add(new Bullet(game, "weapon3"), true);
 	}
 }
 
-SplitShot.prototype = Object.create(Phaser.Group.prototype);
-SplitShot.prototype.constructor = SingleShot;
+TriShot.prototype = Object.create(Phaser.Group.prototype);
+TriShot.prototype.constructor = TriShot;
 
-SplitShot.prototype.fire = function(source) {
+TriShot.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
 		return;
