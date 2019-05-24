@@ -64,6 +64,24 @@ function Level_0(game) {}
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
 			
+			this.explosions = game.add.group();
+    		this.explosions.enableBody = true;
+    		this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    		this.explosions.createMultiple(30, 'explosion');
+    		this.explosions.setAll('anchor.x', 0.5);
+    		this.explosions.setAll('anchor.y', 0.5);
+    		this.explosions.forEach(function(explosion) {
+    			explosion.animations.add('explosion');
+   			 })
+
+   			//player death explosion
+			this.playerDeath = game.add.emitter(this.player.position.x, this.player.position.y);
+    		this.playerDeath.width = 25;
+   			this.playerDeath.height = 25;
+    		this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
+    		this.playerDeath.setAlpha(0.9, 0, 800);
+    		this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out);
+
 			//this.BGM.play();
 			
 		},
@@ -172,11 +190,15 @@ function Level_1(game) {}
             case 5:
                    break;
             }
+
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
 			target.HEALTH -= this.player.weapon.DAMAGE;
 			if(!this.player.weapon.PENETRATE){weapon.kill();}
+			var explosion = this.explosions.getFirstExists(false);
+        	explosion.reset(target.body.x + target.body.halfWidth, target.body.y + target.body.halfHeight);
+        	explosion.play('explosion', 30, false, true);
 			console.log("Handled");
 		},
 		checkCollision: function(enemy){
@@ -191,6 +213,9 @@ function Level_1(game) {}
             //kill it with fire!!!!
 			this.equipped.kill();
 			this.BGM.stop();
+			this.playerDeath.x = this.player.x;
+        	this.playerDeath.y = this.player.y;
+        	this.playerDeath.start(false, 1000, 10, 10);
 			this.player.kill();
 			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
 		},

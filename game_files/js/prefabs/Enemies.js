@@ -55,6 +55,26 @@ Enemy1.prototype.shoot = function(){
 	}
 }
 
+/*var Enemy2;
+
+function Enemy2(game, posX, posY, key) {
+	Phaser.Sprite.call(this,game, posX, posY, key);
+	
+	Enemy2 = game.add.group();
+    Enemy2.enableBody = true;
+    Enemy2.physicsBodyType = Phaser.Physics.ARCADE;
+    Enemy2.createMultiple(30, 'enemy1');
+    Enemy2.setAll('anchor.x', 0.5);
+    Enemy2.setAll('anchor.y', 0.5);
+    Enemy2.setAll('scale.x', 0.5);
+    Enemy2.setAll('scale.y', 0.5);
+    Enemy2.setAll('angle', 180);
+    //Enemy2.forEach(function(enemy){
+     //   enemy.damageAmount = 40;
+    //});
+	
+	this.weapon = new SingleShotE(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
+=======
 ///////////////////////////////Rambopus Enemy//////////////////////////////////////////////////////////////
 
 function Enemy2(game, posX, posY, key) {
@@ -75,6 +95,7 @@ function Enemy2(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(0, 300);
 	
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
+>>>>>>> 7298c66bc8654a4bc3996dbc94d755cf341cf4e0
 }
 
 Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
@@ -88,6 +109,36 @@ Enemy2.prototype.create = function() {
 
 Enemy2.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
+<<<<<<< HEAD
+	
+	var startingX = game.rnd.integerInRange(100, game.width - 100);
+    var verticalSpeed = 180;
+    var spread = 60;
+    var frequency = 70;
+    var verticalSpacing = 70;
+    var numEnemiesInWave = 5;
+    var timeBetweenWaves = 2500;
+
+    //  Launch wave
+    for (var i =0; i < numEnemiesInWave; i++) {
+        var enemy = Enemy2.getFirstExists(false);
+        if (enemy) {
+            enemy.startingX = startingX;
+            enemy.reset(game.width / 2, -verticalSpacing * i);
+            enemy.body.velocity.y = verticalSpeed;
+
+            enemy.update = function(){
+              //  Wave movement
+              this.body.x = this.startingX + Math.sin((this.y) / frequency) * spread;
+          	};
+        }
+    }
+
+	if(this.HEALTH <= 0){
+		this.kill();
+	}
+	
+=======
 	//kill the object when is out of scope
 	    this.body.velocity.y = 200;
 
@@ -99,14 +150,17 @@ Enemy2.prototype.update = function() {
 		this.kill();
 	}
 	// fire rate
+>>>>>>> 7298c66bc8654a4bc3996dbc94d755cf341cf4e0
 	if(this.alive && this.inCamera && game.rnd.integerInRange(1,100) > 90){this.weapon.fire(this);}
 }
 
 Enemy2.prototype.shoot = function(){
-	for(var i = 0; i < 40; i++){
+<<<<<<< HEAD
+	for(var i = 0; i < 20; i++){
 		this.weapon.fire(this);
 	}
-}
+}*/
+
 
 ///////////////////////////////Small Turret Enemy//////////////////////////////////////////////////////////////
 
