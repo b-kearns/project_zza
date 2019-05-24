@@ -24,12 +24,7 @@ function Level_0(game) {}
             this.BGM.loop = true;
 		},
 		create: function(){
-			if(!this.background){
-				this.background = [];
-				this.background[0] = game.add.tileSprite(0,0,800,640,"StarsBackground");
-				this.background[1] = game.add.sprite(0,100,"EarthBackground");
-				this.background[1].scale.setTo(3.5, 3.5);
-			}
+			
 			
 			console.log("BG Exists? " + (this.background != null));
 			
@@ -381,9 +376,9 @@ function Level_4(game) {}
 		},
 		preload: function(){
 			console.log("Level_4: Preload");
+			console.log(this.background[0].alive);
 		},
 		create: function(){
-			
 		},
 		update: function(){
             //collision handling
