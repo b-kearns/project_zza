@@ -21,7 +21,7 @@ function Enemy1(game, posX, posY, key) {
     this.body.velocity.setTo(200, 0);
     this.body.setSize(20, 20, 5, 10);
 	
-	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 2);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
@@ -36,7 +36,8 @@ Enemy1.prototype.create = function() {
 Enemy1.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
 	//kill the object when is out of scope
-     this.body.velocity.x = -200;
+    this.body.velocity.x = -200;
+	
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
@@ -45,7 +46,7 @@ Enemy1.prototype.update = function() {
 		this.kill();
 	}
 	// fire rate
-	if(this.alive && this.inCamera && game.rnd.integerInRange(1,100) > 90){this.weapon.fire(this);}
+	if(this.alive && this.inCamera && game.rnd.integerInRange(1,100) > 95){this.weapon.fire(this);}
 }
 
 Enemy1.prototype.shoot = function(){
@@ -228,14 +229,14 @@ function Enemy4(game, posX, posY, key) {
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
-	this.outOfCameraBoundsKill = false;
-	this.autoCull = false;
+	// this.outOfCameraBoundsKill = false;
+	// this.autoCull = false;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(300, 300);
     
 
 	
-	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 1);
+	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 3);
 }
 
 Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
@@ -251,19 +252,20 @@ Enemy4.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
     //set path
     this.body.velocity.x = -200;
-    if(this.body.position.y < 310){
-        this.body.velocity.y = 160;
-    }
-    else if(this.body.position.y > 310 ){
-        this.body.velocity.y = -160;
-    }
-    else if(this.body.position.y === 310){
-        this.body.velocity.y = 0;
-    }
+	
+    // if(this.body.position.y < 310){
+        // this.body.velocity.y = 160;
+    // }
+    // else if(this.body.position.y > 310 ){
+        // this.body.velocity.y = -160;
+    // }
+    // else if(this.body.position.y === 310){
+        // this.body.velocity.y = 0;
+    // }
 	//kill the object when is out of scope
-	if(this.inCamera && !this.outOfCameraBoundsKill){
-		this.outOfCameraBoundsKill = true;
-	}
+	// if(this.inCamera && !this.outOfCameraBoundsKill){
+		// this.outOfCameraBoundsKill = true;
+	// }
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
 		this.kill();
