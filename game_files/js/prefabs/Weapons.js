@@ -11,7 +11,7 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 600;
+	this.bulletSpeed = 500;
 	this.fireRate = 200;
     this.SFX = game.add.audio("weapon_fx_1");
 	
@@ -48,13 +48,13 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 600;
+	this.bulletSpeed = 500;
 	this.fireRate = 100;
 	this.ALT = 1;
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "weapon1"), true);
+		this.add(new Bullet(game, "weapon1"), true);
 	}
 }
 
@@ -85,13 +85,13 @@ function TriShot(game, posX, posY, direction, key, ammo) {
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 600;
+	this.bulletSpeed = 400;
 	this.fireRate = 200;
     this.SFX = game.add.audio("tri_shot");
     //this.SFX.
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "weapon3"), true);
+		this.add(new Bullet(game, "weapon3"), true);
 	}
 }
 
@@ -103,13 +103,16 @@ TriShot.prototype.fire = function(source) {
 	if(game.time.time < this.nextFire){
 		return;
 	}
-	this.bullet = this.getFirstExists(false);
-	if(this.bullet === null){return;}
+	// this.bullet = this.getFirstExists(false);
+	// if(this.bullet === null){return;}
     this.SFX.play();
-    this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, -500);
-    this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
-    this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 500);
-
+	try{
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
+	}
+	catch{return;}
+	
 	this.nextFire = game.time.time + this.fireRate;
 	
 }
@@ -124,7 +127,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 800;
+	this.bulletSpeed = 400;
 	this.fireRate = 1000;
     this.SFX = game.add.audio("shotgun_fx");
 	
@@ -142,13 +145,14 @@ Shotgun.prototype.fire = function(source) {
 	if(game.time.time < this.nextFire){
 		return;
 	}
-	this.bullet = this.getFirstExists(false);
-	if(this.bullet === null){return;}
+	
     this.SFX.play();
-	for(var i = 0; i < Math.floor(this.children.length/2); i++) {
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-30, 30), this.bulletSpeed * this.DIRECTION, 0, 0);
-
+	try{
+		for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-30, 30), this.bulletSpeed * this.DIRECTION, 0, 0);
+		}
 	}
+	catch{this.nextFire = game.time.time + this.fireRate; return;}
 
 	this.nextFire = game.time.time + this.fireRate;
 }
