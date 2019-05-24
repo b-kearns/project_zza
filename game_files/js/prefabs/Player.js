@@ -1,19 +1,12 @@
 "use strict";
-<<<<<<< HEAD
 
 var shipTrail;
 var playerDeath;
-
-function Player(game, key) {
-
-	Phaser.Sprite.call(this, game, 64, game.world.centerY, key);
 	
-=======
 // player controller
 function Player(game, key) {
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
 	//PC variables
->>>>>>> 478c945af36f7c6b4a3dbfc48cecca6362420f3b
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
@@ -26,7 +19,6 @@ function Player(game, key) {
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(10, 10, 5, 10);
-<<<<<<< HEAD
 
     shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
     shipTrail.width = 10;
@@ -38,9 +30,8 @@ function Player(game, key) {
     shipTrail.setScale(0.05, 0.4, 0.05, 0.4, 2000, Phaser.Easing.Quintic.Out);
     shipTrail.start(false, 5000, 10);
     
-=======
+
     //PC controls
->>>>>>> 478c945af36f7c6b4a3dbfc48cecca6362420f3b
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {
 		up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -124,10 +115,3 @@ Player.prototype.swap = function(direction) {
 		if(this.EQUIP >= this.weapons.length){this.EQUIP = 0;}
 	}
 }
-
-
-
-
-
-
-

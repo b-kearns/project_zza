@@ -7,8 +7,6 @@ function Boot(game) {}
 		preload: function(){
             // preloading all assets before game starts
 			game.load.bitmapFont("myfont", "assets/imgs/pixel_fantasy.png", "assets/imgs/pixel_fantasy.fnt");
-			
-<<<<<<< HEAD
 			game.load.image("player_side", "assets/imgs/player_side.png");
 			game.load.image("trail", "assets/imgs/trail.png"); 
 			game.load.image("weapon1","assets/imgs/projectile-blue.png");
@@ -16,7 +14,6 @@ function Boot(game) {}
             game.load.image("enemyWeapon", "assets/imgs/projectile-orange.png")
             game.load.image("weapon2", "assets/imgs/ScatterShot.png");
             //game.load.image("weapon3", "assets/imgs/SplitShot.png");
-=======
 			game.load.image("player_side", "assets/imgs/Blue-04.png"); 
 			game.load.image("weapon1","assets/imgs/projectile-blue.png");
             game.load.image("enemy1", "assets/imgs/Dark-Grey-04.png");
@@ -43,7 +40,6 @@ function Boot(game) {}
             game.load.image("TentieBot", "assets/imgs/Tentacle bot.png");
             game.load.image("weapon2", "assets/imgs/ShotgunShot.png");
             game.load.image("weapon3", "assets/imgs/TriShot.png");
->>>>>>> 7298c66bc8654a4bc3996dbc94d755cf341cf4e0
             game.load.image("weapon4", "assets/imgs/RailShot.png");
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");

@@ -54,7 +54,6 @@ Enemy1.prototype.shoot = function(){
 	}
 }
 
-<<<<<<< HEAD
 /*var Enemy2;
 
 function Enemy2(game, posX, posY, key) {
@@ -160,11 +159,7 @@ Enemy2.prototype.shoot = function(){
 		this.weapon.fire(this);
 	}
 }*/
-=======
-	for(var i = 0; i < 40; i++){
-		this.weapon.fire(this);
-	}
-}
+
 
 ///////////////////////////////Small Turret Enemy//////////////////////////////////////////////////////////////
 
@@ -282,4 +277,3 @@ Enemy4.prototype.shoot = function(){
 		this.weapon.fire(this);
 	}
 }
->>>>>>> 7298c66bc8654a4bc3996dbc94d755cf341cf4e0
