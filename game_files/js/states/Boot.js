@@ -7,13 +7,7 @@ function Boot(game) {}
 		preload: function(){
             // preloading all assets before game starts
 			game.load.bitmapFont("myfont", "assets/imgs/pixel_fantasy.png", "assets/imgs/pixel_fantasy.fnt");
-			game.load.image("player_side", "assets/imgs/player_side.png");
 			game.load.image("trail", "assets/imgs/trail.png"); 
-			game.load.image("weapon1","assets/imgs/projectile-blue.png");
-            game.load.image("enemy1", "assets/imgs/Red-02.png")
-            game.load.image("enemyWeapon", "assets/imgs/projectile-orange.png")
-            game.load.image("weapon2", "assets/imgs/ScatterShot.png");
-            //game.load.image("weapon3", "assets/imgs/SplitShot.png");
 			game.load.image("player_side", "assets/imgs/Blue-04.png"); 
 			game.load.image("weapon1","assets/imgs/projectile-blue.png");
             game.load.image("enemy1", "assets/imgs/Dark-Grey-04.png");

@@ -182,13 +182,13 @@ function Level_1(game) {}
 					catch{console.log("Spawn Failed");return;}
 					break;
             case 2:
-                   break;
+					break;
             case 3:
-                   break;
+					break;
             case 4:
-                   break;
+					break;
             case 5:
-                   break;
+					break;
             }
 
 		},
@@ -196,10 +196,6 @@ function Level_1(game) {}
 		collisionHandle: function(target, weapon){
 			target.HEALTH -= this.player.weapon.DAMAGE;
 			if(!this.player.weapon.PENETRATE){weapon.kill();}
-			var explosion = this.explosions.getFirstExists(false);
-        	explosion.reset(target.body.x + target.body.halfWidth, target.body.y + target.body.halfHeight);
-        	explosion.play('explosion', 30, false, true);
-			console.log("Handled");
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;
@@ -213,9 +209,6 @@ function Level_1(game) {}
             //kill it with fire!!!!
 			this.equipped.kill();
 			this.BGM.stop();
-			this.playerDeath.x = this.player.x;
-        	this.playerDeath.y = this.player.y;
-        	this.playerDeath.start(false, 1000, 10, 10);
 			this.player.kill();
 			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
 		},
@@ -470,29 +463,7 @@ function Level_4(game) {}
            }
         },
 		makeEnemy: function(player){
-            //makin enemies
-			if(this.enemies.length === 0){
-				for(var i = 0; i < 10; i++){
-					this.enemy = new Enemy1(game, 1000, 1000, "enemy1", this.player);
-					game.add.existing(this.enemy);
-					this.enemies.add(this.enemy);
-					this.enemy.exists = false;
-				}
-			}
-			else if(!this.firstCall){
-				for(var i = 1; i < 5; i++){
-					this.enemy = this.enemies.getFirstExists(false);
-					//console.log(this.enemy);
-					if(this.enemy != null){
-						this.enemy.outOfCameraBoundsKill = false;
-						this.enemy.HEALTH = 2;
-						this.enemy.reset(game.world.width + 64 * i, game.rnd.integerInRange(150, 250) * i + game.rnd.integerInRange(100,300));
-					}
-				}
-			}
-			
-			this.firstCall = false;
-			
+            
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
