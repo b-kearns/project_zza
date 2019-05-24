@@ -1,10 +1,11 @@
 "use strict";
-
+// state to hadle load times
 function Boot(game) {}
 	
 	Boot.prototype = {
 		init: function(){},
 		preload: function(){
+            // preloading all assets before game starts
 			game.load.bitmapFont("myfont", "assets/imgs/pixel_fantasy.png", "assets/imgs/pixel_fantasy.fnt");
 			
 			game.load.image("player_side", "assets/imgs/player_side.png");

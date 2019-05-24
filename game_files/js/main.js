@@ -1,3 +1,7 @@
+//Members: Corey Hunt, Brandon Kearns, Cole Watts
+//Group Name: Project Zza
+//Game Title: Captain S.H.M.U.P(Strategic Human Military Uprising Protocol)
+
 "use strict";
 
 var game = new Phaser.Game(960, 640, Phaser.AUTO);
@@ -10,7 +14,7 @@ var game = new Phaser.Game(960, 640, Phaser.AUTO);
 
 // this.GameOver = new GameOver(game);
 // game.add.existing(this.GameOver);
-
+//Let's start a game!
 game.state.add("Boot", Boot);
 game.state.add("MainMenu", MainMenu);
 game.state.add("Intro", Intro);

@@ -1,11 +1,16 @@
 "use strict";
+<<<<<<< HEAD
 
 var playerDeath;
 
+=======
+// where the magic happens
+>>>>>>> 478c945af36f7c6b4a3dbfc48cecca6362420f3b
 function GamePlay(game) {}
 	
 	GamePlay.prototype = {
 		init: function(background, BGM){
+            // so the background parallax persists between states
 			this.background = background;
 			this.BGM = BGM;
 		},
@@ -50,15 +55,16 @@ function GamePlay(game) {}
 
 		},
 		update: function(){
+            //collision handling
 			game.physics.arcade.overlap(this.enemies, this.player.weapon, this.collisionHandle, null, this);
 			this.enemies.forEachExists(this.checkCollision, this);
-			
+			//move the background
 			for(var i = 1; i < this.background.length + 1; i++){
 				this.background[i - 1].position.x -= 0.01 * i;
 			}
-			
+			//UI w00t!
 			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
-			
+			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.sendToGameOver();
 			}
@@ -70,6 +76,7 @@ function GamePlay(game) {}
 			}
         },
         render: function(){
+           //handle debug info
            if(this.debug){
               game.debug.body(this.player);
               //game.debug.body(this.makeEnemy);
@@ -78,6 +85,7 @@ function GamePlay(game) {}
            }
        },
 		makeEnemy: function(player){
+            //makin enemies
 			if(this.enemies.length === 0){
 				for(var i = 0; i < 10; i++){
 					this.enemy = new Enemy1(game, 1000, 1000, "enemy1", this.player);
@@ -104,6 +112,7 @@ function GamePlay(game) {}
 			// this.enemy1 = new Enemy1(game, game.world.width, 400, "player_side");
 			// game.add.existing(this.enemy1);
 		},
+        //collision handling
 		collisionHandle: function(target, weapon){
 			//console.log(target);
 			target.HEALTH -= this.player.weapon.DAMAGE;
@@ -125,6 +134,7 @@ function GamePlay(game) {}
 			game.debug.body(member);
 		},
 		sendToGameOver: function(){
+            //kill it with fire!!!!
 			this.equipped.kill();
 			this.BGM.stop();
 			this.playerDeath.x = this.player.x;
