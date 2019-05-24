@@ -3,7 +3,7 @@
 ///////////////////////////////Small Single Shot Enemy//////////////////////////////////////////////////////////////
 
 function Enemy1(game, posX, posY, key) {
-	Phaser.Sprite.call(this,game, posX, posY, key);
+	Phaser.Sprite.call(this, game, posX, posY, key);
 	// set enemy data
 	this.anchor.set(0.5);
     this.scale.setTo(-1, 1);

@@ -20,7 +20,7 @@ GameOver.prototype = {
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
 			this.text.kill();
 			
-			game.state.start("Level_0", true, false, this.background, this.CHECKPOINT);
+			game.state.start("Level_0", false, false, this.background, this.CHECKPOINT);
 		}
 	},
 	render: function(){}
