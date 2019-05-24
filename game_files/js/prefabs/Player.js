@@ -1,7 +1,11 @@
 "use strict";
 
+var shipTrail;
+var playerDeath;
+
 function Player(game, key) {
-	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
+
+	Phaser.Sprite.call(this, game, 64, game.world.centerY, key);
 	
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
@@ -16,6 +20,16 @@ function Player(game, key) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(10, 10, 5, 10);
 
+    shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
+    shipTrail.width = 10;
+    shipTrail.makeParticles('trail');
+    shipTrail.setXSpeed(-200, -250);
+    shipTrail.setYSpeed(25, -50);
+    shipTrail.setRotation(50,-50);
+    shipTrail.setAlpha(1, 0.01, 800);
+    shipTrail.setScale(0.05, 0.4, 0.05, 0.4, 2000, Phaser.Easing.Quintic.Out);
+    shipTrail.start(false, 5000, 10);
+    
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {
 		up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -48,6 +62,10 @@ Player.prototype.create = function() {
 
 Player.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.enemies, GamePlay.collisionHandle, null, this);
+
+	shipTrail.x = this.position.x;
+	shipTrail.y = this.position.y;
+
 	this.weapon = this.weapons[this.EQUIP];
 
 	this.body.acceleration.setTo(0,0);
@@ -99,6 +117,8 @@ Player.prototype.swap = function(direction) {
 		if(this.EQUIP >= this.weapons.length){this.EQUIP = 0;}
 	}
 }
+
+
 
 
 
