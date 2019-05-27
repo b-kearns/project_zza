@@ -70,7 +70,7 @@ Enemy1.prototype.shoot = function(){
 ///////////////////////////////Rambopus Enemy//////////////////////////////////////////////////////////////
 
 function Enemy2(game, posX, posY, key) {
-	Phaser.Sprite.call(this,game, posX, posY, key);
+	Phaser.Sprite.call(this, game, posX, posY, key);
 	// set enemy data
 	this.anchor.set(0.5);
     this.scale.setTo(0.75, 0.75);
@@ -116,6 +116,7 @@ Enemy2.prototype.update = function() {
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
+	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
 		var explosion = this.explosions.getFirstExists(false);
@@ -140,13 +141,17 @@ Enemy2.prototype.shoot = function(){
 
 ///////////////////////////////Small Turret Enemy//////////////////////////////////////////////////////////////
 
-function Enemy3(game, posX, posY, key) {
-	this.BASE = Phaser.Sprite.call(this, game, posX, posY, "enemy3-1");
-	this.BASE.anchor.setTo(0.5, 0.3);
-	this.BARREL = Phaser.Sprite.call(this, game, posX, posY, "enemy3");
-	// set enemy data
-	this.anchor.set(0.5);
-    this.scale.setTo(-1, 1);
+function Enemy3(game, posX, posY, key, verticalScale) {
+	if(verticalScale == null){verticalScale = 1;}
+	this.BARREL = game.add.sprite(posX, posY, "enemy3");
+	Phaser.Sprite.call(this, game, posX, posY, "enemy3-1");
+	this.anchor.setTo(0.4, 0.5);
+	
+	this.BARREL.anchor.setTo(0, 0.5);
+	//set enemy data
+    this.scale.setTo(-1, verticalScale);
+    //this.BARREL.scale.setTo(-1, 1);
+	
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
@@ -157,12 +162,24 @@ function Enemy3(game, posX, posY, key) {
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
 	this.outOfCameraBoundsKill = false;
+	this.BARREL.outOfCameraBoundsKill = false;
+	this.BARREL.autoCull = true;
 	this.autoCull = true;
+	this.BARREL.autoCull = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
-	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
-    this.body.velocity.setTo(200, 0);
-    this.body.setSize(20, 20, 5, 10);
+
 	
+
+	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
+    this.body.velocity.setTo(-200, 0);
+	
+	this.weapon = new Shotgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon2", 8);
+	
+	this.BARREL.exists = false;
+	this.exists = false;
+	
+	//console.log(this.body);
+  
 	this.explosions = game.add.group();
     this.explosions.enableBody = true;
     this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
@@ -172,28 +189,43 @@ function Enemy3(game, posX, posY, key) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
-	//give it a weapon
-	this.weapon = new Shotgun(game, this.position.x, this.position.y, -1, "Weapon2", 1);
+
 }
 
 Enemy3.prototype = Object.create(Phaser.Sprite.prototype);
-Enemy3.prototype.constructor = Enemy1;
+Enemy3.prototype.constructor = Enemy3;
 
-Enemy3.prototype.create = function() {
-	
+Enemy3.prototype.respawn = function(x, y) {
+	this.BARREL.exists = true;
+	this.exists = true;
+	this.reset(x, y);
 }
 
 Enemy3.prototype.update = function() {
 
+	
+	//kill the object when is out of scope
+	
+	this.BARREL.position.x = this.position.x;
+	this.BARREL.position.y = this.position.y;
+	
+	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
+
+	
+
+
+
     //track the player UwU
-	this.BARREL.rotation = game.physics.arcade.angleToPointer(turret);
+	
 
 	//i like to move it move it
 	this.body.velocity.x = -100;
 	//kill the object when is out of scope
+
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
+	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
 		var explosion = this.explosions.getFirstExists(false);
@@ -205,13 +237,15 @@ Enemy3.prototype.update = function() {
 		
 		this.HEALTH = this.DEFAULT;
 	}
-	// fire rate
-	if(this.alive && this.inCamera && game.rnd.integerInRange(1,100) > 90){this.weapon.fire(this);}
+	
+	if(!this.exists){this.BARREL.exists = false;}
+	
+	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
 }
 
 Enemy3.prototype.shoot = function(){
 	for(var i = 0; i < 2; i++){
-		this.weapon.fire(this);
+		this.weapon.fire(this.BARREL);
 	}
 }
 

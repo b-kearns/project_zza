@@ -145,12 +145,22 @@ Shotgun.prototype.fire = function(source) {
 	}
 	
     this.SFX.play();
-	try{
-		for(var i = 0; i < Math.floor(this.children.length/4); i++) {
-			this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-20, 20), this.bulletSpeed * this.DIRECTION, 0, 0);
+	if(this.DIRECTION < 0){
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) + 180, this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
 		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
 	}
-	catch{this.nextFire = game.time.time + this.fireRate; return;}
+	else{
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-20, 20), this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
+	}
 
 	this.nextFire = game.time.time + this.fireRate;
 }
