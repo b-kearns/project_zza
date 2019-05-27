@@ -5,17 +5,18 @@
 function SingleShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "SingleShot", false, true, Phaser.Physics.ARCADE);
 	
+	this.UNLOCK = true;
 	this.NAME = "Single";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 600;
+	this.bulletSpeed = 500;
 	this.fireRate = 200;
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "weapon1"), true);
+	this.add(new Bullet(game, "weapon1", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -33,24 +34,104 @@ SingleShot.prototype.fire = function(source) {
 	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
+}
+
+//get the double shooter man!
+function DoubleShot(game, posX, posY, direction, key, ammo) {
+	Phaser.Group.call(this, game, game.world, "DoubleShot", false, true, Phaser.Physics.ARCADE);
+	
+	this.UNLOCK = false;
+	this.NAME = "Double";
+
+	this.DIRECTION = direction;
+	this.PENETRATE = false;
+	this.DAMAGE = 1;
+    this.nextFire = 0;
+	this.bulletSpeed = 500;
+	this.fireRate = 150;
+	this.ALT = 1;
+    this.SFX = game.add.audio("weapon_fx_1");
+	
+	for(var i = 0; i < ammo; i++){
+		this.add(new Bullet(game, "weapon1", this.DAMAGE, this.PENETRATE), true);
+	}
+}
+
+DoubleShot.prototype = Object.create(Phaser.Group.prototype);
+DoubleShot.prototype.constructor = DoubleShot;
+
+DoubleShot.prototype.fire = function(source) {
+	if(!source){return;}
+	if(game.time.time < this.nextFire){
+		return;
+	}
+	this.bullet = this.getFirstExists(false);
+	if(this.bullet === null){return;}
+    this.SFX.play();
+	
+	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+
+	this.nextFire = game.time.time + this.fireRate;
+	this.ALT *= -1;
+}
+//this is how we trishot
+function TriShot(game, posX, posY, direction, key, ammo) {
+	Phaser.Group.call(this, game, game.world, "TriShot", false, true, Phaser.Physics.ARCADE);
+	
+	this.UNLOCK = false;
+	this.NAME = "Tri";
+	this.DIRECTION = direction;
+	this.PENETRATE = false;
+	this.DAMAGE = 1;
+    this.nextFire = 0;
+	this.bulletSpeed = 400;
+	this.fireRate = 300;
+    this.SFX = game.add.audio("tri_shot");
+    //this.SFX.
+	
+	for(var i = 0; i < ammo; i++){
+		this.add(new Bullet(game, "weapon3", this.DAMAGE, this.PENETRATE), true);
+	}
+}
+
+TriShot.prototype = Object.create(Phaser.Group.prototype);
+TriShot.prototype.constructor = TriShot;
+
+TriShot.prototype.fire = function(source) {
+	if(!source){return;}
+	if(game.time.time < this.nextFire){
+		return;
+	}
+	// this.bullet = this.getFirstExists(false);
+	// if(this.bullet === null){return;}
+    this.SFX.play();
+	try{
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
+	}
+	catch{return;}
+	
+	this.nextFire = game.time.time + this.fireRate;
 	
 }
-// add specific data to shotgun bullets
+
+//shoot gun
 function Shotgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Shotgun", false, true, Phaser.Physics.ARCADE);
 	
+	this.UNLOCK = false;
 	this.NAME = "Shotgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 800;
+	this.bulletSpeed = 200;
 	this.fireRate = 1000;
     this.SFX = game.add.audio("shotgun_fx");
-	
+	// add specific data to shotgun bullets
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon2"), true);
-		//console.log("Creating Ammo!");
+		this.add(new Bullet(game, "weapon2", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -62,20 +143,32 @@ Shotgun.prototype.fire = function(source) {
 	if(game.time.time < this.nextFire){
 		return;
 	}
-	this.bullet = this.getFirstExists(false);
-	if(this.bullet === null){return;}
+	
     this.SFX.play();
-	for(var i = 0; i < Math.floor(this.children.length/2); i++) {
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-30, 30), this.bulletSpeed * this.DIRECTION, 0, 0);
-
+	if(this.DIRECTION < 0){
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) + 180, this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
+	}
+	else{
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-20, 20), this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
 	}
 
 	this.nextFire = game.time.time + this.fireRate;
 }
-
+//make the rail shooter
 function Railgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Railgun", false, true, Phaser.Physics.ARCADE);
 	//set all the variables unique to the railgun
+	this.UNLOCK = false;
 	this.NAME = "Railgun";
 	this.DIRECTION = direction;
 	this.PENETRATE = true;
@@ -87,14 +180,13 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2 = game.add.audio("rail_shot");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon4"), true);
-		//console.log("Creating Ammo!");
+		this.add(new Bullet(game, "weapon4", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
 Railgun.prototype = Object.create(Phaser.Group.prototype);
 Railgun.prototype.constructor = Railgun;
-// handle the railguun spinup of its fire event
+// handle the railgun spinup of its fire event
 Railgun.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
@@ -131,8 +223,7 @@ BlinkDrive.prototype.constructor = BlinkDrive;
 BlinkDrive.prototype.jump = function(player) {
 	if(!player){return;}
 	if(game.time.time < this.nextFire) {return;}
-	
-	//NEEDS ANIMATION
+
 	player.position.x += 150;
 	
 	this.nextFire = game.time.time + this.fireRate;
