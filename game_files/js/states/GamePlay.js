@@ -125,7 +125,7 @@ function Level_1(game) {}
 				this.background[i - 1].position.x -= 0.015 * i;
 			}
 			//UI w00t!
-			this.equipped.setText("Weapon: " + /*this.player.weapon.NAME*/ SCORE);
+			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -262,36 +262,40 @@ function Level_2(game) {}
               this.player.weapon.forEachAlive(this.renderGroup, this);
            }
         },
-		makeEnemy: function(player){
+		makeEnemy: function(player, key){
             //makin enemies
-			if(this.enemies.length === 0){
-				for(var i = 0; i < 10; i++){
-					this.enemy = new Enemy1(game, 1000, 1000, "enemy1", this.player);
-					game.add.existing(this.enemy);
-					this.enemies.add(this.enemy);
-					this.enemy.exists = false;
-				}
-			}
-			else if(!this.firstCall){
-				for(var i = 1; i < 5; i++){
-					this.enemy = this.enemies.getFirstExists(false);
-					//console.log(this.enemy);
-					if(this.enemy != null){
+            switch(key){
+            case 1:
+					try{
+						this.enemy = this.cache[0].getFirstExists(false);
 						this.enemy.outOfCameraBoundsKill = false;
-						this.enemy.HEALTH = 2;
-						this.enemy.reset(game.world.width + 64 * i, game.rnd.integerInRange(150, 250) * i + game.rnd.integerInRange(100,300));
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
 					}
-				}
-			}
-			
-			this.firstCall = false;
-			
+					catch{console.log("Spawn Case 1 Failed");return;}
+					break;
+            case 2:
+					try{
+						this.enemy = this.cache[1].getFirstExists(false);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.reset(game.world.width - 50 * game.rnd.integerInRange(1, 4), -100);
+					}
+					catch{console.log("Spawn Case 2 Failed");return;}
+					break;
+            case 3:
+					break;
+            case 4:
+					break;
+            case 5:
+					break;
+            }
+
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
-			target.HEALTH -= this.player.weapon.DAMAGE;
-			if(!this.player.weapon.PENETRATE){weapon.kill();}
-			console.log("Handled");
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;
@@ -387,9 +391,8 @@ function Level_3(game) {}
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
-			target.HEALTH -= this.player.weapon.DAMAGE;
-			if(!this.player.weapon.PENETRATE){weapon.kill();}
-			console.log("Handled");
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;
@@ -463,9 +466,8 @@ function Level_4(game) {}
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
-			target.HEALTH -= this.player.weapon.DAMAGE;
-			if(!this.player.weapon.PENETRATE){weapon.kill();}
-			console.log("Handled");
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;

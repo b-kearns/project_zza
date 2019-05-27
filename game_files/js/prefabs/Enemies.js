@@ -116,6 +116,7 @@ Enemy2.prototype.shoot = function(){
 
 function Enemy3(game, posX, posY, key) {
 	this.BASE = Phaser.Sprite.call(this, game, posX, posY, "enemy3-1");
+	this.BASE.anchor.setTo(0.5, 0.3);
 	this.BARREL = Phaser.Sprite.call(this, game, posX, posY, "enemy3");
 	// set enemy data
 	this.anchor.set(0.5);
@@ -147,7 +148,10 @@ Enemy3.prototype.create = function() {
 Enemy3.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
 	//kill the object when is out of scope
-	    this.body.velocity.x = -100;
+	this.BARREL.rotation = game.physics.arcade.angleToPointer(turret);
+
+	
+	this.body.velocity.x = -100;
 
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
