@@ -61,6 +61,13 @@ function Level_0(game) {}
 				this.d_enemies.add(this.enemy);
 				this.enemy.exists = false;
 			}
+
+			for(var i = 0; i < 5; i++){
+				this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
+				game.add.existing(this.enemy);
+				this.r_enemies.add(this.enemy);
+				this.enemy.exists = false;
+			}
 				
 			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
 
@@ -77,7 +84,7 @@ function Level_0(game) {}
 			EQ = this.equipped;
 
 
-			//this.BGM.play();
+			this.BGM.play();
 
 		},
 		update: function(){
@@ -124,6 +131,8 @@ function Level_1(game) {}
 		create: function(){
 			game.time.events.add(Phaser.Timer.SECOND * 20, this.startTimer, this, 1, 3);
 			game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
+			game.time.events.add(Phaser.Timer.SECOND * 100, this.startTimer, this, 4, 3);
+
 			game.time.events.add(Phaser.Timer.SECOND * 15, this.makeEnemy, this, this.player, 1);
 			game.time.events.add(Phaser.Timer.SECOND * 120, this.displayText, this, "Level 2 Start");
 			//game.time.events.loop(Phaser.Timer.SECOND * 5, this.makeEnemy, this, this.player, 2);
@@ -189,6 +198,13 @@ function Level_1(game) {}
             case 3:
 					break;
             case 4:
+            		try{
+            			this.enemy = this.cache[4].getFirstExists(false);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+					}
+					catch{console.log("Spawn Case 4 Failed");return;}
 					break;
             case 5:
 					break;
