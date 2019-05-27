@@ -36,7 +36,7 @@ SingleShot.prototype.fire = function(source) {
 	this.nextFire = game.time.time + this.fireRate;
 }
 
-
+//get the double shooter man!
 function DoubleShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "DoubleShot", false, true, Phaser.Physics.ARCADE);
 	
@@ -74,7 +74,7 @@ DoubleShot.prototype.fire = function(source) {
 	this.nextFire = game.time.time + this.fireRate;
 	this.ALT *= -1;
 }
-
+//this is how we trishot
 function TriShot(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "TriShot", false, true, Phaser.Physics.ARCADE);
 	
@@ -115,8 +115,8 @@ TriShot.prototype.fire = function(source) {
 	this.nextFire = game.time.time + this.fireRate;
 	
 }
-// add specific data to shotgun bullets
 
+//shoot gun
 function Shotgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Shotgun", false, true, Phaser.Physics.ARCADE);
 	
@@ -129,7 +129,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
 	this.bulletSpeed = 200;
 	this.fireRate = 1000;
     this.SFX = game.add.audio("shotgun_fx");
-	
+	// add specific data to shotgun bullets
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "weapon2", this.DAMAGE, this.PENETRATE), true);
 	}
@@ -164,7 +164,7 @@ Shotgun.prototype.fire = function(source) {
 
 	this.nextFire = game.time.time + this.fireRate;
 }
-
+//make the rail shooter
 function Railgun(game, posX, posY, direction, key, ammo) {
 	Phaser.Group.call(this, game, game.world, "Railgun", false, true, Phaser.Physics.ARCADE);
 	//set all the variables unique to the railgun
@@ -186,7 +186,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
 
 Railgun.prototype = Object.create(Phaser.Group.prototype);
 Railgun.prototype.constructor = Railgun;
-// handle the railguun spinup of its fire event
+// handle the railgun spinup of its fire event
 Railgun.prototype.fire = function(source) {
 	if(!source){return;}
 	if(game.time.time < this.nextFire){
@@ -223,8 +223,7 @@ BlinkDrive.prototype.constructor = BlinkDrive;
 BlinkDrive.prototype.jump = function(player) {
 	if(!player){return;}
 	if(game.time.time < this.nextFire) {return;}
-	
-	//NEEDS ANIMATION
+
 	player.position.x += 150;
 	
 	this.nextFire = game.time.time + this.fireRate;

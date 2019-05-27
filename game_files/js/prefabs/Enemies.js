@@ -13,7 +13,7 @@ function Enemy1(game, posX, posY, key) {
 	this.HEALTH = 2;
 	this.DEFAULT = 2;
 	this.POINTS = 100;
-	
+	//give it physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
 	this.outOfCameraBoundsKill = false;
@@ -23,11 +23,11 @@ function Enemy1(game, posX, posY, key) {
     this.body.velocity.setTo(200, 0);
     this.body.setSize(20, 20, 5, 10);
 
-    //explosion
+    //explosion death effect
 	this.explosions = game.add.group();
     this.explosions.enableBody = true;
     this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(1000, 'explosion');
+    this.explosions.createMultiple(100, 'explosion');
     this.explosions.setAll('anchor.x', 0.5);
     this.explosions.setAll('anchor.y', 0.5);
     this.explosions.forEach(function(explosion) {
@@ -41,10 +41,9 @@ Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy1.prototype.constructor = Enemy1;
 
 Enemy1.prototype.update = function() {
-	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
-	//kill the object when is out of scope
+    //sliiiide to the left
     this.body.velocity.x = -200;
-	
+    //kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
@@ -88,6 +87,16 @@ function Enemy2(game, posX, posY, key) {
 	this.autoCull = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(0, 300);
+
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
 	
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 16);
 }
@@ -101,25 +110,28 @@ Enemy2.prototype.create = function() {
 
 Enemy2.prototype.update = function() {
 
-	//kill the object when is out of scope
-	this.body.velocity.y = 200;
 
+	this.body.velocity.y = 200;
+	//kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
 		this.kill();
 		
 		SCORE += this.POINTS;
 		
 		this.HEALTH = this.DEFAULT;
 	}
-	
+	//FIRE!!!
 	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.shoot();}catch{return;}}
 }
-
+//also fire...
 Enemy2.prototype.shoot = function(){
 	for(var i = 0; i < 10; i++){
 		this.weapon.fire(this);
@@ -155,8 +167,9 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.autoCull = true;
 	this.BARREL.autoCull = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
-	this.body.maxVelocity.setTo(0, 300);
+
 	
+
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(-200, 0);
 	
@@ -165,7 +178,18 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.BARREL.exists = false;
 	this.exists = false;
 	
-	console.log(this.body);
+	//console.log(this.body);
+  
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
+
 }
 
 Enemy3.prototype = Object.create(Phaser.Sprite.prototype);
@@ -178,7 +202,8 @@ Enemy3.prototype.respawn = function(x, y) {
 }
 
 Enemy3.prototype.update = function() {
-	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
+
+	
 	//kill the object when is out of scope
 	
 	this.BARREL.position.x = this.position.x;
@@ -186,7 +211,16 @@ Enemy3.prototype.update = function() {
 	
 	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
 
-	this.body.velocity.x = -200;
+	
+
+
+
+    //track the player UwU
+	
+
+	//i like to move it move it
+	this.body.velocity.x = -100;
+	//kill the object when is out of scope
 
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
@@ -194,6 +228,9 @@ Enemy3.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
 		this.kill();
 		
 		SCORE += this.POINTS;
@@ -214,65 +251,69 @@ Enemy3.prototype.shoot = function(){
 
 // ///////////////////////////////Trishot Enemy//////////////////////////////////////////////////////////////
 
-// function Enemy4(game, posX, posY, key) {
-	// Phaser.Sprite.call(this,game, posX, posY, key);
-	// // set enemy data
-	// this.anchor.set(0.5);
-    // this.scale.setTo(-1, 1);
-	// this.DRAG = 8000;
-	// this.MAX_VELOCITY = 500;
-	// this.ACCELERATION = 1500;
-	// this.HEALTH = 3;
+function Enemy4(game, posX, posY, key) {
+	Phaser.Sprite.call(this,game, posX, posY, key);
+	//set enemy data
+	this.anchor.set(0.5);
+    this.scale.setTo(-1, 1);
+	this.DRAG = 8000;
+	this.MAX_VELOCITY = 500;
+	this.ACCELERATION = 1500;
+	this.HEALTH = 3;
 	
-	// game.physics.enable(this);
-	// this.body.collideWorldBounds = false;
-	// // this.outOfCameraBoundsKill = false;
-	// // this.autoCull = false;
-	// this.body.drag.setTo(this.DRAG, this.DRAG);
-	// this.body.maxVelocity.setTo(300, 300);
+	game.physics.enable(this);
+	this.body.collideWorldBounds = false;
+	this.outOfCameraBoundsKill = false;
+	this.autoCull = false;
+	this.body.drag.setTo(this.DRAG, this.DRAG);
+	this.body.maxVelocity.setTo(300, 300);
+
+    //explosion
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
     
+	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 32);
+}
 
+Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy4.prototype.constructor = Enemy4;
+
+Enemy4.prototype.create = function() {
+}
+
+Enemy4.prototype.update = function() {
+	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
+    //set path
+    this.body.velocity.x = -300;
 	
-	// this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 3);
-// }
+	//kill the object when is out of scope
+	if(this.inCamera && !this.outOfCameraBoundsKill){
+		this.outOfCameraBoundsKill = true;
+	}
+	//allow player to kill with shots
+	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
+		this.kill();
 
-// Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
-// Enemy4.prototype.constructor = Enemy1;
+		SCORE += this.POINTS;
+		
+		this.HEALTH = this.DEFAULT;
+	}
+	//fire rate
+	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 90){try{this.shoot();}catch{return;}}
+}
 
-// Enemy4.prototype.create = function() {
-	// // var timer = game.time.create(false);
-	// // timer.loop(200, this.shoot, this);
-	// // timer.start();
-// }
-
-// Enemy4.prototype.update = function() {
-	// //game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
-    // //set path
-    // this.body.velocity.x = -200;
-	
-    // // if(this.body.position.y < 310){
-        // // this.body.velocity.y = 160;
-    // // }
-    // // else if(this.body.position.y > 310 ){
-        // // this.body.velocity.y = -160;
-    // // }
-    // // else if(this.body.position.y === 310){
-        // // this.body.velocity.y = 0;
-    // // }
-	// //kill the object when is out of scope
-	// // if(this.inCamera && !this.outOfCameraBoundsKill){
-		// // this.outOfCameraBoundsKill = true;
-	// // }
-	// // allow player to kill with shots
-	// if(this.HEALTH <= 0){
-		// this.kill();
-	// }
-	// // fire rate
-	// //if(this.alive && this.inCamera && game.rnd.integerInRange(1,100) > 90){this.weapon.fire(this);}
-// }
-
-// Enemy4.prototype.shoot = function(){
-	// for(var i = 0; i < 10; i++){
-		// this.weapon.fire(this);
-	// }
-// }
+Enemy4.prototype.shoot = function(){
+	for(var i = 0; i < 3; i++){
+		this.weapon.fire(this);
+	}
+}

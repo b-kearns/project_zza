@@ -16,6 +16,8 @@ function sendToGameOver(){
 	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT);
 }
 
+//handle loading the game objects in a boot-like level
+
 function Level_0(game) {}
 
 	Level_0.prototype = {
@@ -62,11 +64,19 @@ function Level_0(game) {}
 				this.d_enemies.add(this.enemy);
 				this.enemy.exists = false;
 			}
+
 			
 			for(var i = 0; i < 3; i++){
 				this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "enemy3");
 				game.add.existing(this.enemy);
 				this.shot_enemies.add(this.enemy);
+
+
+			for(var i = 0; i < 5; i++){
+				this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
+				game.add.existing(this.enemy);
+				this.r_enemies.add(this.enemy);
+
 				this.enemy.exists = false;
 			}
 				
@@ -84,7 +94,7 @@ function Level_0(game) {}
 			EQ = this.equipped;
 
 
-			//this.BGM.play();
+			this.BGM.play();
 
 		},
 		update: function(){
@@ -116,7 +126,7 @@ function Level_1(game) {}
 	
 	Level_1.prototype = {
 		init: function(background, BGM, player, enemies, cache, equipped){
-            // so the background parallax persists between states
+            // so the background parallax, bgm, and loaded enemies persists between states
 			this.background = background;
 			this.BGM = BGM;
 			this.player = player;
@@ -129,12 +139,23 @@ function Level_1(game) {}
 			console.log("Level_1: " + CHECKPOINT);
 		},
 		create: function(){
+
 			//game.time.events.add(Phaser.Timer.SECOND * 20, this.startTimer, this, 1, 3);
 			//game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
 			game.time.events.loop(Phaser.Timer.SECOND * 30, this.makeEnemy, this, 2);
 			game.time.events.add(Phaser.Timer.SECOND * 4, this.makeEnemy, this, this.player, 1);
 			game.time.events.add(Phaser.Timer.SECOND * 120, this.nextLevel, this);
 			
+
+           //set the enemies to come in
+			
+			game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
+			game.time.events.add(Phaser.Timer.SECOND * 100, this.startTimer, this, 4, 3);
+
+			game.time.events.add(Phaser.Timer.SECOND * 15, this.makeEnemy, this, this.player, 1);
+			
+			
+
 		},
 		update: function(){
             //collision handling
@@ -157,8 +178,13 @@ function Level_1(game) {}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
 				this.player.kill();
 			}
-            if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
+            if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;
+            }
+            if(this.input.keyboard.justPressed(Phaser.Keyboard.H)){
+				//this.pickup = new Pickup(game, 900, game.rnd.integerInRange(60,600), "pickup05", 5);
+                //game.add.existing(this.pickup);
+                this.player.SHIELD = true;
             }
         },
         render: function(){
@@ -223,9 +249,17 @@ function Level_1(game) {}
 					catch{console.log("Spawn Case 3 Failed");return;}
 					break;
             case 4:
+            		try{
+            			this.enemy = this.cache[4].getFirstExists(false);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+					}
+					catch{console.log("Spawn Case 4 Failed");return;}
 					break;
             case 5:
 					break;
+
 			case 6:
 			//Upside down shotgun turret
 					try{
@@ -241,12 +275,54 @@ function Level_1(game) {}
 			//Upside down rail turret
 					break;
 			}
+
+            
+
 		},
+        //collision handling
+		collisionHandle: function(target, weapon){
+
+            if(target.SHIELD){
+               target.SHIELD = false;
+               weapon.kill();
+               return;
+            }
+			target.HEALTH -= this.player.weapon.DAMAGE;
+			if(!this.player.weapon.PENETRATE){weapon.kill();}
+
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
+
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
+
+		},
+        //also collision handling
+		checkCollision: function(enemy){
+			this.enemy = enemy;
+			//console.log(this.weapon.PENETRATE);
+			game.physics.arcade.overlap(this.enemy.weapon, this.player, this.collisionHandle, null, this);
+		},
+        //debug stuff
+		renderGroup: function(member){
+			game.debug.body(member);
+		},
+        //checkpoint system for level transition
+		nextLevel: function(){
+			CHECKPOINT++;
+			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
+		},
+        // enemy timer
+		startTimer: function(key, interval){
+			game.time.events.loop(Phaser.Timer.SECOND * interval, this.makeEnemy, this, this.player, key);
+
+		},
+        //janky UI
 		displayText: function(string){
 			game.add.text(0,0,string, {fill: "#facade"});
 		}
 	}
-	
+	//level 2... START!!!
 function Level_2(game) {}
 	
 	Level_2.prototype = {

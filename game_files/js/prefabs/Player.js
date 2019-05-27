@@ -13,15 +13,15 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
+  this.SHIELD = false;
 	this.POINTS = 0;
-	
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(10, 10, 5, 10);
-
+    //handle the player thruster emitter
     this.shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
     this.shipTrail.width = 10;
     this.shipTrail.makeParticles('trail');
@@ -60,6 +60,10 @@ function Player(game, key) {
 	this.weapon = this.weapons[this.EQUIP];
 	
 	this.blinkDrive = new BlinkDrive(game);
+    //handles the shield sprite
+    this.SHIELD_SPRITE = game.add.sprite(0,0,"Shield");
+    this.SHIELD_SPRITE.anchor.set(0.5);
+    
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -73,7 +77,7 @@ Player.prototype.create = function() {
 }
 
 Player.prototype.update = function() {
-
+this.SHIELD_SPRITE.bringToTop();
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
 
@@ -81,7 +85,15 @@ Player.prototype.update = function() {
 	
     // movement data
 	this.body.acceleration.setTo(0,0);
-	
+    
+    this.SHIELD_SPRITE.position.x = this.position.x;
+    this.SHIELD_SPRITE.position.y = this.position.y;
+    if(this.SHIELD){
+       this.SHIELD_SPRITE.exists = true;
+    }
+    else{
+       this.SHIELD_SPRITE.exists = false;
+    }
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;

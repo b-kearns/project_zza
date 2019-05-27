@@ -48,9 +48,19 @@ function Boot(game) {}
 			
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
+
+            game.load.image("Shield", "assets/imgs/ShipShield.png");
+
+			game.load.image("Platform", "assets/imgs/space plat.png");
+
+
+            game.load.image("Shield", "assets/imgs/ShipShield.png");
+
 			game.load.image("Platform", "assets/imgs/space plat.png");
 
 			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
+			game.load.audio("GameOver","assets/audio/Uninstall.wav");
+			game.load.audio("Menu","assets/audio/ShmupMenu.wav");
 
             game.load.spritesheet("explosion", "assets/imgs/explosion_animation.png", 46, 46);
 			
@@ -59,6 +69,8 @@ function Boot(game) {}
 			game.load.audio("rail_charge", "assets/audio/railSpinup.wav");
             game.load.audio("rail_shot", "assets/audio/railShot.wav");
             game.load.audio("tri_shot", "assets/audio/triShot.wav");
+            game.load.audio("enemyDeath", "assets/audio/enemyDeath.wav");
+            game.load.audio("playerDeath", "assets/audio/playerDeath.wav");
 		},
 		create: function(){
 			
