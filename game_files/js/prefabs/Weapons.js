@@ -16,7 +16,7 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "weapon1"), true);
+	this.add(new Bullet(game, "weapon1", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -34,7 +34,6 @@ SingleShot.prototype.fire = function(source) {
 	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
-	
 }
 
 
@@ -49,12 +48,12 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 500;
-	this.fireRate = 100;
+	this.fireRate = 150;
 	this.ALT = 1;
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon1"), true);
+		this.add(new Bullet(game, "weapon1", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -86,12 +85,12 @@ function TriShot(game, posX, posY, direction, key, ammo) {
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 400;
-	this.fireRate = 200;
+	this.fireRate = 300;
     this.SFX = game.add.audio("tri_shot");
     //this.SFX.
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon3"), true);
+		this.add(new Bullet(game, "weapon3", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -127,13 +126,12 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
 	this.PENETRATE = false;
 	this.DAMAGE = 1;
     this.nextFire = 0;
-	this.bulletSpeed = 400;
+	this.bulletSpeed = 200;
 	this.fireRate = 1000;
     this.SFX = game.add.audio("shotgun_fx");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon2"), true);
-		//console.log("Creating Ammo!");
+		this.add(new Bullet(game, "weapon2", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -149,7 +147,7 @@ Shotgun.prototype.fire = function(source) {
     this.SFX.play();
 	try{
 		for(var i = 0; i < Math.floor(this.children.length/4); i++) {
-			this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-30, 30), this.bulletSpeed * this.DIRECTION, 0, 0);
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), game.rnd.integerInRange(-20, 20), this.bulletSpeed * this.DIRECTION, 0, 0);
 		}
 	}
 	catch{this.nextFire = game.time.time + this.fireRate; return;}
@@ -172,8 +170,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2 = game.add.audio("rail_shot");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon4"), true);
-		//console.log("Creating Ammo!");
+		this.add(new Bullet(game, "weapon4", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 

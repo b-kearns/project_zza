@@ -37,8 +37,11 @@ function Boot(game) {}
             game.load.image("weapon4", "assets/imgs/RailShot.png");
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
+
+			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
+
             game.load.spritesheet("explosion", "assets/imgs/explosion_animation.png", 46, 46);
-			game.load.audio("MainTrack","assets/audio/Captain Shmup.wav");
+			
             game.load.audio("weapon_fx_1", "assets/audio/PShot.wav");
             game.load.audio("shotgun_fx", "assets/audio/shotblast.wav");
 			game.load.audio("rail_charge", "assets/audio/railSpinup.wav");
