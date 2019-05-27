@@ -48,15 +48,16 @@ function Boot(game) {}
 			
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
-<<<<<<< HEAD
-<<<<<<< HEAD
-            game.load.image("Shield", "assets/imgs/ShipShield.png");
-=======
-=======
-			game.load.image("Platform", "assets/imgs/space plat.png");
->>>>>>> 306090c62e9a06ab5060d4e8d65b952d9f702c7e
 
->>>>>>> 740894837f9bbcadccbdf8f9a0ee7a295e80a3dd
+            game.load.image("Shield", "assets/imgs/ShipShield.png");
+
+			game.load.image("Platform", "assets/imgs/space plat.png");
+
+
+            game.load.image("Shield", "assets/imgs/ShipShield.png");
+
+			game.load.image("Platform", "assets/imgs/space plat.png");
+
 			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
 
             game.load.spritesheet("explosion", "assets/imgs/explosion_animation.png", 46, 46);

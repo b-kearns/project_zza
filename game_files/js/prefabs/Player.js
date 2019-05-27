@@ -14,12 +14,8 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
-<<<<<<< HEAD
     this.SHIELD = false;
-=======
 	this.POINTS = 0;
-	
->>>>>>> 306090c62e9a06ab5060d4e8d65b952d9f702c7e
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -86,7 +82,7 @@ Player.prototype.update = function() {
 	
     // movement data
 	this.body.acceleration.setTo(0,0);
-<<<<<<< HEAD
+
     this.SHIELD_SPRITE.position.x = this.position.x;
     this.SHIELD_SPRITE.position.y = this.position.y;
     if(this.SHIELD){
@@ -95,9 +91,6 @@ Player.prototype.update = function() {
     else{
        this.SHIELD_SPRITE.exists = false;
     }
-=======
-	
->>>>>>> 306090c62e9a06ab5060d4e8d65b952d9f702c7e
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;
