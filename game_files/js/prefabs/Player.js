@@ -14,7 +14,7 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
-  this.SHIELD = false;
+    this.SHIELD = false;
 	this.POINTS = 0;
     //spin up physics
 	game.physics.enable(this);
@@ -91,7 +91,6 @@ Player.prototype.update = function() {
     else{
        this.SHIELD_SPRITE.exists = false;
     }
-
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;

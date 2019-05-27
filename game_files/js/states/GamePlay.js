@@ -197,14 +197,20 @@ function Level_1(game) {}
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
+
             if(target.SHIELD){
                target.SHIELD = false;
                return;
             }
 			target.HEALTH -= this.player.weapon.DAMAGE;
 			if(!this.player.weapon.PENETRATE){weapon.kill();}
+
 			target.HEALTH -= weapon.DAMAGE;
 			if(!weapon.PENETRATE){weapon.kill();}			
+
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
+
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;
