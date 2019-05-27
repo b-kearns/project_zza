@@ -22,6 +22,17 @@ function Enemy1(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(200, 0);
     this.body.setSize(20, 20, 5, 10);
+
+    //explosion
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(1000, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
 	
 	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 2);
 }
@@ -39,6 +50,9 @@ Enemy1.prototype.update = function() {
 	}
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
 		this.kill();
 		
 		SCORE += this.POINTS;

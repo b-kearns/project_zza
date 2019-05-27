@@ -1,7 +1,20 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
+
+var BACKGROUND;
+var BGM;
+var EQ;
+
+function sendToGameOver(){
+	EQ.kill();
+	BGM.stop();
+	
+	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT);
+}
+
 var SCORE = 0;
+
 
 function Level_0(game) {}
 
@@ -9,6 +22,7 @@ function Level_0(game) {}
 		init: function(background, check){
 			console.log(check);
 			this.background = background;
+			BACKGROUND = background;
 			if(check != null){
 				CHECKPOINT = check;
 			}
@@ -23,6 +37,7 @@ function Level_0(game) {}
 			
 			this.BGM = game.add.audio("MainTrack");
 
+			BGM = this.BGM;
 
             this.BGM.loop = true;
 			
@@ -59,10 +74,11 @@ function Level_0(game) {}
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
 
+			EQ = this.equipped;
+
 
 			//this.BGM.play();
 
-			
 		},
 		update: function(){
 			this.nextLevel();
@@ -136,9 +152,6 @@ function Level_1(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -195,13 +208,6 @@ function Level_1(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		},
 		nextLevel: function(){
 			CHECKPOINT++;
 			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
@@ -249,9 +255,6 @@ function Level_2(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -300,13 +303,6 @@ function Level_2(game) {}
 		},
 		renderGroup: function(member){
 			game.debug.body(member);
-		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
 		},
 		nextLevel: function(){
 			CHECKPOINT++;
@@ -347,9 +343,6 @@ function Level_3(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -399,13 +392,6 @@ function Level_3(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		},
 		nextLevel: function(){
 			CHECKPOINT++;
 			game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
@@ -445,9 +431,6 @@ function Level_4(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -475,14 +458,4 @@ function Level_4(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			
-			this.player.kill();
-			console.log("Level_4: GameOver");
-			this.equipped.kill();
-			this.BGM.stop();
-			
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		}
 	}
