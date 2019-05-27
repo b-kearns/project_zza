@@ -1,6 +1,7 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
+var SCORE = 0;
 
 function Level_0(game) {}
 
@@ -30,29 +31,20 @@ function Level_0(game) {}
 			this.t_enemies = game.add.group();
 			this.r_enemies = game.add.group();
 			
-			for(var i = 0; i < 10; i++){
+			for(var i = 0; i < 8; i++){
 				this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "enemy1");
 				game.add.existing(this.enemy);
 				this.s_enemies.add(this.enemy);
 				this.enemy.exists = false;
-				
-				// this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "enemy2");
-				// game.add.existing(this.enemy);
-				// this.d_enemies.add(this.enemy);
-				// this.enemy.exists = false;
-				
-				// this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "enemy3");
-				// game.add.existing(this.enemy);
-				// this.shot_enemies.add(this.enemy);
-				// this.enemy.exists = false;
-				
-				// this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
-				// game.add.existing(this.enemy);
-				// this.t_enemies.add(this.enemy);
-				// this.enemy.exists = false;
 			}
 			
-			//this.enemies.add([this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies]);
+			for(var i =0; i < 3; i++){
+				this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "enemy2");
+				game.add.existing(this.enemy);
+				this.d_enemies.add(this.enemy);
+				this.enemy.exists = false;
+			}
+				
 			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
 		},
 		create: function(){
@@ -63,24 +55,6 @@ function Level_0(game) {}
 			game.add.existing(this.player);
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
-			
-			this.explosions = game.add.group();
-    		this.explosions.enableBody = true;
-    		this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    		this.explosions.createMultiple(30, 'explosion');
-    		this.explosions.setAll('anchor.x', 0.5);
-    		this.explosions.setAll('anchor.y', 0.5);
-    		this.explosions.forEach(function(explosion) {
-    			explosion.animations.add('explosion');
-   			 })
-
-   			//player death explosion
-			this.playerDeath = game.add.emitter(this.player.position.x, this.player.position.y);
-    		this.playerDeath.width = 25;
-   			this.playerDeath.height = 25;
-    		this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
-    		this.playerDeath.setAlpha(0.9, 0, 800);
-    		this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out);
 
 			//this.BGM.play();
 			
@@ -91,7 +65,7 @@ function Level_0(game) {}
 		render: function(){
 		},
 		nextLevel: function(){
-			//console.log(CHECKPOINT);
+			
 			switch(CHECKPOINT){
 				case 1:
 					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
@@ -127,7 +101,11 @@ function Level_1(game) {}
 			console.log("Level_1: " + CHECKPOINT);
 		},
 		create: function(){
-			game.time.events.loop(Phaser.Timer.SECOND * 1, this.makeEnemy, this, this.player, 1);
+			game.time.events.add(Phaser.Timer.SECOND * 20, this.startTimer, this, 1, 3);
+			game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
+			game.time.events.add(Phaser.Timer.SECOND * 15, this.makeEnemy, this, this.player, 1);
+			game.time.events.add(Phaser.Timer.SECOND * 120, this.displayText, this, "Level 2 Start");
+			//game.time.events.loop(Phaser.Timer.SECOND * 5, this.makeEnemy, this, this.player, 2);
 		},
 		update: function(){
             //collision handling
@@ -139,10 +117,10 @@ function Level_1(game) {}
 			
 			//move the background
 			for(var i = 1; i < this.background.length + 1; i++){
-				this.background[i - 1].position.x -= 0.01 * i;
+				this.background[i - 1].position.x -= 0.015 * i;
 			}
 			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+			this.equipped.setText("Weapon: " + /*this.player.weapon.NAME*/ SCORE);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -173,15 +151,22 @@ function Level_1(game) {}
             //makin enemies
             switch(key){
             case 1:
-                   try{
+					try{
 						this.enemy = this.cache[0].getFirstExists(false);
 						this.enemy.outOfCameraBoundsKill = false;
-						this.enemy.HEALTH = 2;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
 						this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
 					}
-					catch{console.log("Spawn Failed");return;}
+					catch{console.log("Spawn Case 1 Failed");return;}
 					break;
             case 2:
+					try{
+						this.enemy = this.cache[1].getFirstExists(false);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.reset(game.world.width - 50 * game.rnd.integerInRange(1, 4), -100);
+					}
+					catch{console.log("Spawn Case 2 Failed");return;}
 					break;
             case 3:
 					break;
@@ -194,8 +179,8 @@ function Level_1(game) {}
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
-			target.HEALTH -= this.player.weapon.DAMAGE;
-			if(!this.player.weapon.PENETRATE){weapon.kill();}
+			target.HEALTH -= weapon.DAMAGE;
+			if(!weapon.PENETRATE){weapon.kill();}			
 		},
 		checkCollision: function(enemy){
 			this.enemy = enemy;
@@ -215,6 +200,12 @@ function Level_1(game) {}
 		nextLevel: function(){
 			CHECKPOINT++;
 			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
+		},
+		startTimer: function(key, interval){
+			game.time.events.loop(Phaser.Timer.SECOND * interval, this.makeEnemy, this, this.player, key);
+		},
+		displayText: function(string){
+			game.add.text(0,0,string, {fill: "#facade"});
 		}
 	}
 	
