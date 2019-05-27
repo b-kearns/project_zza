@@ -48,6 +48,9 @@ function Boot(game) {}
 			
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
+
+            game.load.image("Shield", "assets/imgs/ShipShield.png");
+
 			game.load.image("Platform", "assets/imgs/space plat.png");
 
 			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");

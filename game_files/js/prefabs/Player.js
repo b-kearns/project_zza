@@ -6,6 +6,7 @@ var playerDeath;
 // player controller
 function Player(game, key) {
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
+    this.SHIELD_SPRITE = game.add.sprite(0,0,"Shield");
 	//PC variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
@@ -13,8 +14,8 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
+  this.SHIELD = false;
 	this.POINTS = 0;
-	
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -81,7 +82,16 @@ Player.prototype.update = function() {
 	
     // movement data
 	this.body.acceleration.setTo(0,0);
-	
+
+    this.SHIELD_SPRITE.position.x = this.position.x;
+    this.SHIELD_SPRITE.position.y = this.position.y;
+    if(this.SHIELD){
+       this.SHIELD_SPRITE.exists = true;
+    }
+    else{
+       this.SHIELD_SPRITE.exists = false;
+    }
+
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;
