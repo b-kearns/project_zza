@@ -1,9 +1,12 @@
 "use strict";
 // prefab for all of the bullets
-function Bullet(game, key){
+function Bullet(game, key, dmg, pen){
 	Phaser.Sprite.call(this, game, 0, 0, key);
 	this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 	this.anchor.set(0.5);
+	
+	this.DAMAGE = dmg;
+	this.PENETRATE = pen;
 	
 	this.checkWorldBounds = true;
 	this.outOfBoundsKill = true;
