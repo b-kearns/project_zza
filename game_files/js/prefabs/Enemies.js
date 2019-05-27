@@ -13,7 +13,7 @@ function Enemy1(game, posX, posY, key) {
 	this.HEALTH = 2;
 	this.DEFAULT = 2;
 	this.POINTS = 100;
-	
+	//give it physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
 	this.outOfCameraBoundsKill = false;
@@ -23,7 +23,7 @@ function Enemy1(game, posX, posY, key) {
     this.body.velocity.setTo(200, 0);
     this.body.setSize(20, 20, 5, 10);
 
-    //explosion
+    //explosion death effect
 	this.explosions = game.add.group();
     this.explosions.enableBody = true;
     this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
@@ -41,10 +41,9 @@ Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy1.prototype.constructor = Enemy1;
 
 Enemy1.prototype.update = function() {
-	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
-	//kill the object when is out of scope
+    //sliiiide to the left
     this.body.velocity.x = -200;
-	
+    //kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
@@ -111,9 +110,9 @@ Enemy2.prototype.create = function() {
 
 Enemy2.prototype.update = function() {
 
-	//kill the object when is out of scope
-	this.body.velocity.y = 200;
 
+	this.body.velocity.y = 200;
+	//kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
@@ -128,10 +127,10 @@ Enemy2.prototype.update = function() {
 		
 		this.HEALTH = this.DEFAULT;
 	}
-	
+	//FIRE!!!
 	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.shoot();}catch{return;}}
 }
-
+//also fire...
 Enemy2.prototype.shoot = function(){
 	for(var i = 0; i < 10; i++){
 		this.weapon.fire(this);
@@ -171,7 +170,7 @@ function Enemy3(game, posX, posY, key) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
-	
+	//give it a weapon
 	this.weapon = new Shotgun(game, this.position.x, this.position.y, -1, "Weapon2", 1);
 }
 
@@ -183,13 +182,13 @@ Enemy3.prototype.create = function() {
 }
 
 Enemy3.prototype.update = function() {
-	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
-	//kill the object when is out of scope
+
+    //track the player UwU
 	this.BARREL.rotation = game.physics.arcade.angleToPointer(turret);
 
-	
+	//i like to move it move it
 	this.body.velocity.x = -100;
-
+	//kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
