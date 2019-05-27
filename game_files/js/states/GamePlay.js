@@ -70,7 +70,7 @@ function Level_0(game) {}
 				this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "enemy3");
 				game.add.existing(this.enemy);
 				this.shot_enemies.add(this.enemy);
-
+			}
 
 			for(var i = 0; i < 5; i++){
 				this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
@@ -81,7 +81,6 @@ function Level_0(game) {}
 			}
 				
 			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
-
 		},
 		create: function(){
 			
@@ -143,7 +142,7 @@ function Level_1(game) {}
 			//game.time.events.add(Phaser.Timer.SECOND * 20, this.startTimer, this, 1, 3);
 			//game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
 			game.time.events.loop(Phaser.Timer.SECOND * 30, this.makeEnemy, this, 2);
-			game.time.events.add(Phaser.Timer.SECOND * 4, this.makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 4, this.makeEnemy, this, this.player, 1);
 			game.time.events.add(Phaser.Timer.SECOND * 120, this.nextLevel, this);
 			
 
@@ -276,8 +275,6 @@ function Level_1(game) {}
 					break;
 			}
 
-            
-
 		},
         //collision handling
 		collisionHandle: function(target, weapon){
@@ -310,7 +307,7 @@ function Level_1(game) {}
         //checkpoint system for level transition
 		nextLevel: function(){
 			CHECKPOINT++;
-			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
+			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
 		},
         // enemy timer
 		startTimer: function(key, interval){

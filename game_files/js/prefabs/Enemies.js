@@ -211,15 +211,11 @@ Enemy3.prototype.update = function() {
 	
 	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
 
-	
-
-
-
     //track the player UwU
 	
 
 	//i like to move it move it
-	this.body.velocity.x = -100;
+	this.body.velocity.x = -200;
 	//kill the object when is out of scope
 
 	if(this.inCamera && !this.outOfCameraBoundsKill){
