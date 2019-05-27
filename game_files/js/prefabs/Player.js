@@ -13,6 +13,8 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
+	this.POINTS = 0;
+	
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -63,14 +65,15 @@ Player.prototype.create = function() {
 }
 
 Player.prototype.update = function() {
-	//game.physics.arcade.overlap(this.weapon, GamePlay.enemies, GamePlay.collisionHandle, null, this);
 
 	shipTrail.x = this.position.x;
 	shipTrail.y = this.position.y;
 
 	this.weapon = this.weapons[this.EQUIP];
+	
     // movement data
 	this.body.acceleration.setTo(0,0);
+	
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;
