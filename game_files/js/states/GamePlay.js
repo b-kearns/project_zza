@@ -1,6 +1,16 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
+var BACKGROUND;
+var BGM;
+var EQ;
+
+function sendToGameOver(){
+	EQ.kill();
+	BGM.stop();
+	
+	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT);
+}
 
 function Level_0(game) {}
 
@@ -8,6 +18,7 @@ function Level_0(game) {}
 		init: function(background, check){
 			console.log(check);
 			this.background = background;
+			BACKGROUND = background;
 			if(check != null){
 				CHECKPOINT = check;
 			}
@@ -21,6 +32,7 @@ function Level_0(game) {}
 			this.player = new Player(game, "player_side");
 			
 			this.BGM = game.add.audio("MainTrack");
+			BGM = this.BGM;
             this.BGM.loop = true;
 			
 			this.enemies = game.add.group();
@@ -63,27 +75,7 @@ function Level_0(game) {}
 			game.add.existing(this.player);
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
-			
-			this.explosions = game.add.group();
-    		this.explosions.enableBody = true;
-    		this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    		this.explosions.createMultiple(30, 'explosion');
-    		this.explosions.setAll('anchor.x', 0.5);
-    		this.explosions.setAll('anchor.y', 0.5);
-    		this.explosions.forEach(function(explosion) {
-    			explosion.animations.add('explosion');
-   			 })
-
-   			//player death explosion
-			this.playerDeath = game.add.emitter(this.player.position.x, this.player.position.y);
-    		this.playerDeath.width = 25;
-   			this.playerDeath.height = 25;
-    		this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
-    		this.playerDeath.setAlpha(0.9, 0, 800);
-    		this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out);
-
-			//this.BGM.play();
-			
+			EQ = this.equipped;
 		},
 		update: function(){
 			this.nextLevel();
@@ -153,9 +145,6 @@ function Level_1(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -205,13 +194,6 @@ function Level_1(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		},
 		nextLevel: function(){
 			CHECKPOINT++;
 			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
@@ -253,9 +235,6 @@ function Level_2(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -304,13 +283,6 @@ function Level_2(game) {}
 		},
 		renderGroup: function(member){
 			game.debug.body(member);
-		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
 		},
 		nextLevel: function(){
 			CHECKPOINT++;
@@ -351,9 +323,6 @@ function Level_3(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -403,13 +372,6 @@ function Level_3(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			this.equipped.kill();
-			this.BGM.stop();
-			this.player.kill();
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		},
 		nextLevel: function(){
 			CHECKPOINT++;
 			game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.equipped);
@@ -449,9 +411,6 @@ function Level_4(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
               this.debug = !this.debug;
             }
-			if(this.player.HEALTH <= 0) {
-				this.sendToGameOver();
-			}
         },
         render: function(){
            //handle debug info
@@ -479,14 +438,4 @@ function Level_4(game) {}
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
-		sendToGameOver: function(){
-            //kill it with fire!!!!
-			
-			this.player.kill();
-			console.log("Level_4: GameOver");
-			this.equipped.kill();
-			this.BGM.stop();
-			
-			game.state.start("GameOver", false, false, this.background, CHECKPOINT);
-		}
 	}

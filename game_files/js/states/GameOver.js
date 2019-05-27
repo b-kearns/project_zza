@@ -10,7 +10,7 @@ GameOver.prototype = {
 	},
 	preload: function(){},
 	create: function(){
-		this.text = game.add.text(0,0,"Press SPACEBAR to retry", {fill: "#facade"});
+		this.text = game.add.text(0,0,"Press SPACEBAR to DIE", {fill: "#facade"});
 	},
 	update: function(){
 		for(var i = 1; i < this.background.length + 1; i++){
