@@ -21,7 +21,6 @@ function Level_0(game) {}
 			this.player = new Player(game, "player_side");
 			
 			this.BGM = game.add.audio("MainTrack");
-            this.BGM.loop = true;
 		},
 		create: function(){
 			if(!this.background){
@@ -42,7 +41,7 @@ function Level_0(game) {}
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
 			
-			//this.BGM.play();
+			this.BGM.play();
 			
 		},
 		update: function(){
