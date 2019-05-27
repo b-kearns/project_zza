@@ -21,6 +21,8 @@ function Level_0(game) {}
 			this.player = new Player(game, "player_side");
 			
 			this.BGM = game.add.audio("MainTrack");
+
+
             this.BGM.loop = true;
 			
 			this.enemies = game.add.group();
@@ -54,6 +56,7 @@ function Level_0(game) {}
 			
 			//this.enemies.add([this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies]);
 			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
+
 		},
 		create: function(){
 			
@@ -63,26 +66,6 @@ function Level_0(game) {}
 			game.add.existing(this.player);
 			
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
-			
-			this.explosions = game.add.group();
-    		this.explosions.enableBody = true;
-    		this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    		this.explosions.createMultiple(30, 'explosion');
-    		this.explosions.setAll('anchor.x', 0.5);
-    		this.explosions.setAll('anchor.y', 0.5);
-    		this.explosions.forEach(function(explosion) {
-    			explosion.animations.add('explosion');
-   			 })
-
-   			//player death explosion
-			this.playerDeath = game.add.emitter(this.player.position.x, this.player.position.y);
-    		this.playerDeath.width = 25;
-   			this.playerDeath.height = 25;
-    		this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
-    		this.playerDeath.setAlpha(0.9, 0, 800);
-    		this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out);
-
-			//this.BGM.play();
 			
 		},
 		update: function(){
