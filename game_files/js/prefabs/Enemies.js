@@ -27,7 +27,7 @@ function Enemy1(game, posX, posY, key) {
 	this.explosions = game.add.group();
     this.explosions.enableBody = true;
     this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(1000, 'explosion');
+    this.explosions.createMultiple(100, 'explosion');
     this.explosions.setAll('anchor.x', 0.5);
     this.explosions.setAll('anchor.y', 0.5);
     this.explosions.forEach(function(explosion) {
@@ -88,6 +88,16 @@ function Enemy2(game, posX, posY, key) {
 	this.autoCull = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(0, 300);
+
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
 	
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 16);
 }
@@ -109,6 +119,9 @@ Enemy2.prototype.update = function() {
 	}
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
 		this.kill();
 		
 		SCORE += this.POINTS;
@@ -149,6 +162,16 @@ function Enemy3(game, posX, posY, key) {
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(0, 300);
 	
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
+	
 	this.weapon = new Shotgun(game, this.position.x, this.position.y, -1, "Weapon2", 1);
 }
 
@@ -172,6 +195,9 @@ Enemy3.prototype.update = function() {
 	}
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
 		this.kill();
 		
 		SCORE += this.POINTS;
