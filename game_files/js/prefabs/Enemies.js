@@ -21,7 +21,7 @@ function Enemy1(game, posX, posY, key) {
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(200, 0);
-    this.body.setSize(20, 20, 5, 10);
+    this.body.setSize(15, 20, 5, 10);
 
     //explosion death effect
 	this.explosions = game.add.group();

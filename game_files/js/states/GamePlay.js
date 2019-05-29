@@ -15,6 +15,16 @@ function sendToGameOver(){
 	
 	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT);
 }
+//handle pickups
+function handlePickup(player, pickup){
+    pickup.kill();
+    player.weapon.UNLOCK = true;
+
+}
+
+
+
+
 
 //handle loading the game objects in a boot-like level
 
@@ -50,6 +60,7 @@ function Level_0(game) {}
 			this.shot_enemies = game.add.group();
 			this.t_enemies = game.add.group();
 			this.r_enemies = game.add.group();
+			this.pickups = game.add.group();
 			
 			for(var i = 0; i < 8; i++){
 				this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "enemy1");
@@ -84,7 +95,28 @@ function Level_0(game) {}
 				game.add.existing(this.enemy);
 				this.r_enemies.add(this.enemy);
 			}
-			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
+			//make double shot pickup
+            this.Double = new Pickup(game, game.world.width, game.world.centerY, "pickup01", 1);
+            game.add.existing(this.Double);
+			this.pickups.add(this.Double);
+            //shotgun
+            this.Shotty = new Pickup(game, game.world.width, game.world.centerY, "pickup02", 2);
+            game.add.existing(this.Shotty);
+			this.pickups.add(this.Shotty);
+			//trishot
+            this.Tri = new Pickup(game, game.world.width, game.world.centerY, "pickup03", 3);
+            game.add.existing(this.Tri);
+			this.pickups.add(this.Tri);
+			//railgun
+            this.Rail = new Pickup(game, game.world.width, game.world.centerY, "pickup04", 4);
+            game.add.existing(this.Rail);
+			this.pickups.add(this.Rail);
+			//shield
+            this.Shield = new Pickup(game, game.world.width, game.world.centerY, "pickup05", 5);
+            game.add.existing(this.Shield);
+			this.pickups.add(this.Shield);
+
+			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies, this.pickups];
 		},
 		create: function(){
 			
@@ -161,13 +193,13 @@ function Level_1(game) {}
 
 		},
 		update: function(){
-            //collision handling
-			game.physics.arcade.overlap(this.cache, this.player.weapon, this.collisionHandle, null, this);
-			
-			for(var i = 0; i < this.cache.length; i++){
+            //collision handling for pickups
+			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			//collision handling for bullets
+			for(var i = 0; i < this.cache.length - 1; i++){
+				game.physics.arcade.overlap(this.cache[i], this.player.weapon, this.collisionHandle, null, this);
 				this.cache[i].forEachExists(this.checkCollision, this);
 			}
-			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.03;
@@ -184,11 +216,6 @@ function Level_1(game) {}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;
             }
-            if(this.input.keyboard.justPressed(Phaser.Keyboard.H)){
-				//this.pickup = new Pickup(game, 900, game.rnd.integerInRange(60,600), "pickup05", 5);
-                //game.add.existing(this.pickup);
-                this.player.SHIELD = true;
-            }
         },
         render: function(){
            //handle debug info
@@ -202,6 +229,8 @@ function Level_1(game) {}
         //collision handling
 		collisionHandle: function(target, weapon){
 			target.HEALTH -= weapon.DAMAGE;
+			game.add.tween(target).to({alpha: 0.2}, 1,"Linear",true, 0, false, false);
+			game.add.tween(target).to({alpha: 1}, 100,"Linear", true, 10, false, false);
 			if(!weapon.PENETRATE){weapon.kill();}			
 		},
 		checkCollision: function(enemy){

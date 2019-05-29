@@ -87,7 +87,7 @@ function TriShot(game, posX, posY, direction, key, ammo) {
 	this.bulletSpeed = 400;
 	this.fireRate = 300;
     this.SFX = game.add.audio("tri_shot");
-    //this.SFX.
+    this.SFX.volume = 0.75;
 	
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "weapon3", this.DAMAGE, this.PENETRATE), true);
@@ -128,7 +128,8 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
     this.nextFire = 0;
 	this.bulletSpeed = 200;
 	this.fireRate = 1000;
-    this.SFX = game.add.audio("shotgun_fx");
+    this.SFX = game.add.audio("shotgun_fx"); 
+    this.SFX.volume = 0.75;
 	// add specific data to shotgun bullets
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "weapon2", this.DAMAGE, this.PENETRATE), true);
@@ -178,6 +179,8 @@ function Railgun(game, posX, posY, direction, key, ammo) {
 	this.fireRate = 5000;
     this.SFX_1 = game.add.audio("rail_charge");
     this.SFX_2 = game.add.audio("rail_shot");
+    this.SFX_1.volume = 0.75;
+    this.SFX_2.volume = 0.75;
 	
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "weapon4", this.DAMAGE, this.PENETRATE), true);

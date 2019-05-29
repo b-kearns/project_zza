@@ -13,14 +13,14 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
-  this.SHIELD = false;
+	this.SHIELD = false;
 	this.POINTS = 0;
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
-    this.body.setSize(10, 10, 5, 10);
+    this.body.setSize(15, 15, 15, 15);
     //handle the player thruster emitter
     this.shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
     this.shipTrail.width = 10;
@@ -40,7 +40,8 @@ function Player(game, key) {
     this.playerDeath.setAlpha(0.9, 0, 800);
     this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
     this.o_noes = game.add.audio("playerDeath");
-   
+    this.o_noes.volume = 0.75;
+	
     
 
     //PC controls
