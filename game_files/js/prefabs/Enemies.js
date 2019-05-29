@@ -358,7 +358,7 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(-200, 0);
 	
-	this.weapon = new Railgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon4", 8);
+	this.weapon = new Railgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon4", 1);
 	
 	this.BARREL.exists = false;
 	this.exists = false;
@@ -397,9 +397,6 @@ Enemy5.prototype.update = function() {
 	this.BARREL.position.y = this.position.y;
 	//track the player UwU
 	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
-
-
-	
 
 	//i like to move it move it
 	this.body.velocity.x = -200;

@@ -10,7 +10,7 @@ function MainMenu(game) {}
 		create: function(){
             //set up user interface
 			this.background = [];
-			this.background[0] = game.add.tileSprite(0,0,800,640,"StarsBackground");
+			this.background[0] = game.add.tileSprite(0,0,960,640,"StarsBackground");
             this.background[1] = game.add.sprite(-200,100,"EarthBackground");
             this.background[1].scale.setTo(3.5, 3.5);
 			this.text = game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});
