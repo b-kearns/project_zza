@@ -121,22 +121,47 @@ function startTimer(key, interval){
 }
 //handle pickups
 function handlePickup(player, pickup){
+	console.log(pickup);
+	switch(pickup.UNLOCK){
+		case 1:
+			//DOUBLE
+			//UPGRADE!!!
+			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "P-shot", 32);
+			player.weapons[0].UNLOCK = true;
+			break;
+		case 2:
+			//SHOTGUN
+			player.weapons[1].UNLOCK = true;
+			break;
+		case 3:
+			//TRIBEAM
+			player.weapons[2].UNLOCK = true;
+			break;
+		case 4:
+			//RAIL
+			player.weapons[4].UNLOCK = true;
+			break;
+		case 5:
+			//SHIELD
+			player.SHIELD = true;
+			break;
+	}
+	
     pickup.kill();
-    player.weapon.UNLOCK = true;
 
 }
 
-
-
-
-
+function spawnPickup(pickups, key){
+	pickups.getFirst("UNLOCK", key).revive();
+	pickups.getFirst("UNLOCK", key).reset(game.world.width, game.world.centerY + 200 * game.rnd.integerInRange(-1, 1));
+}
 //handle loading the game objects in a boot-like level
 
 function Level_0(game) {}
 
 	Level_0.prototype = {
 		init: function(background, check, cache){
-			console.log(check);
+			// console.log(check);
 			this.background = background;
 			BACKGROUND = background;
 			if(check != null){
@@ -168,7 +193,7 @@ function Level_0(game) {}
 				this.shot_enemies = game.add.group();
 				this.t_enemies = game.add.group();
 				this.r_enemies = game.add.group();
-        this.pickups = game.add.group();
+				this.pickups = game.add.group();
 				
 				//creating single shot enemies
 				console.log("Spooling up single shot enemies");
@@ -214,30 +239,36 @@ function Level_0(game) {}
 					this.r_enemies.add(this.enemy);
 				}
 				
-          //make double shot pickup
-          this.Double = new Pickup(game, game.world.width, game.world.centerY, "pickup01", 1);
-          game.add.existing(this.Double);
-          this.pickups.add(this.Double);
-          //shotgun
-          this.Shotty = new Pickup(game, game.world.width, game.world.centerY, "pickup02", 2);
-          game.add.existing(this.Shotty);
-          this.pickups.add(this.Shotty);
-          //trishot
-          this.Tri = new Pickup(game, game.world.width, game.world.centerY, "pickup03", 3);
-          game.add.existing(this.Tri);
-          this.pickups.add(this.Tri);
-          //railgun
-          this.Rail = new Pickup(game, game.world.width, game.world.centerY, "pickup04", 4);
-          game.add.existing(this.Rail);
-          this.pickups.add(this.Rail);
-          //shield
-          this.Shield = new Pickup(game, game.world.width, game.world.centerY, "pickup05", 5);
-          game.add.existing(this.Shield);
-          this.pickups.add(this.Shield);
+				//make double shot pickup
+				this.Double = new Pickup(game, game.world.width, game.world.centerY, "pickup01", 1);
+				game.add.existing(this.Double);
+				this.pickups.add(this.Double);
+				this.Double.exists = false;
+				//shotgun
+				this.Shotty = new Pickup(game, game.world.width, game.world.centerY, "pickup02", 2);
+				game.add.existing(this.Shotty);
+				this.pickups.add(this.Shotty);
+				this.Shotty.exists = false;
+				//trishot
+				this.Tri = new Pickup(game, game.world.width, game.world.centerY, "pickup03", 3);
+				game.add.existing(this.Tri);
+				this.pickups.add(this.Tri);
+				this.Tri.exists = false;
+				//railgun
+				this.Rail = new Pickup(game, game.world.width, game.world.centerY, "pickup04", 4);
+				game.add.existing(this.Rail);
+				this.pickups.add(this.Rail);
+				this.Rail.exists = false;
+				//shield
+				this.Shield = new Pickup(game, game.world.width, game.world.centerY, "pickup05", 5);
+				game.add.existing(this.Shield);
+				this.pickups.add(this.Shield);
+				this.Shield.exists = false;
 
-          this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies, this.pickups];
 
-          NEWGAME = false;
+				this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies, this.pickups];
+
+				NEWGAME = false;
 			}
 			else{
 				this.player = PLAYER.reset(64, game.world.centerY);
@@ -264,7 +295,7 @@ function Level_0(game) {}
 			
 			switch(CHECKPOINT){
 				case 1:
-					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
+					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
 					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
@@ -283,7 +314,7 @@ function Level_0(game) {}
 function Level_1(game) {}
 	
 	Level_1.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped){
+		init: function(background, BGM, player, enemies, cache, equipped, pickups){
             // so the background parallax, bgm, and loaded enemies persists between states
 			this.background = background;
 			this.BGM = BGM;
@@ -291,6 +322,7 @@ function Level_1(game) {}
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
+			this.pickups = pickups;
 		},
 		preload: function(){
 			console.log("Level_1: Preload");
@@ -324,7 +356,7 @@ function Level_1(game) {}
 				this.nextLevel();
 			}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
+				spawnPickup(this.pickups, 3);
 			}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;

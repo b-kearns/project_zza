@@ -11,7 +11,7 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 2;
+	this.HEALTH = 1;
 	this.EQUIP = 0;
 	this.SHIELD = false;
 	this.POINTS = 0;
@@ -58,7 +58,7 @@ function Player(game, key) {
 	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
 	this.weapons[2] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
 	this.weapons[3] = new TriShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
-	this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
+	// this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
 
 	this.weapon = this.weapons[this.EQUIP];
 	
@@ -148,11 +148,13 @@ Player.prototype.update = function() {
 Player.prototype.swap = function(direction) {
 	//SWAP LEFT
 	if(direction){
-		this.EQUIP--;
-		if(this.EQUIP < 0){this.EQUIP = this.weapons.length - 1;}
+		if(this.EQUIP - 1 < 0){this.key = this.weapons.length - 1;}
+		else{this.key = this.EQUIP - 1;}
+		if(this.weapons[this.key].UNLOCK){this.EQUIP = this.key;}
 	}
 	else {
-		this.EQUIP++;
-		if(this.EQUIP >= this.weapons.length){this.EQUIP = 0;}
+		if(this.EQUIP + 1 >= this.weapons.length){this.key = 0;}
+		else{this.key = this.EQUIP + 1;}
+		if(this.weapons[this.key].UNLOCK){this.EQUIP = this.key;}
 	}
 }

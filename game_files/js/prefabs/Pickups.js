@@ -7,7 +7,7 @@ function Pickup(game, posX, posY, key, weap){
 	    this.outOfCameraBoundsKill = false;
     	this.autoCull = true;
         this.body.velocity.setTo(-150, 0);
-        this.unlock = weap;
+        this.UNLOCK = weap;
         this.scale.setTo(0.75,0.75);
 }
     

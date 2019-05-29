@@ -286,7 +286,7 @@ function Enemy4(game, posX, posY, key) {
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
-	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 32);
+	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 9);
 }
 
 Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
@@ -317,11 +317,11 @@ Enemy4.prototype.update = function() {
 		this.HEALTH = this.DEFAULT;
 	}
 	//fire rate
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 90){try{this.shoot();}catch{return;}}
+	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 97){try{this.shoot();}catch{return;}}
 }
 
 Enemy4.prototype.shoot = function(){
-	for(var i = 0; i < 3; i++){
+	for(var i = 0; i < 2; i++){
 		this.weapon.fire(this);
 	}
 }
@@ -332,7 +332,8 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	Phaser.Sprite.call(this, game, posX, posY, "enemy5-1");
 	this.anchor.setTo(0.4, 0.5);
 	
-	this.BARREL.anchor.setTo(0, 0.5);
+	this.BARREL.anchor.setTo(1.2, 0.5);
+	this.BARREL.scale.setTo(-1.0, 1.0);
 	//set enemy data
     this.scale.setTo(-1, verticalScale);
     //this.BARREL.scale.setTo(-1, 1);
