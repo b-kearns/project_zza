@@ -15,7 +15,9 @@ function MainMenu(game) {}
             this.background[1].scale.setTo(3.5, 3.5);
 			this.text = game.add.text(0,0,"Press SPACEBAR to start", {fill: "#facade"});
             //load music
-            
+            this.menuBGM = game.add.audio("Menu");
+			this.menuBGM.loop = true;
+            this.menuBGM.play();
 		},
 		update: function(){
             // start background movement for parallax
@@ -26,6 +28,7 @@ function MainMenu(game) {}
 			if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
                 
 				this.text.kill();
+                this.menuBGM.stop();
 				game.state.start("Level_0", false, false, this.background, this.BGM);
 			}
 		},
