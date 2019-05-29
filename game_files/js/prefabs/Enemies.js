@@ -33,6 +33,9 @@ function Enemy1(game, posX, posY, key) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
+    // audio object for death 
+    this.boom = game.add.audio("enemyDeath");
+
 	
 	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 2);
 }
@@ -52,6 +55,7 @@ Enemy1.prototype.update = function() {
 		var explosion = this.explosions.getFirstExists(false);
         explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
       	explosion.play('explosion', 30, false, true);
+        this.boom.play();
 		this.kill();
 		
 		SCORE += this.POINTS;
@@ -97,7 +101,8 @@ function Enemy2(game, posX, posY, key) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
-	
+	// audio object for death 
+    this.boom = game.add.audio("enemyDeath");
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 16);
 }
 
@@ -122,6 +127,7 @@ Enemy2.prototype.update = function() {
 		var explosion = this.explosions.getFirstExists(false);
         explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
       	explosion.play('explosion', 30, false, true);
+        this.boom.play();
 		this.kill();
 		
 		SCORE += this.POINTS;
@@ -189,6 +195,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
+    // audio object for death 
+    this.boom = game.add.audio("enemyDeath");
 
 }
 
@@ -227,6 +235,7 @@ Enemy3.prototype.update = function() {
 		var explosion = this.explosions.getFirstExists(false);
         explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
       	explosion.play('explosion', 30, false, true);
+        this.boom.play();
 		this.kill();
 		
 		SCORE += this.POINTS;
@@ -274,7 +283,9 @@ function Enemy4(game, posX, posY, key) {
     this.explosions.forEach(function(explosion) {
     	explosion.animations.add('explosion');
    	})
-    
+    // audio object for death 
+    this.boom = game.add.audio("enemyDeath");
+
 	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 32);
 }
 
@@ -298,6 +309,7 @@ Enemy4.prototype.update = function() {
 		var explosion = this.explosions.getFirstExists(false);
         explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
       	explosion.play('explosion', 30, false, true);
+        this.boom.play();
 		this.kill();
 
 		SCORE += this.POINTS;
@@ -311,5 +323,112 @@ Enemy4.prototype.update = function() {
 Enemy4.prototype.shoot = function(){
 	for(var i = 0; i < 3; i++){
 		this.weapon.fire(this);
+	}
+}
+
+function Enemy5(game, posX, posY, key, verticalScale) {
+	if(verticalScale == null){verticalScale = 1;}
+	this.BARREL = game.add.sprite(posX, posY, "enemy5");
+	Phaser.Sprite.call(this, game, posX, posY, "enemy5-1");
+	this.anchor.setTo(0.4, 0.5);
+	
+	this.BARREL.anchor.setTo(0, 0.5);
+	//set enemy data
+    this.scale.setTo(-1, verticalScale);
+    //this.BARREL.scale.setTo(-1, 1);
+	
+	this.DRAG = 8000;
+	this.MAX_VELOCITY = 500;
+	this.ACCELERATION = 1500;
+	this.HEALTH = 5;
+	this.DEFAULT = 5;
+	this.POINTS = 200;
+	
+	game.physics.enable(this);
+	this.body.collideWorldBounds = false;
+	this.outOfCameraBoundsKill = false;
+	this.BARREL.outOfCameraBoundsKill = false;
+	this.BARREL.autoCull = true;
+	this.autoCull = true;
+	this.BARREL.autoCull = true;
+	this.body.drag.setTo(this.DRAG, this.DRAG);
+
+	
+
+	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
+    this.body.velocity.setTo(-200, 0);
+	
+	this.weapon = new Railgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon4", 8);
+	
+	this.BARREL.exists = false;
+	this.exists = false;
+	
+	//console.log(this.body);
+  
+	this.explosions = game.add.group();
+    this.explosions.enableBody = true;
+    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
+    this.explosions.forEach(function(explosion) {
+    	explosion.animations.add('explosion');
+   	})
+    // audio object for death 
+    this.boom = game.add.audio("enemyDeath");
+
+}
+
+Enemy5.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy5.prototype.constructor = Enemy5;
+
+Enemy5.prototype.respawn = function(x, y) {
+	this.BARREL.exists = true;
+	this.exists = true;
+	this.reset(x, y);
+}
+
+Enemy5.prototype.update = function() {
+
+	
+	//kill the object when is out of scope
+	
+	this.BARREL.position.x = this.position.x;
+	this.BARREL.position.y = this.position.y;
+	//track the player UwU
+	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
+
+
+	
+
+	//i like to move it move it
+	this.body.velocity.x = -200;
+	//kill the object when is out of scope
+
+	if(this.inCamera && !this.outOfCameraBoundsKill){
+		this.outOfCameraBoundsKill = true;
+	}
+	
+	// allow player to kill with shots
+	if(this.HEALTH <= 0){
+		var explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
+      	explosion.play('explosion', 30, false, true);
+        this.boom.play();
+		this.kill();
+		
+		SCORE += this.POINTS;
+		
+		this.HEALTH = this.DEFAULT;
+	}
+	
+	if(!this.exists){this.BARREL.exists = false;}
+	
+	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
+}
+
+Enemy3.prototype.shoot = function(){
+	for(var i = 0; i < 2; i++){
+		this.weapon.fire(this.BARREL);
 	}
 }

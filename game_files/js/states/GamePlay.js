@@ -75,11 +75,15 @@ function Level_0(game) {}
 			for(var i = 0; i < 5; i++){
 				this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
 				game.add.existing(this.enemy);
-				this.r_enemies.add(this.enemy);
+				this.t_enemies.add(this.enemy);
 
 				this.enemy.exists = false;
 			}
-				
+			for(var i = 0; i < 3; i++){
+				this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "enemy5");
+				game.add.existing(this.enemy);
+				this.r_enemies.add(this.enemy);
+			}
 			this.cache = [this.s_enemies, this.d_enemies, this.shot_enemies, this.t_enemies, this.r_enemies];
 		},
 		create: function(){
@@ -141,7 +145,7 @@ function Level_1(game) {}
 
 			//game.time.events.add(Phaser.Timer.SECOND * 20, this.startTimer, this, 1, 3);
 			//game.time.events.add(Phaser.Timer.SECOND * 30, this.startTimer, this, 2, 20);
-			game.time.events.loop(Phaser.Timer.SECOND * 30, this.makeEnemy, this, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 30, this.makeEnemy, this, this.player, 2);
 			game.time.events.loop(Phaser.Timer.SECOND * 4, this.makeEnemy, this, this.player, 1);
 			game.time.events.add(Phaser.Timer.SECOND * 120, this.nextLevel, this);
 			
@@ -219,6 +223,7 @@ function Level_1(game) {}
 		},
 		makeEnemy: function(player, key){
 			switch(key){
+            //basic p-shot enemy
             case 1:
 					try{
 						this.enemy = this.cache[0].getFirstExists(false);
@@ -228,6 +233,7 @@ function Level_1(game) {}
 					}
 					catch{console.log("Spawn Case 1 Failed");return;}
 					break;
+			//double shot rambopus
             case 2:
 					try{
 						this.enemy = this.cache[1].getFirstExists(false);
@@ -237,6 +243,7 @@ function Level_1(game) {}
 					}
 					catch{console.log("Spawn Case 2 Failed");return;}
 					break;
+			//shotgun turret
             case 3:
 					try{
 						this.enemy = this.cache[2].getFirstExists(false);
@@ -247,20 +254,29 @@ function Level_1(game) {}
 					}
 					catch{console.log("Spawn Case 3 Failed");return;}
 					break;
+			//tribeam ship
             case 4:
             		try{
-            			this.enemy = this.cache[4].getFirstExists(false);
+            			this.enemy = this.cache[3].getFirstExists(false);
 						this.enemy.outOfCameraBoundsKill = false;
 						this.enemy.HEALTH = this.enemy.DEFAULT;
 						this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
 					}
 					catch{console.log("Spawn Case 4 Failed");return;}
 					break;
+			//rail turret
             case 5:
+					try{
+						this.enemy = this.cache[4].getFirstExists(false);
+						this.enemy.scale.setTo(-1.0, 1.0);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), game.world.height-120);
+					}
+					catch{console.log("Spawn Case 5 Failed");return;}
 					break;
-
-			case 6:
 			//Upside down shotgun turret
+			case 6:
 					try{
 						this.enemy = this.cache[2].getFirstExists(false);
 						this.enemy.scale.setTo(-1.0, -1.0);
@@ -270,8 +286,16 @@ function Level_1(game) {}
 					}
 					catch{console.log("Spawn Case 3 Failed");return;}
 					break;
-			case 7:
 			//Upside down rail turret
+			case 7:
+					try{
+						this.enemy = this.cache[4].getFirstExists(false);
+						this.enemy.scale.setTo(-1.0, -1.0);
+						this.enemy.outOfCameraBoundsKill = false;
+						this.enemy.HEALTH = this.enemy.DEFAULT;
+						this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), 120);
+					}
+					catch{console.log("Spawn Case 5 Failed");return;}
 					break;
 			}
 

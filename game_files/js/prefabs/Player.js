@@ -38,7 +38,9 @@ function Player(game, key) {
    	this.playerDeath.height = 25;
     this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
     this.playerDeath.setAlpha(0.9, 0, 800);
-    this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out);    
+    this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
+    this.o_noes = game.add.audio("playerDeath");
+   
     
 
     //PC controls
@@ -77,7 +79,7 @@ Player.prototype.create = function() {
 }
 
 Player.prototype.update = function() {
-this.SHIELD_SPRITE.bringToTop();
+	this.SHIELD_SPRITE.bringToTop();
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
 
@@ -129,6 +131,7 @@ this.SHIELD_SPRITE.bringToTop();
 			this.playerDeath.x = this.x;
         	this.playerDeath.y = this.y;
         	this.playerDeath.start(false, 1000, 10, 10);
+            this.o_noes.play();
 
 			this.shipTrail.kill();
 			this.kill();

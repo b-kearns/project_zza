@@ -53,11 +53,6 @@ function Boot(game) {}
 
 			game.load.image("Platform", "assets/imgs/space plat.png");
 
-
-            game.load.image("Shield", "assets/imgs/ShipShield.png");
-
-			game.load.image("Platform", "assets/imgs/space plat.png");
-
 			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
 			game.load.audio("GameOver","assets/audio/Uninstall.wav");
 			game.load.audio("Menu","assets/audio/ShmupMenu.wav");
