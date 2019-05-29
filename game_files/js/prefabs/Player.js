@@ -13,7 +13,7 @@ function Player(game, key) {
 	this.ACCELERATION = 1500;
 	this.HEALTH = 2;
 	this.EQUIP = 0;
-  this.SHIELD = false;
+	this.SHIELD = false;
 	this.POINTS = 0;
     //spin up physics
 	game.physics.enable(this);
@@ -79,7 +79,10 @@ Player.prototype.create = function() {
 }
 
 Player.prototype.update = function() {
+	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
+	
 	this.SHIELD_SPRITE.bringToTop();
+	
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
 
@@ -115,9 +118,9 @@ Player.prototype.update = function() {
 			this.weapon.fire(this);
 		}
 		
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
-			this.blinkDrive.jump(this);
-		}
+		// if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
+			// this.blinkDrive.jump(this);
+		// }
 		
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT)){
 			this.swap(false);
