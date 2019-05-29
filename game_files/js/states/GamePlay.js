@@ -267,7 +267,13 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
-			game.time.events.add(Phaser.Timer.SECOND * 5, this.nextLevel, this);
+			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 3);
+			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 6);
+			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 4);
+			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
+			game.time.events.loop(Phaser.Timer.SECOND * 22, makeEnemy, this, this.player, 7);
 		},
 		update: function(){
             //collision handling
@@ -495,12 +501,11 @@ function Level_4(game) {}
         },
         render: function(){
            //handle debug info
-           if(this.debug){
-              game.debug.body(this.player);
-              game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
-              this.enemies.forEachAlive(this.renderGroup, this);
-              this.player.weapon.forEachAlive(this.renderGroup, this);
-           }
+			if(this.debug){
+				game.debug.body(this.player);
+				game.debug.text('FPS: ' + game.time.fps || 'FPS: --', 40, 40, "#00ff00");
+				this.player.weapon.forEachAlive(this.renderGroup, this);
+			}
         },
 		renderGroup: function(member){
 			game.debug.body(member);
