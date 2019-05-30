@@ -21,7 +21,7 @@ GameOver.prototype = {
 			this.background[i - 1].position.x -= 0.01 * i;
 		}
 		
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
 			this.text.kill();
 			this.Uninstall.stop();
 			game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache);
