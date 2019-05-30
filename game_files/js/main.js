@@ -16,5 +16,6 @@ game.state.add("Level_2", Level_2);
 game.state.add("Level_3", Level_3);
 game.state.add("Level_4", Level_4);
 game.state.add("GameOver", GameOver);
+game.state.add("Zza", Zza);
 game.state.start("Boot");
 

@@ -11,6 +11,7 @@ function Boot(game) {}
 			game.load.image("trail", "assets/imgs/trail.png"); 
 			
 			game.load.image("player_side", "assets/imgs/Blue-04.png"); 
+			game.load.image("TopPlayer", "assets/imgs/blue_05.png"); 
 			
 			game.load.image("weapon1","assets/imgs/projectile-blue.png");
 			
@@ -48,10 +49,11 @@ function Boot(game) {}
 			
             game.load.image("EarthBackground", "assets/imgs/earth.png");
             game.load.image("StarsBackground", "assets/imgs/stars.png");
-
+            game.load.image("Plats", "assets/imgs/space plat.png");
+            game.load.image("leftPlats", "assets/imgs/leftPlat.png");
+            game.load.image("rightPlats", "assets/imgs/rightPlat.png");
+            game.load.image("TopPlats", "assets/imgs/space plat top.png");
             game.load.image("Shield", "assets/imgs/ShipShield.png");
-
-			game.load.image("Platform", "assets/imgs/space plat.png");
 
 			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
 			game.load.audio("GameOver","assets/audio/Uninstall.wav");
