@@ -5,7 +5,7 @@ var playerDeath;
 	
 // player controller
 function Player(game, key) {
-	Phaser.Sprite.call(this,game, 64, game.world.centerY, key);
+	Phaser.Sprite.call(this,game, 64, game.world.centerY, "Atlas", key);
 	//PC variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
@@ -24,7 +24,7 @@ function Player(game, key) {
     //handle the player thruster emitter
     this.shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
     this.shipTrail.width = 10;
-    this.shipTrail.makeParticles('trail');
+    this.shipTrail.makeParticles("Atlas", "trail");
     this.shipTrail.setXSpeed(-200, -250);
     this.shipTrail.setYSpeed(25, -50);
     this.shipTrail.setRotation(50,-50);
@@ -36,7 +36,8 @@ function Player(game, key) {
 	this.playerDeath = game.add.emitter(this.position.x, this.position.y);
     this.playerDeath.width = 25;
    	this.playerDeath.height = 25;
-    this.playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7,8,9,10], 10);
+	this.animations.add("explosion", "Atlas", ["explosion0001","explosion0002","explosion0003","explosion0004","explosion0005","explosion0006","explosion0007","explosion0008","explosion0009","explosion0010","explosion0011",], 10, false);
+    this.playerDeath.makeParticles("explosion");
     this.playerDeath.setAlpha(0.9, 0, 800);
     this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
     this.o_noes = game.add.audio("playerDeath");
@@ -64,7 +65,7 @@ function Player(game, key) {
 	
 	this.blinkDrive = new BlinkDrive(game);
     //handles the shield sprite
-    this.SHIELD_SPRITE = game.add.sprite(0,0,"Shield");
+    this.SHIELD_SPRITE = game.add.sprite(0,0, "Atlas", "ShipShield");
     this.SHIELD_SPRITE.anchor.set(0.5);
     
 }

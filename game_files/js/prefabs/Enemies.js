@@ -3,7 +3,7 @@
 ///////////////////////////////Small Single Shot Enemy//////////////////////////////////////////////////////////////
 
 function Enemy1(game, posX, posY, key) {
-	Phaser.Sprite.call(this, game, posX, posY, key);
+	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
 	// set enemy data
 	this.anchor.set(0.5);
     this.scale.setTo(-1, 1);
@@ -74,7 +74,7 @@ Enemy1.prototype.shoot = function(){
 ///////////////////////////////Rambopus Enemy//////////////////////////////////////////////////////////////
 
 function Enemy2(game, posX, posY, key) {
-	Phaser.Sprite.call(this, game, posX, posY, key);
+	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
 	// set enemy data
 	this.anchor.set(0.5);
     this.scale.setTo(0.75, 0.75);
@@ -149,8 +149,8 @@ Enemy2.prototype.shoot = function(){
 
 function Enemy3(game, posX, posY, key, verticalScale) {
 	if(verticalScale == null){verticalScale = 1;}
-	this.BARREL = game.add.sprite(posX, posY, "enemy3");
-	Phaser.Sprite.call(this, game, posX, posY, "enemy3-1");
+	this.BARREL = game.add.sprite(posX, posY, "Atlas", "TankBarrel");
+	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
 	this.anchor.setTo(0.4, 0.5);
 	
 	this.BARREL.anchor.setTo(0, 0.5);
@@ -193,7 +193,7 @@ function Enemy3(game, posX, posY, key, verticalScale) {
     this.explosions.setAll('anchor.x', 0.5);
     this.explosions.setAll('anchor.y', 0.5);
     this.explosions.forEach(function(explosion) {
-    	explosion.animations.add('explosion');
+    	explosion.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion",0,11,"",4),10,false);
    	})
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
@@ -257,7 +257,7 @@ Enemy3.prototype.shoot = function(){
 // ///////////////////////////////Trishot Enemy//////////////////////////////////////////////////////////////
 
 function Enemy4(game, posX, posY, key) {
-	Phaser.Sprite.call(this,game, posX, posY, key);
+	Phaser.Sprite.call(this,game, posX, posY, "Atlas", key);
 	//set enemy data
 	this.anchor.set(0.5);
     this.scale.setTo(-1, 1);
@@ -328,8 +328,8 @@ Enemy4.prototype.shoot = function(){
 
 function Enemy5(game, posX, posY, key, verticalScale) {
 	if(verticalScale == null){verticalScale = 1;}
-	this.BARREL = game.add.sprite(posX, posY, "enemy5");
-	Phaser.Sprite.call(this, game, posX, posY, "enemy5-1");
+	this.BARREL = game.add.sprite(posX, posY, "Atlas", "TurretHead");
+	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
 	this.anchor.setTo(0.6, 0);
 	
 	this.BARREL.anchor.setTo(0.5);
