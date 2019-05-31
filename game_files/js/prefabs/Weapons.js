@@ -16,7 +16,9 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-	this.add(new Bullet(game, "projectile-blue", this.DAMAGE, this.PENETRATE), true);
+
+	this.add(new Bullet(game, key, this.DAMAGE, this.PENETRATE), true);
+
 	}
 }
 
@@ -53,7 +55,9 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "projectile-blue", this.DAMAGE, this.PENETRATE), true);
+
+		this.add(new Bullet(game, key, this.DAMAGE, this.PENETRATE), true);
+
 	}
 }
 
@@ -75,7 +79,7 @@ DoubleShot.prototype.fire = function(source) {
 	this.ALT *= -1;
 }
 //this is how we trishot
-function TriShot(game, posX, posY, direction, key, ammo) {
+function TriShot(game, posX, posY, direction, key, ammo, fireRate) {
 	Phaser.Group.call(this, game, game.world, "TriShot", false, true, Phaser.Physics.ARCADE);
 	
 	this.UNLOCK = false;
@@ -85,7 +89,7 @@ function TriShot(game, posX, posY, direction, key, ammo) {
 	this.DAMAGE = 1;
     this.nextFire = 0;
 	this.bulletSpeed = 400;
-	this.fireRate = 300;
+	this.fireRate = fireRate;
     this.SFX = game.add.audio("tri_shot");
     this.SFX.volume = 0.75;
 	

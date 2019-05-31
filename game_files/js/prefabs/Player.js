@@ -5,7 +5,9 @@ var playerDeath;
 	
 // player controller
 function Player(game, key) {
+
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, "Atlas", key);
+
 	//PC variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
@@ -15,12 +17,15 @@ function Player(game, key) {
 	this.EQUIP = 0;
 	this.SHIELD = false;
 	this.POINTS = 0;
+	this.HERO = true;
+	this.DOUBLE_UNLOCK = false;
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, this.MAX_VELOCITY);
     this.body.setSize(15, 15, 15, 15);
+	
     //handle the player thruster emitter
     this.shipTrail = game.add.emitter(this.position.x -20, this.position.y, 400);
     this.shipTrail.width = 10;
@@ -42,8 +47,6 @@ function Player(game, key) {
     this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
     this.o_noes = game.add.audio("playerDeath");
     this.o_noes.volume = 0.75;
-	
-    
 
     //PC controls
 	this.cursors = game.input.keyboard.createCursorKeys();
@@ -55,10 +58,11 @@ function Player(game, key) {
 	}
 	//swappable weapons for PC
 	this.weapons = [];
-	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "P-shot", 16);
+	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "weapon1", 16);
 	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
-	this.weapons[2] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
-	this.weapons[3] = new TriShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
+	this.weapons[2] = new TriShot(game, this.position.x, this.position.y, 1, "P-shot", 32, 400);
+	this.weapons[3] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
+	
 	// this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
 
 	this.weapon = this.weapons[this.EQUIP];
@@ -141,7 +145,7 @@ Player.prototype.update = function() {
 			this.shipTrail.kill();
 			this.kill();
 			this.HEALTH = 1;
-			sendToGameOver();
+			sendToGameOver(CACHE);
 		}
 	
 }

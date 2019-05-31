@@ -13,6 +13,8 @@ function Enemy1(game, posX, posY, key) {
 	this.HEALTH = 2;
 	this.DEFAULT = 2;
 	this.POINTS = 100;
+	this.HERO = false;
+	this.KEY = 0;
 	//give it physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -37,7 +39,7 @@ function Enemy1(game, posX, posY, key) {
     this.boom = game.add.audio("enemyDeath");
 
 	
-	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 2);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
@@ -84,6 +86,8 @@ function Enemy2(game, posX, posY, key) {
 	this.HEALTH = 10;
 	this.DEFAULT = 10;
 	this.POINTS = 250;
+	this.HERO = false;
+	this.KEY = 1;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -103,7 +107,7 @@ function Enemy2(game, posX, posY, key) {
    	})
 	// audio object for death 
     this.boom = game.add.audio("enemyDeath");
-	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 16);
+	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "weapon1", 16);
 }
 
 Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
@@ -114,7 +118,6 @@ Enemy2.prototype.create = function() {
 }
 
 Enemy2.prototype.update = function() {
-
 
 	this.body.velocity.y = 200;
 	//kill the object when is out of scope
@@ -139,7 +142,7 @@ Enemy2.prototype.update = function() {
 }
 //also fire...
 Enemy2.prototype.shoot = function(){
-	for(var i = 0; i < 10; i++){
+	for(var i = 0; i < 8; i++){
 		this.weapon.fire(this);
 	}
 }
@@ -161,9 +164,11 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 1;
-	this.DEFAULT = 1;
+	this.HEALTH = 2;
+	this.DEFAULT = 2;
 	this.POINTS = 200;
+	this.HERO = false;
+	this.KEY = 2;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -223,7 +228,7 @@ Enemy3.prototype.update = function() {
 	
 
 	//i like to move it move it
-	this.body.velocity.x = -200;
+	this.body.velocity.x = -250;
 	//kill the object when is out of scope
 
 	if(this.inCamera && !this.outOfCameraBoundsKill){
@@ -264,7 +269,14 @@ function Enemy4(game, posX, posY, key) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 3;
+
+	this.HEALTH = 1;
+	this.DEFAULT = 1;
+
+	this.POINTS = 250;
+	this.HERO = false;
+	this.KEY = 3;
+
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -286,7 +298,7 @@ function Enemy4(game, posX, posY, key) {
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
-	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 9);
+	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 9, 600);
 }
 
 Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
@@ -326,6 +338,7 @@ Enemy4.prototype.shoot = function(){
 	}
 }
 
+//////////////Railgun Turret////////////////////
 function Enemy5(game, posX, posY, key, verticalScale) {
 	if(verticalScale == null){verticalScale = 1;}
 	this.BARREL = game.add.sprite(posX, posY, "Atlas", "TurretHead");
@@ -341,9 +354,14 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 5;
-	this.DEFAULT = 5;
-	this.POINTS = 200;
+
+	this.HEALTH = 3;
+	this.DEFAULT = 3;
+
+	this.POINTS = 400;
+	this.HERO = false;
+	this.KEY = 4;
+
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;

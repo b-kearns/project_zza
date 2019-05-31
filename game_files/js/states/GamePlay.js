@@ -5,17 +5,27 @@ var CHECKPOINT;
 var BACKGROUND;
 var BGM;
 var EQ;
+var PICKUPS;
+var CACHE;
+var PLATS;
 
 var PLAYER;
 var SCORE = 0;
 var NEWGAME = true;
 
 function sendToGameOver(cache){
+	for(var i = 0; i < cache.length; i++){
+		cache[i].forEachExists(destroy, this);
+	}
 	PLAYER.shipTrail.kill();
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
-	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache);
+	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS);
+}
+
+function destroy(target){
+	target.kill();
 }
 
 function sendToZza(){
@@ -52,7 +62,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, 1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), game.world.height-120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height - 105);
 			}
 			catch{console.log("Spawn Case 3 Failed");return;}
 			break;
@@ -73,7 +83,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, 1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), game.world.height-120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height-120);
 			}
 			catch{console.log("Spawn Case 5 Failed");return;}
 			break;
@@ -84,7 +94,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, -1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), 120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), 120);
 			}
 			catch{console.log("Spawn Case 6 Failed");return;}
 			break;
@@ -95,7 +105,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, -1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), 120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), 120);
 			}
 			catch{console.log("Spawn Case 7 Failed");return;}
 			break;
@@ -112,6 +122,9 @@ function collisionHandle(target, weapon){
     game.add.tween(target).to({tint: 0xfefefe}, 50, null, true, 0, false, false);
     game.add.tween(target).to({tint: 0xffffff}, 50, null, true, 70, false, false);
 	target.HEALTH -= weapon.DAMAGE;
+	if(target.HEALTH <= 0 && !target.HERO){
+		checkPickups(PLAYER, target, PICKUPS);
+	}
 	if(!weapon.PENETRATE){weapon.kill();}			
 }
 
@@ -131,8 +144,9 @@ function handlePickup(player, pickup){
 		case 1:
 			//DOUBLE
 			//UPGRADE!!!
-			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "P-shot", 32);
+			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "weapon1", 32);
 			player.weapons[0].UNLOCK = true;
+			player.DOUBLE_UNLOCK = true;
 			break;
 		case 2:
 			//SHOTGUN
@@ -144,7 +158,7 @@ function handlePickup(player, pickup){
 			break;
 		case 4:
 			//RAIL
-			player.weapons[4].UNLOCK = true;
+			player.weapons[3].UNLOCK = true;
 			break;
 		case 5:
 			//SHIELD
@@ -156,17 +170,55 @@ function handlePickup(player, pickup){
 
 }
 
-function spawnPickup(pickups, key){
-	pickups.getFirst("UNLOCK", key).revive();
-	pickups.getFirst("UNLOCK", key).reset(game.world.width, game.world.centerY + 200 * game.rnd.integerInRange(-1, 1));
+function spawnPickup(x, y, pickups, key){
+	try{
+		pickups.getFirst("UNLOCK", key).revive();
+		pickups.getFirst("UNLOCK", key).reset(x, y);
+	}
+	catch(err){console.log("Pickup Spawn Failed: " +err);return;}
 }
 //handle loading the game objects in a boot-like level
+
+function checkPickups(player, target, pickups){
+	// console.log("Checking for pickups: " +target.KEY);
+	switch(target.KEY){
+		case 0:
+			break;
+		case 1:
+			console.log(player.DOUBLE_UNLOCK);
+			if(!player.DOUBLE_UNLOCK){
+				spawnPickup(target.position.x, target.position.y, pickups, 1);
+			}
+			break;
+		case 2:
+			if(!player.weapons[1].UNLOCK){
+				spawnPickup(target.position.x, target.position.y, pickups, 2);
+			}
+			break;
+		case 3:
+			if(!player.weapons[2].UNLOCK){
+				spawnPickup(target.position.x, target.position.y, pickups, 3);
+			}
+			break;
+		case 4:
+			if(!player.weapons[3].UNLOCK){
+				spawnPickup(target.position.x, target.position.y, pickups, 4);
+			}
+			break;
+	}
+}
+
+function spawnShield(){
+	// console.log("Spawning Shield");
+	if(game.rnd.integerInRange(1,100) > 70){
+		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
+	}
+}
 
 function Level_0(game) {}
 
 	Level_0.prototype = {
-		init: function(background, check, cache){
-			//console.log(check);
+		init: function(background, check, cache, plats){
 
 			this.background = background;
 			BACKGROUND = background;
@@ -202,7 +254,7 @@ function Level_0(game) {}
 				this.pickups = game.add.group();
 				
 				//creating single shot enemies
-				console.log("Spooling up single shot enemies");
+				//console.log("Spooling up single shot enemies");
 				for(var i = 0; i < 8; i++){
 					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "Dark-Grey-04");
 					game.add.existing(this.enemy);
@@ -211,16 +263,17 @@ function Level_0(game) {}
 				}
 				
 				//creating doubleshot enemies
-				console.log("Spooling up double shot enemies");
+
 				for(var i = 0; i < 2; i++){
 					this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "OctoMini");
+
 					game.add.existing(this.enemy);
 					this.d_enemies.add(this.enemy);
 					this.enemy.exists = false;
 				}
 
 				//creating shotgun enemies
-				console.log("Spooling up shotgun enemies");
+				// console.log("Spooling up shotgun enemies");
 				for(var i = 0; i < 3; i++){
 					this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "TankBase");
 					game.add.existing(this.enemy);
@@ -228,9 +281,11 @@ function Level_0(game) {}
 				}
 
 				//creating tri beam enemies
-				console.log("Spooling up tribeam enemies");
+
+				//console.log("Spooling up tribeam enemies");
 				for(var i = 0; i < 5; i++){
 					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "TriEnemy");
+
 					game.add.existing(this.enemy);
 					this.t_enemies.add(this.enemy);
 
@@ -238,9 +293,11 @@ function Level_0(game) {}
 				}
 				
 				//creating rail gun enemies
-				console.log("Spooling up rail gun enemies");
-				for(var i = 0; i < 1; i++){
+
+				//console.log("Spooling up rail gun enemies");
+				for(var i = 0; i < 2; i++){
 					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "TurretBase");
+
 					game.add.existing(this.enemy);
 					this.r_enemies.add(this.enemy);
 				}
@@ -282,6 +339,9 @@ function Level_0(game) {}
 				
 				this.BGM = BGM;
 			}
+			
+			PICKUPS = this.pickups;
+			CACHE = this.cache;
 		},
 		create: function(){
 			game.add.existing(this.player);
@@ -337,13 +397,20 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
-			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 3);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 6);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 4);
-			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
-			game.time.events.loop(Phaser.Timer.SECOND * 22, makeEnemy, this, this.player, 7);
+
+
+			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 33, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 102, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 1);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+
 		},
 		update: function(){
 
@@ -411,7 +478,9 @@ function Level_2(game) {}
 		},
 		create: function(){
 			this.plats = [];
+
             this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
+
             game.physics.enable(this.plats[0]);
             this.plats[0].body.immovable = true;
             this.plats[0].body.setSize(960,100,0,14);
@@ -423,33 +492,44 @@ function Level_2(game) {}
             this.plats[0].moveDown();
             this.plats[0].moveDown();
 			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
+
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 3);
 		},
 		update: function(){
             this.plats[0].tilePosition.x -=2;
-            //collision handling
-				game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
-				game.physics.arcade.collide(this.player, this.plats);1
-				for(var i = 0; i < this.cache.length; i++){
-					this.cache[i].forEachExists(checkCollision, this);
-				}
-				
-				//move the background
-				this.background[0].tilePosition.x -= 0.015;
-				this.background[1].position.x -= 0.03;
+
 			
-				//UI w00t!
-				this.equipped.setText("Weapon: " + this.player.weapon.NAME);
-				//debug options
-				if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
-					this.nextLevel();
-				}
-				if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-					this.player.kill();
-				}
-				if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-					this.debug = !this.debug;
-				}
-            
+			//collision handling for pickups
+			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			//collision handling for bullets
+			for(var i = 0; i < this.cache.length - 1; i++){
+				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
+				this.cache[i].forEachExists(checkCollision, this);
+			}
+			
+			//move the background
+			this.background[0].tilePosition.x -= 0.015;
+			this.background[1].position.x -= 0.03;
+		
+			//UI w00t!
+			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+			//debug options
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+				this.nextLevel();
+			}
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
+				this.player.kill();
+			}
+			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
+				this.debug = !this.debug;
+			}
         },
         render: function(){
 			//handle debug info
@@ -498,14 +578,25 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
+			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
 		},
 		update: function(){
 			this.plats[0].tilePosition.x -= 2.5;
 			this.plats[1].tilePosition.x -= 2.5;
-            //collision handling
-			game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
-			game.physics.arcade.collide(this.player, this.plats);
-			for(var i = 0; i < this.cache.length; i++){
+
+            //collision handling for pickups
+			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			//collision handling for bullets
+			for(var i = 0; i < this.cache.length - 1; i++){
+				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
 				this.cache[i].forEachExists(checkCollision, this);
 			}
 			
@@ -560,37 +651,41 @@ function Level_4(game) {}
 		},
 		create: function(){
             game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
-
+            game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 3);
+			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
 		},
 		update: function(){
 
 			this.plats[0].tilePosition.x -=3;
 			this.plats[1].tilePosition.x -=3;
 
-            //collision handling
-			game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
-			game.physics.arcade.collide(this.player, this.plats);
-				for(var i = 0; i < this.cache.length; i++){
-					this.cache[i].forEachExists(checkCollision, this);
-				}
+            //collision handling for pickups
+			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			//collision handling for bullets
+			for(var i = 0; i < this.cache.length - 1; i++){
+				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
+				this.cache[i].forEachExists(checkCollision, this);
+			}
 				
-				//move the background
-				this.background[0].tilePosition.x -= 0.015;
-				this.background[1].position.x -= 0.03;
-			
-				//UI w00t!
-				this.equipped.setText("Weapon: " + this.player.weapon.NAME);
-				//debug options
-				if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
-                    game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
-                   	game.time.events.add(Phaser.Timer.SECOND * 3, this.nextLevel, this, this.player);
-				}
-				if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-					this.player.kill();
-				}
-				if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-					this.debug = !this.debug;
-				}
+			//move the background
+			this.background[0].tilePosition.x -= 0.015;
+			this.background[1].position.x -= 0.03;
+		
+			//UI w00t!
+			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+			//debug options
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+				game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
+				game.time.events.add(Phaser.Timer.SECOND * 3, this.nextLevel, this, this.player);
+			}
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
+				this.player.kill();
+			}
+			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
+				this.debug = !this.debug;
+			}
         },
         render: function(){
            //handle debug info
