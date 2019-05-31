@@ -9,6 +9,8 @@ var game = new Phaser.Game(960, 640, Phaser.AUTO);
 //Let's start a game!
 game.state.add("Boot", Boot);
 game.state.add("MainMenu", MainMenu);
+game.state.add("Credits", Credits);
+game.state.add("Instructions", Instructions);
 game.state.add("Intro", Intro);
 game.state.add("Level_0", Level_0);
 game.state.add("Level_1", Level_1);
