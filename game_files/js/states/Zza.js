@@ -15,9 +15,12 @@ function Zza(game){}
 			
 		},
 		create: function(){
-      game.scale.setGameSize(640, 750);
+			
+			game.scale.setGameSize(640, 750);
             this.player = game.add.sprite(730, game.world.height, "TopPlayer");
+			
 			this.Zza = game.add.sprite(200, -500, "ZZA");
+			
             this.Zza1Top = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 190, "TentieTop");
             this.Zza1Mid = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 240, "TentieMid");
             this.Zza1Bot = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 300, "TentieBot");
@@ -33,9 +36,11 @@ function Zza(game){}
             this.Zza4Top = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 190, "TentieTop");
             this.Zza4Mid = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 240, "TentieMid");
             this.Zza4Bot = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 300, "TentieBot");
+			
 			this.plats = [];
             this.plats[0]= game.add.tileSprite(-100,0,100,750,"leftPlats");
             this.plats[1]= game.add.tileSprite(640,0,70,750,"rightPlats");
+			
             for(var i = 0; i < 2; i++){
 				game.physics.enable(this.plats[i]);
 				this.plats[i].body.immovable = true;
@@ -46,7 +51,7 @@ function Zza(game){}
 				this.plats[i].moveDown();
 				this.plats[i].moveDown();
 				this.plats[i].moveDown();
-        }
+			}
       
       game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
             game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);

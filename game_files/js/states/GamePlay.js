@@ -312,6 +312,9 @@ function Level_0(game) {}
 				case 4:
 					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
+				case 5:
+					game.state.start("Zza", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					break;
 			}
 			
 		}
@@ -580,7 +583,7 @@ function Level_4(game) {}
 				//debug options
 				if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
                     game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
-                   	game.time.events.add(Phaser.Timer.SECOND * 3, sendToZza, this, this.player);
+                   	game.time.events.add(Phaser.Timer.SECOND * 3, this.nextLevel, this, this.player);
 				}
 				if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
 					this.player.kill();
@@ -599,6 +602,10 @@ function Level_4(game) {}
         },
 		renderGroup: function(member){
 			game.debug.body(member);
+		},
+		nextLevel: function(){
+			BGM.stop();
+			game.state.start("Zza", false, false, BACKGROUND, BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 		}
 	}
 	
