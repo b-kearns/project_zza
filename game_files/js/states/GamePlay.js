@@ -15,7 +15,6 @@ function sendToGameOver(cache){
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
-	
 	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache);
 }
 
@@ -305,13 +304,13 @@ function Level_0(game) {}
 					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
-					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
+					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 3:
-					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
+					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 4:
-					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
+					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 			}
 			
@@ -377,15 +376,6 @@ function Level_1(game) {}
 
            }
 		},
-		renderGroup: function(member){
-			game.debug.body(member);
-		},
-		nextLevel: function(){
-			console.log(game.time.events);
-			CHECKPOINT++;
-			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
-			game.time.events.removeAll();
-		},
         //debug stuff
 		renderGroup: function(member){
 			game.debug.body(member);
@@ -418,8 +408,7 @@ function Level_2(game) {}
 		},
 		create: function(){
 			this.plats = [];
-            this.plats[0]= game.add.tileSprite(960,540,960,110,"Plats");
-			this.plats[0].position.x = 960;
+            this.plats[0]= game.add.tileSprite(0,640,960,110,"Plats");
             game.physics.enable(this.plats[0]);
             this.plats[0].body.immovable = true;
             this.plats[0].body.setSize(960,100,0,14);
@@ -430,17 +419,13 @@ function Level_2(game) {}
             this.plats[0].moveDown();
             this.plats[0].moveDown();
             this.plats[0].moveDown();
+			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 		},
 		update: function(){
-			if(this.plats[0].position.x != 0){
-				this.plats[0].position.x -= 2;
-			}
-			if(this.plats[0].position.x === 0){
-				this.plats[0].tilePosition.x -=2;
-			}
+            this.plats[0].tilePosition.x -=2;
             //collision handling
 				game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
-				game.physics.arcade.collide(this.player, this.plats);
+				game.physics.arcade.collide(this.player, this.plats);1
 				for(var i = 0; i < this.cache.length; i++){
 					this.cache[i].forEachExists(checkCollision, this);
 				}
@@ -498,8 +483,7 @@ function Level_3(game) {}
 			console.log("Level_3: Preload");
 		},
 		create: function(){
-			this.plats[1]= game.add.tileSprite(960, 0, 960, 110, "TopPlats");
-			this.plats[1].position.x = 960;
+			this.plats[1]= game.add.tileSprite(0, -110, 960, 110, "TopPlats");
             game.physics.enable(this.plats[1]);
             this.plats[1].body.immovable = true;
             this.plats[1].body.setSize(960,100,0,14);
@@ -510,20 +494,11 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
             this.plats[1].moveDown();
+			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
 		},
 		update: function(){
-			if(this.plats[0].position.x != 0){
-				this.plats[0].position.x -= 2;
-			}
-			if(this.plats[0].position.x === 0){
-				this.plats[0].tilePosition.x -=2;
-			}
-			if(this.plats[1].position.x != 0){
-				this.plats[1].position.x -= 2;
-			}
-			if(this.plats[1].position.x === 0){
-				this.plats[1].tilePosition.x -=2;
-			}
+			this.plats[0].tilePosition.x -= 2.5;
+			this.plats[1].tilePosition.x -= 2.5;
             //collision handling
 			game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
 			game.physics.arcade.collide(this.player, this.plats);
@@ -581,10 +556,13 @@ function Level_4(game) {}
 			console.log("Level_4: Preload");
 		},
 		create: function(){
+            game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
+
 		},
 		update: function(){
+
 			this.plats[0].tilePosition.x -=3;
-			this.plats[1].position.x -= 3;
+			this.plats[1].tilePosition.x -=3;
 
             //collision handling
 			game.physics.arcade.overlap(this.cache, this.player.weapon, collisionHandle, null, this);
@@ -601,9 +579,8 @@ function Level_4(game) {}
 				this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 				//debug options
 				if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
-                    game.add.tween(this.plats[0]).to({x: -2000}, 7000, "Linear", true, 0, 0, false);
-                    game.add.tween(this.plats[0].tilePosition).to({x: -10}, 7000, "Linear", true, 0, 0, false);
-                   	game.time.events.add(Phaser.Timer.SECOND * 5, sendToZza, this, this.player);
+                    game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
+                   	game.time.events.add(Phaser.Timer.SECOND * 3, sendToZza, this, this.player);
 				}
 				if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
 					this.player.kill();

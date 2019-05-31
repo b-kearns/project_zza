@@ -330,9 +330,9 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	if(verticalScale == null){verticalScale = 1;}
 	this.BARREL = game.add.sprite(posX, posY, "enemy5");
 	Phaser.Sprite.call(this, game, posX, posY, "enemy5-1");
-	this.anchor.setTo(0.4, 0.5);
+	this.anchor.setTo(0.6, 0);
 	
-	this.BARREL.anchor.setTo(1.2, 0.5);
+	this.BARREL.anchor.setTo(0.5);
 	this.BARREL.scale.setTo(-1.0, 1.0);
 	//set enemy data
     this.scale.setTo(-1, verticalScale);

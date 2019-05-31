@@ -11,7 +11,7 @@ GameOver.prototype = {
 	},
 	preload: function(){},
 	create: function(){
-		this.text = game.add.text(0,0,"Press SPACEBAR for another chance to WIN", {fill: "#facade"});
+		this.text = game.add.text(0,0,"Press ENTER for another chance to WIN", {fill: "#facade"});
         this.Uninstall = game.add.audio("GameOver");
         this.Uninstall.loop = true;
         this.Uninstall.play();

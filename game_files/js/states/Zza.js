@@ -68,6 +68,8 @@ function Zza(game){}
 		update: function(){
 			this.plats[0].tilePosition.y -=3;
 			this.plats[1].tilePosition.y -=3;
+            this.background[0].tilePosition.y -=1;
+            
 		},
 		render: function(){}
 	}
