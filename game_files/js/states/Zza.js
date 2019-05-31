@@ -2,16 +2,20 @@
 
 function Zza(game){}
 	Zza.prototype = {
-		init: function(player, equipped, background){
+		init: function(background, BGM, player, enemies, cache, equipped, pickups){
+			this.background = background;
+			this.BGM = BGM;
 			this.player = player;
+			this.enemies = enemies;
+			this.cache = cache;
 			this.equipped = equipped;
-            this.background = background;
+			this.pickups = pickups;
 		},
-		preload: function(){},
+		preload: function(){
+			
+		},
 		create: function(){
-            //enter tha big boss
-
-			game.scale.setGameSize(640, 750);
+      game.scale.setGameSize(640, 750);
             this.player = game.add.sprite(730, game.world.height, "TopPlayer");
 			this.Zza = game.add.sprite(200, -500, "ZZA");
             this.Zza1Top = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 190, "TentieTop");
@@ -42,8 +46,9 @@ function Zza(game){}
 				this.plats[i].moveDown();
 				this.plats[i].moveDown();
 				this.plats[i].moveDown();
-			}
-            game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
+        }
+      
+      game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
             game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);
             game.add.tween(this.Zza).to({y: 0}, 5000, "Linear", true, 0, 0, false);//1
             game.add.tween(this.Zza1Top).to({y: 190}, 5000, "Linear", true, 0, 0, false);
@@ -57,19 +62,14 @@ function Zza(game){}
             game.add.tween(this.Zza3Bot).to({y: 335}, 5000, "Linear", true, 0, 0, false);
             game.add.tween(this.Zza4Top).to({y: 190}, 5000, "Linear", true, 0, 0, false);
             game.add.tween(this.Zza4Mid).to({y: 240}, 5000, "Linear", true, 0, 0, false);
-            game.add.tween(this.Zza4Bot).to({y: 300}, 5000, "Linear", true, 0, 0, false);//13
-           // game.add.tween(this.plats[0].tilePosition).to({y: 720}, 3000, "Linear", true, 0, 0, false);
-           // game.add.tween(this.plats[1].tilePosition).to({y: 720}, 3000, "Linear", true, 0, 0, false);
-            //play that scary boss music
-            //this.BossBGM = game.add.audio("BossTrack");
-            //this.BossBGM.loop = true;
-			//this.BossBGM.play();
+            game.add.tween(this.Zza4Bot).to({y: 300}, 5000, "Linear", true, 0, 0, false);
 		},
 		update: function(){
 			this.plats[0].tilePosition.y -=3;
 			this.plats[1].tilePosition.y -=3;
             this.background[0].tilePosition.y -=1;
-            
 		},
-		render: function(){}
+		render: function(){
+			
+		}
 	}

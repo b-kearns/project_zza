@@ -334,13 +334,13 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
-			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 3);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 6);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 4);
-			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
-			game.time.events.loop(Phaser.Timer.SECOND * 22, makeEnemy, this, this.player, 7);
+			// game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			// game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
+			// game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 3);
+			// game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 6);
+			// game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 4);
+			// game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
+			// game.time.events.loop(Phaser.Timer.SECOND * 22, makeEnemy, this, this.player, 7);
 		},
 		update: function(){
 
