@@ -62,7 +62,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, 1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), game.world.height-120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height - 105);
 			}
 			catch{console.log("Spawn Case 3 Failed");return;}
 			break;
@@ -83,7 +83,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, 1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), game.world.height-120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height-120);
 			}
 			catch{console.log("Spawn Case 5 Failed");return;}
 			break;
@@ -94,7 +94,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, -1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), 120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), 120);
 			}
 			catch{console.log("Spawn Case 6 Failed");return;}
 			break;
@@ -105,7 +105,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, -1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), 120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), 120);
 			}
 			catch{console.log("Spawn Case 7 Failed");return;}
 			break;
@@ -254,8 +254,9 @@ function Level_0(game) {}
 				this.pickups = game.add.group();
 				
 				//creating single shot enemies
-				// console.log("Spooling up single shot enemies");
-				for(var i = 0; i < 8; i++){
+
+				for(var i = 0; i < 5; i++){
+
 					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "enemy1");
 					game.add.existing(this.enemy);
 					this.s_enemies.add(this.enemy);
@@ -263,8 +264,9 @@ function Level_0(game) {}
 				}
 				
 				//creating doubleshot enemies
-				// console.log("Spooling up double shot enemies");
+
 				for(var i = 0; i < 2; i++){
+
 					this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "enemy2");
 					game.add.existing(this.enemy);
 					this.d_enemies.add(this.enemy);
@@ -280,8 +282,9 @@ function Level_0(game) {}
 				}
 
 				//creating tri beam enemies
-				// console.log("Spooling up tribeam enemies");
-				for(var i = 0; i < 5; i++){
+
+				for(var i = 0; i < 2; i++){
+
 					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
 					game.add.existing(this.enemy);
 					this.t_enemies.add(this.enemy);
@@ -290,8 +293,9 @@ function Level_0(game) {}
 				}
 				
 				//creating rail gun enemies
-				// console.log("Spooling up rail gun enemies");
-				for(var i = 0; i < 1; i++){
+
+				for(var i = 0; i < 2; i++){
+
 					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "enemy5");
 					game.add.existing(this.enemy);
 					this.r_enemies.add(this.enemy);
@@ -392,14 +396,19 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
+
+			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 33, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 102, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 1);
+
 			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
-			// game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 3);
-			// game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 6);
-			// game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 4);
-			// game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
-			// game.time.events.loop(Phaser.Timer.SECOND * 22, makeEnemy, this, this.player, 7);
+
 		},
 		update: function(){
 
@@ -480,11 +489,19 @@ function Level_2(game) {}
             this.plats[0].moveDown();
             this.plats[0].moveDown();
 			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
-			
-			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 4);
+
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 3);
 		},
 		update: function(){
             this.plats[0].tilePosition.x -=2;
+
 			
 			//collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
@@ -558,11 +575,20 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
+			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
 		},
 		update: function(){
 			this.plats[0].tilePosition.x -= 2.5;
 			this.plats[1].tilePosition.x -= 2.5;
-			
+
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
 			//collision handling for bullets
@@ -622,7 +648,10 @@ function Level_4(game) {}
 		},
 		create: function(){
             game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
-
+            game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 3);
+			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 5);
 		},
 		update: function(){
 
