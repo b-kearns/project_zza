@@ -17,29 +17,29 @@ function Zza(game){}
 		create: function(){
 			
 			game.scale.setGameSize(640, 750);
-            this.player = game.add.sprite(730, game.world.height, "TopPlayer");
+            this.player = game.add.sprite(730, game.world.height, "Atlas", "blue_05");
 			
-			this.Zza = game.add.sprite(200, -500, "ZZA");
+			this.Zza = game.add.sprite(200, -500, "Atlas", "OctoBoss");
 			
-            this.Zza1Top = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 190, "TentieTop");
-            this.Zza1Mid = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 240, "TentieMid");
-            this.Zza1Bot = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 300, "TentieBot");
+            this.Zza1Top = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 190, "Atlas", "tentacle top");
+            this.Zza1Mid = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 240, "Atlas", "Tentacle mid");
+            this.Zza1Bot = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 300, "Atlas", "Tentacle bot");
 
-            this.Zza2Top = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 225, "TentieTop");
-            this.Zza2Mid = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 275, "TentieMid");
-            this.Zza2Bot = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 335, "TentieBot");
+            this.Zza2Top = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 225, "Atlas", "tentacle top");
+            this.Zza2Mid = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 275, "Atlas", "Tentacle mid");
+            this.Zza2Bot = game.add.sprite(this.Zza.position.x + 74, this.Zza.position.y + 335, "Atlas", "Tentacle bot");
 
-            this.Zza3Top = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 225, "TentieTop");
-            this.Zza3Mid = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 275, "TentieMid");
-            this.Zza3Bot = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 335, "TentieBot");
+            this.Zza3Top = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 225, "Atlas", "tentacle top");
+            this.Zza3Mid = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 275, "Atlas", "Tentacle mid");
+            this.Zza3Bot = game.add.sprite(this.Zza.position.x + 111, this.Zza.position.y + 335, "Atlas", "Tentacle bot");
 
-            this.Zza4Top = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 190, "TentieTop");
-            this.Zza4Mid = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 240, "TentieMid");
-            this.Zza4Bot = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 300, "TentieBot");
+            this.Zza4Top = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 190, "Atlas", "tentacle top");
+            this.Zza4Mid = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 240, "Atlas", "Tentacle mid");
+            this.Zza4Bot = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 300, "Atlas", "Tentacle bot");
 			
 			this.plats = [];
-            this.plats[0]= game.add.tileSprite(-100,0,100,750,"leftPlats");
-            this.plats[1]= game.add.tileSprite(640,0,70,750,"rightPlats");
+            this.plats[0]= game.add.tileSprite(-100,0,100,750,"Atlas", "leftPlat");
+            this.plats[1]= game.add.tileSprite(640,0,70,750,"Atlas", "rightPlat");
 			
             for(var i = 0; i < 2; i++){
 				game.physics.enable(this.plats[i]);

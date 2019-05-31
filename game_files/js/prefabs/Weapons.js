@@ -16,7 +16,9 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
+
 	this.add(new Bullet(game, key, this.DAMAGE, this.PENETRATE), true);
+
 	}
 }
 
@@ -53,7 +55,9 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
     this.SFX = game.add.audio("weapon_fx_1");
 	
 	for(var i = 0; i < ammo; i++){
+
 		this.add(new Bullet(game, key, this.DAMAGE, this.PENETRATE), true);
+
 	}
 }
 
@@ -90,7 +94,7 @@ function TriShot(game, posX, posY, direction, key, ammo, fireRate) {
     this.SFX.volume = 0.75;
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon3", this.DAMAGE, this.PENETRATE), true);
+		this.add(new Bullet(game, "TriShot", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -132,7 +136,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
     this.SFX.volume = 0.75;
 	// add specific data to shotgun bullets
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon2", this.DAMAGE, this.PENETRATE), true);
+		this.add(new Bullet(game, "ShotgunShot", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 
@@ -183,7 +187,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2.volume = 0.75;
 	
 	for(var i = 0; i < ammo; i++){
-		this.add(new Bullet(game, "weapon4", this.DAMAGE, this.PENETRATE), true);
+		this.add(new Bullet(game, "RailShot", this.DAMAGE, this.PENETRATE), true);
 	}
 }
 

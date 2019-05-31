@@ -1,7 +1,7 @@
 //create the pickup objects
 
 function Pickup(game, posX, posY, key, weap){
-   	Phaser.Sprite.call(this, game, posX, posY, key);
+   	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
         game.physics.enable(this);
 	    this.body.collideWorldBounds = false;
 	    this.outOfCameraBoundsKill = false;

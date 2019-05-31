@@ -236,7 +236,7 @@ function Level_0(game) {}
 			game.time.advancedTiming = true;
 			
 			if(NEWGAME){
-				this.player = new Player(game, "player_side");
+				this.player = new Player(game, "Blue-04");
 				PLAYER = this.player;
 				
 				this.BGM = game.add.audio("MainTrack");
@@ -254,10 +254,9 @@ function Level_0(game) {}
 				this.pickups = game.add.group();
 				
 				//creating single shot enemies
-
-				for(var i = 0; i < 5; i++){
-
-					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "enemy1");
+				//console.log("Spooling up single shot enemies");
+				for(var i = 0; i < 8; i++){
+					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "Dark-Grey-04");
 					game.add.existing(this.enemy);
 					this.s_enemies.add(this.enemy);
 					this.enemy.exists = false;
@@ -266,8 +265,8 @@ function Level_0(game) {}
 				//creating doubleshot enemies
 
 				for(var i = 0; i < 2; i++){
+					this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "OctoMini");
 
-					this.enemy = new Enemy2(game, game.world.width, game.world.centerY, "enemy2");
 					game.add.existing(this.enemy);
 					this.d_enemies.add(this.enemy);
 					this.enemy.exists = false;
@@ -276,16 +275,17 @@ function Level_0(game) {}
 				//creating shotgun enemies
 				// console.log("Spooling up shotgun enemies");
 				for(var i = 0; i < 3; i++){
-					this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "enemy3");
+					this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "TankBase");
 					game.add.existing(this.enemy);
 					this.shot_enemies.add(this.enemy);
 				}
 
 				//creating tri beam enemies
 
-				for(var i = 0; i < 2; i++){
+				//console.log("Spooling up tribeam enemies");
+				for(var i = 0; i < 5; i++){
+					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "TriEnemy");
 
-					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "enemy4");
 					game.add.existing(this.enemy);
 					this.t_enemies.add(this.enemy);
 
@@ -294,35 +294,36 @@ function Level_0(game) {}
 				
 				//creating rail gun enemies
 
+				//console.log("Spooling up rail gun enemies");
 				for(var i = 0; i < 2; i++){
+					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "TurretBase");
 
-					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "enemy5");
 					game.add.existing(this.enemy);
 					this.r_enemies.add(this.enemy);
 				}
 				
 				//make double shot pickup
-				this.Double = new Pickup(game, game.world.width, game.world.centerY, "pickup01", 1);
+				this.Double = new Pickup(game, game.world.width, game.world.centerY, "DoublePickup", 1);
 				game.add.existing(this.Double);
 				this.pickups.add(this.Double);
 				this.Double.exists = false;
 				//shotgun
-				this.Shotty = new Pickup(game, game.world.width, game.world.centerY, "pickup02", 2);
+				this.Shotty = new Pickup(game, game.world.width, game.world.centerY, "ShotgunPickup", 2);
 				game.add.existing(this.Shotty);
 				this.pickups.add(this.Shotty);
 				this.Shotty.exists = false;
 				//trishot
-				this.Tri = new Pickup(game, game.world.width, game.world.centerY, "pickup03", 3);
+				this.Tri = new Pickup(game, game.world.width, game.world.centerY, "TriPickup", 3);
 				game.add.existing(this.Tri);
 				this.pickups.add(this.Tri);
 				this.Tri.exists = false;
 				//railgun
-				this.Rail = new Pickup(game, game.world.width, game.world.centerY, "pickup04", 4);
+				this.Rail = new Pickup(game, game.world.width, game.world.centerY, "RailPickup", 4);
 				game.add.existing(this.Rail);
 				this.pickups.add(this.Rail);
 				this.Rail.exists = false;
 				//shield
-				this.Shield = new Pickup(game, game.world.width, game.world.centerY, "pickup05", 5);
+				this.Shield = new Pickup(game, game.world.width, game.world.centerY, "ShieldPickup", 5);
 				game.add.existing(this.Shield);
 				this.pickups.add(this.Shield);
 				this.Shield.exists = false;
@@ -396,6 +397,7 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
+
 
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 1);
@@ -476,8 +478,9 @@ function Level_2(game) {}
 		},
 		create: function(){
 			this.plats = [];
-			PLATS = this.plats;
-            this.plats[0]= game.add.tileSprite(0,640,960,110,"Plats");
+
+            this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
+
             game.physics.enable(this.plats[0]);
             this.plats[0].body.immovable = true;
             this.plats[0].body.setSize(960,100,0,14);
@@ -563,7 +566,7 @@ function Level_3(game) {}
 			console.log("Level_3: Preload");
 		},
 		create: function(){
-			this.plats[1]= game.add.tileSprite(0, -110, 960, 110, "TopPlats");
+			this.plats[1]= game.add.tileSprite(0, -110, 960, 110, "Atlas", "space plat top");
             game.physics.enable(this.plats[1]);
             this.plats[1].body.immovable = true;
             this.plats[1].body.setSize(960,100,0,14);
