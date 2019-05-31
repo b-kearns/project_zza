@@ -41,9 +41,7 @@ function Player(game, key) {
     this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
     this.o_noes = game.add.audio("playerDeath");
     this.o_noes.volume = 0.75;
-	
     
-
     //PC controls
 	this.cursors = game.input.keyboard.createCursorKeys();
 	this.cursors = {

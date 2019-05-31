@@ -37,7 +37,7 @@ function Enemy1(game, posX, posY, key) {
     this.boom = game.add.audio("enemyDeath");
 
 	
-	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 2);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
@@ -115,7 +115,6 @@ Enemy2.prototype.create = function() {
 
 Enemy2.prototype.update = function() {
 
-
 	this.body.velocity.y = 200;
 	//kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
@@ -139,7 +138,7 @@ Enemy2.prototype.update = function() {
 }
 //also fire...
 Enemy2.prototype.shoot = function(){
-	for(var i = 0; i < 10; i++){
+	for(var i = 0; i < 8; i++){
 		this.weapon.fire(this);
 	}
 }
@@ -161,8 +160,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 1;
-	this.DEFAULT = 1;
+	this.HEALTH = 2;
+	this.DEFAULT = 2;
 	this.POINTS = 200;
 	
 	game.physics.enable(this);
@@ -223,7 +222,7 @@ Enemy3.prototype.update = function() {
 	
 
 	//i like to move it move it
-	this.body.velocity.x = -200;
+	this.body.velocity.x = -250;
 	//kill the object when is out of scope
 
 	if(this.inCamera && !this.outOfCameraBoundsKill){
@@ -264,7 +263,8 @@ function Enemy4(game, posX, posY, key) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 3;
+	this.HEALTH = 1;
+	this.DEFAULT = 1;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -341,8 +341,8 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 5;
-	this.DEFAULT = 5;
+	this.HEALTH = 3;
+	this.DEFAULT = 3;
 	this.POINTS = 200;
 	
 	game.physics.enable(this);
