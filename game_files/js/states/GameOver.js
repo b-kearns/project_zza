@@ -11,7 +11,10 @@ GameOver.prototype = {
 	},
 	preload: function(){},
 	create: function(){
-		this.text = game.add.text(0,0,"Press ENTER to respawn at checkpoint. (Also DIE)", {fill: "#facade"});
+		this.text = game.add.text(0,0,"Press ENTER for another chance to WIN", {fill: "#facade"});
+        this.Uninstall = game.add.audio("GameOver");
+        this.Uninstall.loop = true;
+        this.Uninstall.play();
 	},
 	update: function(){
 		for(var i = 1; i < this.background.length + 1; i++){
@@ -20,7 +23,7 @@ GameOver.prototype = {
 		
 		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
 			this.text.kill();
-			
+			this.Uninstall.stop();
 			game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache);
 		}
 	},
