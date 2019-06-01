@@ -144,7 +144,7 @@ function handlePickup(player, pickup){
 		case 1:
 			//DOUBLE
 			//UPGRADE!!!
-			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "weapon1", 32);
+			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "projectile-blue", 32);
 			player.weapons[0].UNLOCK = true;
 			player.DOUBLE_UNLOCK = true;
 			break;

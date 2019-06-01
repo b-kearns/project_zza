@@ -39,7 +39,7 @@ function Enemy1(game, posX, posY, key) {
     this.boom = game.add.audio("enemyDeath");
 
 	
-	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "enemyWeapon", 1);
+	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 1);
 }
 
 Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
@@ -107,7 +107,7 @@ function Enemy2(game, posX, posY, key) {
    	})
 	// audio object for death 
     this.boom = game.add.audio("enemyDeath");
-	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "weapon1", 16);
+	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 16);
 }
 
 Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
@@ -184,7 +184,7 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(-200, 0);
 	
-	this.weapon = new Shotgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon2", 8);
+	this.weapon = new Shotgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "ShotgunShot", 8);
 	
 	this.BARREL.exists = false;
 	this.exists = false;
@@ -298,7 +298,7 @@ function Enemy4(game, posX, posY, key) {
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
-	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "Weapon3", 9, 600);
+	this.weapon = new TriShot(game, this.position.x, this.position.y, -1, "TriShot", 9, 600);
 }
 
 Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
@@ -377,7 +377,7 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
     this.body.velocity.setTo(-200, 0);
 	
-	this.weapon = new Railgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "weapon4", 1);
+	this.weapon = new Railgun(game, this.BARREL.position.x, this.BARREL.position.y, -1, "RailShot", 1);
 	
 	this.BARREL.exists = false;
 	this.exists = false;

@@ -58,10 +58,10 @@ function Player(game, key) {
 	}
 	//swappable weapons for PC
 	this.weapons = [];
-	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "weapon1", 16);
-	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "P-shot", 32);
-	this.weapons[2] = new TriShot(game, this.position.x, this.position.y, 1, "P-shot", 32, 400);
-	this.weapons[3] = new Railgun(game, this.position.x, this.position.y, 1, "P-shot", 1);
+	this.weapons[0] = new SingleShot(game, this.position.x, this.position.y, 1, "projectile-blue", 16);
+	this.weapons[1] = new Shotgun(game, this.position.x, this.position.y, 1, "ShotgunShot", 32);
+	this.weapons[2] = new TriShot(game, this.position.x, this.position.y, 1, "TriShot", 32, 400);
+	this.weapons[3] = new Railgun(game, this.position.x, this.position.y, 1, "RailShot", 1);
 	
 	// this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
 
