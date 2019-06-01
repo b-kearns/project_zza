@@ -397,6 +397,8 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
+			game.time.events.add(1000 * 3, this.nextLevel, this);
+
 
 
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 1);
