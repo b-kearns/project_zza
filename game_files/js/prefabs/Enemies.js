@@ -29,7 +29,7 @@ function Enemy1(game, posX, posY, key) {
 	this.explosions = game.add.group();
     this.explosions.enableBody = true;
     this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(100, 'explosion');
+    this.explosions.createMultiple(10, 'explosion');
     this.explosions.setAll('anchor.x', 0.5);
     this.explosions.setAll('anchor.y', 0.5);
     this.explosions.forEach(function(explosion) {
