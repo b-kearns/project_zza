@@ -38,13 +38,7 @@ function Player(game, key) {
     this.shipTrail.start(false, 5000, 10);
 
    	//player death explosion
-	this.playerDeath = game.add.emitter(this.position.x, this.position.y);
-    this.playerDeath.width = 25;
-   	this.playerDeath.height = 25;
-	this.animations.add("explosion", "Atlas", ["explosion0001","explosion0002","explosion0003","explosion0004","explosion0005","explosion0006","explosion0007","explosion0008","explosion0009","explosion0010","explosion0011",], 10, false);
-    this.playerDeath.makeParticles("explosion");
-    this.playerDeath.setAlpha(0.9, 0, 800);
-    this.playerDeath.setScale(1.2, 1.3, 1.2, 1.3, 1000, Phaser.Easing.Quintic.Out); 
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
     this.o_noes = game.add.audio("playerDeath");
     this.o_noes.volume = 0.75;
 
@@ -137,15 +131,11 @@ Player.prototype.update = function() {
 	}
 
 	if(this.HEALTH <= 0) {
-			this.playerDeath.x = this.x;
-        	this.playerDeath.y = this.y;
-        	this.playerDeath.start(false, 1000, 10, 10);
+			this.animations.play("explosion", 20, false, true);
             this.o_noes.play();
-
 			this.shipTrail.kill();
-			this.kill();
 			this.HEALTH = 1;
-			sendToGameOver(CACHE);
+			game.time.events.add(600, sendToGameOver, this, CACHE);
 		}
 	
 }

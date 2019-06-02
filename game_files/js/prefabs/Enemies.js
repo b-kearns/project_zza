@@ -26,18 +26,11 @@ function Enemy1(game, posX, posY, key) {
     this.body.setSize(15, 20, 5, 10);
 
     //explosion death effect
-	this.explosions = game.add.group();
-    this.explosions.enableBody = true;
-    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(10, 'explosion');
-    this.explosions.setAll('anchor.x', 0.5);
-    this.explosions.setAll('anchor.y', 0.5);
-    this.explosions.forEach(function(explosion) {
-    	explosion.animations.add('explosion');
-   	})
+
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
-
 	
 	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 1);
 }
@@ -54,11 +47,9 @@ Enemy1.prototype.update = function() {
 	}
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
-		var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
-      	explosion.play('explosion', 30, false, true);
+		this.animations.play("explosion", 20, false, true);
+
         this.boom.play();
-		this.kill();
 		
 		SCORE += this.POINTS;
 		
@@ -96,15 +87,8 @@ function Enemy2(game, posX, posY, key) {
 	this.body.drag.setTo(this.DRAG, this.DRAG);
 	this.body.maxVelocity.setTo(0, 300);
 
-	this.explosions = game.add.group();
-    this.explosions.enableBody = true;
-    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(100, 'explosion');
-    this.explosions.setAll('anchor.x', 0.5);
-    this.explosions.setAll('anchor.y', 0.5);
-    this.explosions.forEach(function(explosion) {
-    	explosion.animations.add('explosion');
-   	})
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
 	// audio object for death 
     this.boom = game.add.audio("enemyDeath");
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 16);
@@ -127,12 +111,10 @@ Enemy2.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
-		var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
-      	explosion.play('explosion', 30, false, true);
+		this.animations.play("explosion", 20, false, true);
+
         this.boom.play();
-		this.kill();
-		
+
 		SCORE += this.POINTS;
 		
 		this.HEALTH = this.DEFAULT;
@@ -191,15 +173,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	
 	//console.log(this.body);
   
-	this.explosions = game.add.group();
-    this.explosions.enableBody = true;
-    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(100, 'explosion');
-    this.explosions.setAll('anchor.x', 0.5);
-    this.explosions.setAll('anchor.y', 0.5);
-    this.explosions.forEach(function(explosion) {
-    	explosion.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion",0,11,"",4),10,false);
-   	})
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
@@ -237,11 +212,9 @@ Enemy3.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
-		var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
-      	explosion.play('explosion', 30, false, true);
+		this.animations.play("explosion", 20, false, true);
+
         this.boom.play();
-		this.kill();
 		
 		SCORE += this.POINTS;
 		
@@ -286,15 +259,8 @@ function Enemy4(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(300, 300);
 
     //explosion
-	this.explosions = game.add.group();
-    this.explosions.enableBody = true;
-    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(100, 'explosion');
-    this.explosions.setAll('anchor.x', 0.5);
-    this.explosions.setAll('anchor.y', 0.5);
-    this.explosions.forEach(function(explosion) {
-    	explosion.animations.add('explosion');
-   	})
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
@@ -318,11 +284,9 @@ Enemy4.prototype.update = function() {
 	}
 	//allow player to kill with shots
 	if(this.HEALTH <= 0){
-		var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
-      	explosion.play('explosion', 30, false, true);
+		this.animations.play("explosion", 20, false, true);
+
         this.boom.play();
-		this.kill();
 
 		SCORE += this.POINTS;
 		
@@ -383,17 +347,10 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.exists = false;
 	
 	//console.log(this.body);
-  
-	this.explosions = game.add.group();
-    this.explosions.enableBody = true;
-    this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
-    this.explosions.createMultiple(100, 'explosion');
-    this.explosions.setAll('anchor.x', 0.5);
-    this.explosions.setAll('anchor.y', 0.5);
-    this.explosions.forEach(function(explosion) {
-    	explosion.animations.add('explosion');
-   	})
-    // audio object for death 
+
+  	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
+
     this.boom = game.add.audio("enemyDeath");
 
 }
@@ -427,11 +384,9 @@ Enemy5.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
-		var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(this.body.x + this.body.halfWidth, this.body.y + this.body.halfHeight);
-      	explosion.play('explosion', 30, false, true);
+		this.animations.play("explosion", 20, false, true);
+
         this.boom.play();
-		this.kill();
 		
 		SCORE += this.POINTS;
 		
