@@ -37,7 +37,7 @@ function Zza(game){}
             this.Zza4Mid = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 240, "Atlas", "Tentacle mid");
             this.Zza4Bot = game.add.sprite(this.Zza.position.x + 148, this.Zza.position.y + 300, "Atlas", "Tentacle bot");
 			
-			this.plats = [];
+		this.plats = [];
             this.plats[0]= game.add.tileSprite(-100,0,100,750,"Atlas", "leftPlat");
             this.plats[1]= game.add.tileSprite(640,0,70,750,"Atlas", "rightPlat");
 			
@@ -53,7 +53,7 @@ function Zza(game){}
 				this.plats[i].moveDown();
 			}
       
-      game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
+            game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
             game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);
             game.add.tween(this.Zza).to({y: 0}, 5000, "Linear", true, 0, 0, false);//1
             game.add.tween(this.Zza1Top).to({y: 190}, 5000, "Linear", true, 0, 0, false);
@@ -70,8 +70,8 @@ function Zza(game){}
             game.add.tween(this.Zza4Bot).to({y: 300}, 5000, "Linear", true, 0, 0, false);
 		},
 		update: function(){
-			this.plats[0].tilePosition.y -=3;
-			this.plats[1].tilePosition.y -=3;
+		this.plats[0].tilePosition.y -=3;
+		this.plats[1].tilePosition.y -=3;
             this.background[0].tilePosition.y -=1;
 		},
 		render: function(){
