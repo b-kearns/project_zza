@@ -57,7 +57,7 @@ GameOver.prototype = {
 	returnToCheckpoint: function(){
 		this.clearScreen();
 		this.Uninstall.stop();
-		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache);
+		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache, this.plats);
 	},
 	highlight: function(text){
 		text.tint = 0x5BC6FD;
@@ -73,6 +73,8 @@ GameOver.prototype = {
 			for(var i = 0; i < this.plats.length; i++){
 				this.plats[i].kill();
 			}
+			this.plats = [];
+			console.log("Killing Plats: " + this.plats);
 		}
 	}
 }
