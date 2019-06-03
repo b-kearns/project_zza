@@ -26,10 +26,11 @@ function Enemy1(game, posX, posY, key) {
     this.body.setSize(15, 20, 5, 10);
 
     //explosion death effect
+
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
-
 	
 	this.weapon = new SingleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 1);
 }

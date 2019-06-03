@@ -7,7 +7,6 @@ var EQ;
 var PICKUPS;
 var CACHE;
 var PLATS;
-
 var PLAYER;
 var SCORE = 0;
 var NEWGAME = true;
@@ -388,7 +387,10 @@ function Level_1(game) {}
 			this.BGM = game.add.audio("MainTrack1");
 			this.BGM.play();
 			BGM = this.BGM;
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 1);
+			//timer for next level
+			game.time.events.add(1000 * 120, this.nextLevel, this);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 33, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 1);
@@ -471,6 +473,9 @@ function Level_2(game) {}
 			console.log("Level_2: Preload");
 		},
 		create: function(){
+			//timer for next level
+			game.time.events.add(1000 * 90, this.nextLevel, this);
+
 			this.plats = [];
 
             this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
@@ -494,9 +499,11 @@ function Level_2(game) {}
 			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 3);
-			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 3);
-			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 3);
-			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
 		},
 		update: function(){
             this.plats[0].tilePosition.x -=2;
@@ -562,6 +569,9 @@ function Level_3(game) {}
 			console.log("Level_3: Preload");
 		},
 		create: function(){
+			//timer for next level
+			game.time.events.add(1000 * 120, this.nextLevel, this);
+
 			this.plats[1]= game.add.tileSprite(0, -110, 960, 110, "Atlas", "space plat top");
             game.physics.enable(this.plats[1]);
             this.plats[1].body.immovable = true;
@@ -651,6 +661,9 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
+			//timer for next level
+			game.time.events.add(1000 * 90, this.nextLevel, this);
+
             game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
             game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 15, makeEnemy, this, this.player, 2);
