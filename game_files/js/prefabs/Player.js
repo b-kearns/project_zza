@@ -13,12 +13,13 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 1;
+	this.HEALTH = 100;
 	this.EQUIP = 0;
 	this.SHIELD = false;
 	this.POINTS = 0;
 	this.HERO = true;
 	this.DOUBLE_UNLOCK = false;
+	this.SHOOT = true;
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -39,6 +40,7 @@ function Player(game, key) {
 
    	//player death explosion
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("Blue-", 4,4,"",2));
     this.o_noes = game.add.audio("playerDeath");
     this.o_noes.volume = 0.75;
 
@@ -57,8 +59,6 @@ function Player(game, key) {
 	this.weapons[2] = new TriShot(game, this.position.x, this.position.y, 1, "TriShot", 32, 400);
 	this.weapons[3] = new Railgun(game, this.position.x, this.position.y, 1, "RailShot", 1);
 	
-	// this.weapons[4] = new DoubleShot(game, this.position.x, this.position.y, 1, "P-shot", 32);
-
 	this.weapon = this.weapons[this.EQUIP];
 	
 	this.blinkDrive = new BlinkDrive(game);
@@ -74,16 +74,20 @@ function Player(game, key) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
-Player.prototype.preload = function(){
-}
-
-Player.prototype.create = function() {
-	
+Player.prototype.respawn = function(x,y){
+	this.SHOOT = true;
+	this.revive();
+	this.animations.play("idle");
+	this.reset(x,y);
 }
 
 Player.prototype.update = function() {
 	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
+
 	this.railSprite.bringToTop();
+
+	game.world.bringToTop(this.weapons);
+
 	this.SHIELD_SPRITE.bringToTop();
 
 	
@@ -118,14 +122,14 @@ Player.prototype.update = function() {
 		}
 		else if(this.cursors.down.isDown){
 			this.body.acceleration.y = this.ACCELERATION;
-		}
-		
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-			if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
-				this.railSprite.exists = true;
+    }
 
-				this.railSprite.animations.play("Rail", 3, false, true);
-			}
+		if(this.SHOOT && game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
+          this.railSprite.exists = true;
+
+          this.railSprite.animations.play("Rail", 3, false, true);
+      }
 			this.weapon.fire(this);
 		}
 		
@@ -142,12 +146,13 @@ Player.prototype.update = function() {
 	}
 
 	if(this.HEALTH <= 0) {
-			this.animations.play("explosion", 20, false, true);
-            this.o_noes.play();
-			this.shipTrail.kill();
-			this.HEALTH = 1;
-			game.time.events.add(600, sendToGameOver, this, CACHE);
-		}
+		this.SHOOT = false;
+		this.animations.play("explosion", 20, false, true);
+		this.o_noes.play();
+		this.shipTrail.kill();
+		this.HEALTH = 1;
+		game.time.events.add(600, sendToGameOver, this, CACHE);
+	}
 	
 }
 
