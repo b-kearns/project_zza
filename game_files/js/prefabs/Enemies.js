@@ -26,8 +26,8 @@ function Enemy1(game, posX, posY, key) {
     this.body.setSize(15, 20, 5, 10);
 
     //explosion death effect
-
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("Dark-Grey-", 4,4,"",2));
 
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
@@ -39,6 +39,7 @@ Enemy1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy1.prototype.constructor = Enemy1;
 
 Enemy1.prototype.update = function() {
+	game.world.bringToTop(this);
     //sliiiide to the left
     this.body.velocity.x = -200;
     //kill the object when is out of scope
@@ -57,6 +58,13 @@ Enemy1.prototype.update = function() {
 	}
 	// fire rate
 	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){this.weapon.fire(this);}
+}
+
+Enemy1.prototype.respawn = function(x,y) {
+	try{this.animations.play("idle");}
+	catch{console.log("Animations Broke");return;}
+	this.exists = true;
+	this.reset(x, y);
 }
 
 Enemy1.prototype.shoot = function(){
@@ -88,6 +96,7 @@ function Enemy2(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(0, 300);
 
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", "Atlas", "OctoMini");
 
 	// audio object for death 
     this.boom = game.add.audio("enemyDeath");
@@ -97,12 +106,14 @@ function Enemy2(game, posX, posY, key) {
 Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy2.prototype.constructor = Enemy2;
 
-Enemy2.prototype.create = function() {
-	
+Enemy2.prototype.respawn = function(x,y) {
+	this.animations.play("idle");
+	this.exists = true;
+	this.reset(x, y);
 }
 
 Enemy2.prototype.update = function() {
-
+	game.world.bringToTop(this);
 	this.body.velocity.y = 200;
 	//kill the object when is out of scope
 	if(this.inCamera && !this.outOfCameraBoundsKill){
@@ -174,6 +185,7 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	//console.log(this.body);
   
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", "Atlas", "TankBase");
 
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
@@ -184,34 +196,30 @@ Enemy3.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy3.prototype.constructor = Enemy3;
 
 Enemy3.prototype.respawn = function(x, y) {
+	this.animations.play("idle");
 	this.BARREL.exists = true;
 	this.exists = true;
 	this.reset(x, y);
 }
 
 Enemy3.prototype.update = function() {
-
-	
-	//kill the object when is out of scope
-	
+	game.world.bringToTop(this);
 	this.BARREL.position.x = this.position.x;
 	this.BARREL.position.y = this.position.y;
 	
 	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
 
-    //track the player UwU
-	
-
 	//i like to move it move it
 	this.body.velocity.x = -250;
+	
 	//kill the object when is out of scope
-
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.BARREL.exists = false;
 		this.animations.play("explosion", 20, false, true);
 
         this.boom.play();
@@ -260,6 +268,7 @@ function Enemy4(game, posX, posY, key) {
 
     //explosion
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", "Atlas", "TriEnemy");
 
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
@@ -270,11 +279,15 @@ function Enemy4(game, posX, posY, key) {
 Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy4.prototype.constructor = Enemy4;
 
-Enemy4.prototype.create = function() {
+Enemy4.prototype.respawn = function(x,y) {
+	this.animations.play("idle");
+	this.exists = true;
+	this.reset(x, y);
 }
 
 Enemy4.prototype.update = function() {
 	//game.physics.arcade.overlap(this.weapon, GamePlay.player, GamePlay.collisionHandle, null, this);
+	game.world.bringToTop(this);
     //set path
     this.body.velocity.x = -300;
 	
@@ -346,10 +359,8 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.BARREL.exists = false;
 	this.exists = false;
 	
-	//console.log(this.body);
-
   	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-
+  	this.animations.add("idle", "Atlas", "TurretBase");
 
     this.boom = game.add.audio("enemyDeath");
 
@@ -359,31 +370,31 @@ Enemy5.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy5.prototype.constructor = Enemy5;
 
 Enemy5.prototype.respawn = function(x, y) {
+	this.animations.play("idle");
 	this.BARREL.exists = true;
 	this.exists = true;
 	this.reset(x, y);
 }
 
 Enemy5.prototype.update = function() {
-
-	
-	//kill the object when is out of scope
-	
+	game.world.bringToTop(this);
 	this.BARREL.position.x = this.position.x;
 	this.BARREL.position.y = this.position.y;
+	
 	//track the player UwU
 	this.BARREL.rotation = game.physics.arcade.angleBetween(this.BARREL, PLAYER);
 
 	//i like to move it move it
 	this.body.velocity.x = -200;
+	
 	//kill the object when is out of scope
-
 	if(this.inCamera && !this.outOfCameraBoundsKill){
 		this.outOfCameraBoundsKill = true;
 	}
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.BARREL.exists = false;
 		this.animations.play("explosion", 20, false, true);
 
         this.boom.play();

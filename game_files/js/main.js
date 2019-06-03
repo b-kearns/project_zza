@@ -1,6 +1,7 @@
 //Members: Corey Hunt, Brandon Kearns, Cole Watts
 //Group Name: Project Zza
 //Game Title: Captain S.H.M.U.P(Strategic Human Military Uprising Protocol)
+//GITHUB :: https://github.com/b-kearns/project_zza
 
 "use strict";
 

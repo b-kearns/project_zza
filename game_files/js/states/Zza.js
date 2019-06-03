@@ -2,7 +2,7 @@
 
 function Zza(game){}
 	Zza.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped, pickups){
+		init: function(background, BGM, player, enemies, cache, equipped, pickups, plats){
 			this.background = background;
 			this.BGM = BGM;
 			this.player = player;
