@@ -13,6 +13,8 @@ function MainMenu(game) {}
 			this.background[0] = game.add.tileSprite(0,0,960,640,"StarsBackground");
             this.background[1] = game.add.sprite(-200,100,"EarthBackground");
             this.background[1].scale.setTo(3.5, 3.5);
+			this.background[2] = game.add.tileSprite(960,0,1990,640, "debrisBackground");
+			this.background[2].alpha = 0.75;
 		},
 		create: function(){
             //set up user interface

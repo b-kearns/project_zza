@@ -65,6 +65,9 @@ function Player(game, key) {
     //handles the shield sprite
     this.SHIELD_SPRITE = game.add.sprite(0,0, "Atlas", "ShipShield");
     this.SHIELD_SPRITE.anchor.set(0.5);
+	this.railSprite = game.add.sprite(10,0,"Atlas", "Rail01");
+	this.railSprite.animations.add("Rail", Phaser.Animation.generateFrameNames("Rail", 1,4,"",2),10,false);
+	this.railSprite.exists = false;
     
 }
 
@@ -80,8 +83,9 @@ Player.prototype.create = function() {
 
 Player.prototype.update = function() {
 	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
-	
+	this.railSprite.bringToTop();
 	this.SHIELD_SPRITE.bringToTop();
+
 	
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
@@ -93,6 +97,8 @@ Player.prototype.update = function() {
     
     this.SHIELD_SPRITE.position.x = this.position.x;
     this.SHIELD_SPRITE.position.y = this.position.y;
+    this.railSprite.position.x = this.position.x + 5;
+    this.railSprite.position.y = this.position.y - 15;
     if(this.SHIELD){
        this.SHIELD_SPRITE.exists = true;
     }
@@ -115,6 +121,11 @@ Player.prototype.update = function() {
 		}
 		
 		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+			if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
+				this.railSprite.exists = true;
+
+				this.railSprite.animations.play("Rail", 3, false, true);
+			}
 			this.weapon.fire(this);
 		}
 		

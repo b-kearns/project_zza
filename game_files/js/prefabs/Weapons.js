@@ -202,6 +202,7 @@ Railgun.prototype.fire = function(source) {
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX_1.play();
+	
 	this.nextFire = game.time.time + this.fireRate;
 	game.time.events.add(Phaser.Timer.SECOND * 1, this.fireRail, this, source, this.bullet);
 	
@@ -214,7 +215,7 @@ Railgun.prototype.fireRail = function(source, bullet) {
 		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	
 	}
 	else{
-		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	
+		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);	
 	}
 
 	this.nextFire = game.time.time + this.fireRate;
