@@ -1,8 +1,9 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
-var BACKGROUND;
+
 var BGM;
+var BACKGROUND;
 var EQ;
 var PICKUPS;
 var CACHE;
@@ -241,12 +242,6 @@ function Level_0(game) {}
 				this.player = new Player(game, "Blue-04");
 				PLAYER = this.player;
 				
-				this.BGM = game.add.audio("MainTrack");
-
-				BGM = this.BGM;
-
-				this.BGM.loop = true;
-				
 				this.enemies = game.add.group();
 				this.s_enemies = game.add.group();
 				this.d_enemies = game.add.group();
@@ -336,10 +331,12 @@ function Level_0(game) {}
 				NEWGAME = false;
 			}
 			else{
+
 				this.player = PLAYER;
 				this.player.respawn(64, game.world.centerY);
 				
 				this.BGM = BGM;
+
 			}
 			
 			PICKUPS = this.pickups;
@@ -351,8 +348,6 @@ function Level_0(game) {}
 			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
 
 			EQ = this.equipped;
-
-			this.BGM.play();
 		},
 		update: function(){
 			this.nextLevel();
@@ -363,7 +358,7 @@ function Level_0(game) {}
 			
 			switch(CHECKPOINT){
 				case 1:
-					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
 					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
@@ -385,10 +380,9 @@ function Level_0(game) {}
 function Level_1(game) {}
 	
 	Level_1.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped, pickups){
-            // so the background parallax, bgm, and loaded enemies persists between states
+		init: function(background, player, enemies, cache, equipped, pickups){
+            // so the background parallax, and loaded enemies persists between states
 			this.background = background;
-			this.BGM = BGM;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
@@ -399,7 +393,9 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
-
+			this.BGM = game.add.audio("MainTrack1");
+			this.BGM.play();
+			BGM = this.BGM;
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
 
@@ -420,7 +416,12 @@ function Level_1(game) {}
 
 		},
 		update: function(){
-
+			if(this.background[2].position.x > 0){
+				this.background[2].position.x -= 2;
+			}
+			else{
+				this.background[2].tilePosition.x -= 2;
+			}
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
 			//collision handling for bullets
@@ -460,7 +461,8 @@ function Level_1(game) {}
         //checkpoint system for level transition
 		nextLevel: function(){
 			CHECKPOINT++;
-			game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped);
+			this.BGM.stop();
+			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped);
 		},
         //janky UI
 		displayText: function(string){
@@ -471,10 +473,9 @@ function Level_1(game) {}
 function Level_2(game) {}
 	
 	Level_2.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped){
+		init: function(background, player, enemies, cache, equipped){
             // so the background parallax persists between states
 			this.background = background;
-			this.BGM = BGM;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
@@ -504,10 +505,12 @@ function Level_2(game) {}
             this.plats[0].moveDown();
 			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 
-
-			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 3);
+			this.BGM = game.add.audio("MainTrack2");
+			this.BGM.play();
+			BGM = this.BGM;
+			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
+			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 3);
@@ -562,7 +565,9 @@ function Level_2(game) {}
 		},
 		nextLevel: function(){
 			CHECKPOINT++;
+			this.BGM.stop();
 			game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
+
 			game.time.events.removeAll();
 		}
 		
@@ -571,9 +576,10 @@ function Level_2(game) {}
 function Level_3(game) {}
 	
 	Level_3.prototype = {
+
 		init: function(background, BGM, player, enemies, cache, equipped, pickups, plats){
+
             this.background = background;
-			this.BGM = BGM;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
@@ -616,6 +622,11 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
+
+			this.BGM = game.add.audio("MainTrack3");
+			this.BGM.play();
+			BGM = this.BGM;
+
 			PLATS = this.plats;
 			console.log(this.plats);
 
@@ -676,6 +687,7 @@ function Level_3(game) {}
 		},
 		nextLevel: function(){
 			CHECKPOINT++;
+			this.BGM.stop();
 			game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.plats);
 		}
 	}
@@ -683,9 +695,8 @@ function Level_3(game) {}
 function Level_4(game) {}
 	
 	Level_4.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped, plats){
+		init: function(background, player, enemies, cache, equipped, plats){
             this.background = background;
-			this.BGM = BGM;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
@@ -696,6 +707,9 @@ function Level_4(game) {}
 			console.log("Level_4: Preload");
 		},
 		create: function(){
+			this.BGM = game.add.audio("MainTrack4");
+			this.BGM.play();
+			BGM = this.BGM;
 			//timer for next level
 			game.time.events.add(1000 * 90, this.nextLevel, this);
 
@@ -769,7 +783,7 @@ function Level_4(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			BGM.stop();
+			this.BGM.stop();
 			game.state.start("Zza", false, false, BACKGROUND, BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 		}
 	}

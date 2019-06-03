@@ -12,9 +12,13 @@ function Boot(game) {}
 			
              game.load.image("EarthBackground", "assets/imgs/earth.png");
              game.load.image("StarsBackground", "assets/imgs/stars.png");
+             game.load.image("debrisBackground", "assets/imgs/debrisBackground.png");
             
 
-			game.load.audio("MainTrack","assets/audio/CaptainShmupMain.wav");
+			game.load.audio("MainTrack1","assets/audio/mainBGM1.wav");
+			game.load.audio("MainTrack2","assets/audio/mainBGM2.wav");
+			game.load.audio("MainTrack3","assets/audio/mainBGM3.wav");
+			game.load.audio("MainTrack4","assets/audio/mainBGM4.wav");
 			game.load.audio("GameOver","assets/audio/Uninstall.wav");
 			game.load.audio("Menu","assets/audio/ShmupMenu.wav");
 
