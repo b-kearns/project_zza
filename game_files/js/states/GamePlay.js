@@ -1,7 +1,6 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
-
 var BACKGROUND;
 var BGM;
 var EQ;
@@ -13,7 +12,7 @@ var SCORE = 0;
 var NEWGAME = true;
 
 function sendToGameOver(cache){
-	for(var i = 0; i < cache.length; i++){
+	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
 	}
 	PLAYER.shipTrail.kill();
@@ -40,7 +39,8 @@ function makeEnemy(player, key){
 				this.enemy = this.cache[0].getFirstExists(false);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+				this.enemy.respawn(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+				this.enemy.bringToTop();
 			}
 			catch{console.log("Spawn Case 1 Failed");return;}
 			break;
@@ -50,7 +50,7 @@ function makeEnemy(player, key){
 				this.enemy = this.cache[1].getFirstExists(false);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.reset(game.world.width - 50 * game.rnd.integerInRange(1, 4), -100);
+				this.enemy.respawn(game.world.width - 50 * game.rnd.integerInRange(1, 4), -100);
 			}
 			catch{console.log("Spawn Case 2 Failed");return;}
 			break;
@@ -71,7 +71,7 @@ function makeEnemy(player, key){
 				this.enemy = this.cache[3].getFirstExists(false);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.reset(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+				this.enemy.respawn(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
 			}
 			catch{console.log("Spawn Case 4 Failed");return;}
 			break;
@@ -220,7 +220,7 @@ function Level_0(game) {}
 		init: function(background, check, cache, plats){
 
 			this.background = background;
-			BACKGROUND = background;
+			BACKGROUND = this.background;
 			if(check != null){
 				CHECKPOINT = check;
 			}
@@ -229,6 +229,9 @@ function Level_0(game) {}
 			}
 			if(cache != null){this.cache = cache;}
 			else{NEWGAME = true;}
+			if(plats != null){this.plats = plats;}
+			else{this.plats = [];}
+			console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
 			console.log("Level_0: Preload");
@@ -333,8 +336,8 @@ function Level_0(game) {}
 				NEWGAME = false;
 			}
 			else{
-				this.player = PLAYER.reset(64, game.world.centerY);
-				this.player.revive();
+				this.player = PLAYER;
+				this.player.respawn(64, game.world.centerY);
 				
 				this.BGM = BGM;
 			}
@@ -363,16 +366,16 @@ function Level_0(game) {}
 					game.state.start("Level_1", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
-					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 3:
-					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 4:
-					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 5:
-					game.state.start("Zza", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					game.state.start("Zza", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 			}
 			
@@ -482,6 +485,7 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 90, this.nextLevel, this);
 
 			this.plats = [];
+			PLATS = this.plats;
 
             this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
 
@@ -511,9 +515,12 @@ function Level_2(game) {}
 		update: function(){
             this.plats[0].tilePosition.x -=2;
 
-			
 			//collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			
+			//collision handling for platforms
+			game.physics.arcade.collide(this.plats, this.player);
+			
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
@@ -550,7 +557,7 @@ function Level_2(game) {}
 		},
 		nextLevel: function(){
 			CHECKPOINT++;
-			game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.plats);
+			game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
 			game.time.events.removeAll();
 		}
 		
@@ -559,13 +566,14 @@ function Level_2(game) {}
 function Level_3(game) {}
 	
 	Level_3.prototype = {
-		init: function(background, BGM, player, enemies, cache, equipped, plats){
+		init: function(background, BGM, player, enemies, cache, equipped, pickups, plats){
             this.background = background;
 			this.BGM = BGM;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
+			this.pickups = pickups;
             this.plats = plats;
 		},
 		preload: function(){
@@ -574,6 +582,22 @@ function Level_3(game) {}
 		create: function(){
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
+			console.log("Plats length: " + this.plats.length);
+			if(this.plats.length <= 0){
+				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
+
+				game.physics.enable(this.plats[0]);
+				this.plats[0].body.immovable = true;
+				this.plats[0].body.setSize(960,100,0,14);
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
+			}
 
 			this.plats[1]= game.add.tileSprite(0, -110, 960, 110, "Atlas", "space plat top");
             game.physics.enable(this.plats[1]);
@@ -587,6 +611,8 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
+			PLATS = this.plats;
+			console.log(this.plats);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
@@ -596,6 +622,8 @@ function Level_3(game) {}
 			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
+			
+			
 		},
 		update: function(){
 			this.plats[0].tilePosition.x -= 2.5;
@@ -603,6 +631,10 @@ function Level_3(game) {}
 
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			
+			//collision handling for platforms
+			game.physics.arcade.collide(this.plats, this.player);
+			
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
@@ -675,6 +707,10 @@ function Level_4(game) {}
 
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			
+			//collision handling for platforms
+			game.physics.arcade.collide(this.plats, this.player);
+			
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
