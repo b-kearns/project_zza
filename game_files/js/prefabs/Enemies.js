@@ -15,6 +15,7 @@ function Enemy1(game, posX, posY, key) {
 	this.POINTS = 100;
 	this.HERO = false;
 	this.KEY = 0;
+	this.SHOOT = true;
 	//give it physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -27,8 +28,9 @@ function Enemy1(game, posX, posY, key) {
 
     //explosion death effect
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-	this.animations.add("idle", Phaser.Animation.generateFrameNames("Dark-Grey-", 4,4,"",2));
-
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("Dark-Grey-", 4,4, "", 2), 1, true);
+	
+	this.animations.play("idle");
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 	
@@ -48,6 +50,7 @@ Enemy1.prototype.update = function() {
 	}
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.SHOOT = false;
 		this.animations.play("explosion", 20, false, true);
 
         this.boom.play();
@@ -57,10 +60,12 @@ Enemy1.prototype.update = function() {
 		this.HEALTH = this.DEFAULT;
 	}
 	// fire rate
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){this.weapon.fire(this);}
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){this.weapon.fire(this);}
 }
 
 Enemy1.prototype.respawn = function(x,y) {
+	this.tint = 0xFFFFFF;
+	this.SHOOT = true;
 	try{this.animations.play("idle");}
 	catch{console.log("Animations Broke");return;}
 	this.exists = true;
@@ -87,6 +92,7 @@ function Enemy2(game, posX, posY, key) {
 	this.POINTS = 250;
 	this.HERO = false;
 	this.KEY = 1;
+	this.SHOOT = true;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -96,8 +102,8 @@ function Enemy2(game, posX, posY, key) {
 	this.body.maxVelocity.setTo(0, 300);
 
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-	this.animations.add("idle", "Atlas", "OctoMini");
-
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("OctoMini", "", "","",0), 1, true);
+	this.animations.play("idle");
 	// audio object for death 
     this.boom = game.add.audio("enemyDeath");
 	this.weapon = new DoubleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 16);
@@ -107,6 +113,8 @@ Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy2.prototype.constructor = Enemy2;
 
 Enemy2.prototype.respawn = function(x,y) {
+	this.tint = 0xFFFFFF;
+	this.SHOOT = true;
 	this.animations.play("idle");
 	this.exists = true;
 	this.reset(x, y);
@@ -122,6 +130,7 @@ Enemy2.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.SHOOT = false;
 		this.animations.play("explosion", 20, false, true);
 
         this.boom.play();
@@ -131,7 +140,7 @@ Enemy2.prototype.update = function() {
 		this.HEALTH = this.DEFAULT;
 	}
 	//FIRE!!!
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.shoot();}catch{return;}}
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.shoot();}catch{return;}}
 }
 //also fire...
 Enemy2.prototype.shoot = function(){
@@ -162,6 +171,7 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.POINTS = 200;
 	this.HERO = false;
 	this.KEY = 2;
+	this.SHOOT = true;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -185,8 +195,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	//console.log(this.body);
   
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-	this.animations.add("idle", "Atlas", "TankBase");
-
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("TankBase", "", "","",0), 1, true);
+	this.animations.play("idle");
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
@@ -196,6 +206,8 @@ Enemy3.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy3.prototype.constructor = Enemy3;
 
 Enemy3.prototype.respawn = function(x, y) {
+	this.tint = 0xFFFFFF;
+	this.SHOOT = true;
 	this.animations.play("idle");
 	this.BARREL.exists = true;
 	this.exists = true;
@@ -219,6 +231,7 @@ Enemy3.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.SHOOT = false;
 		this.BARREL.exists = false;
 		this.animations.play("explosion", 20, false, true);
 
@@ -231,7 +244,7 @@ Enemy3.prototype.update = function() {
 	
 	if(!this.exists){this.BARREL.exists = false;}
 	
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
 }
 
 Enemy3.prototype.shoot = function(){
@@ -257,7 +270,7 @@ function Enemy4(game, posX, posY, key) {
 	this.POINTS = 250;
 	this.HERO = false;
 	this.KEY = 3;
-
+	this.SHOOT = true;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -268,8 +281,8 @@ function Enemy4(game, posX, posY, key) {
 
     //explosion
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-	this.animations.add("idle", "Atlas", "TriEnemy");
-
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("TriEnemy", "", "","",0), 1, true);
+	this.animations.play("idle");
     // audio object for death 
     this.boom = game.add.audio("enemyDeath");
 
@@ -280,6 +293,8 @@ Enemy4.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy4.prototype.constructor = Enemy4;
 
 Enemy4.prototype.respawn = function(x,y) {
+	this.tint = 0xFFFFFF;
+	this.SHOOT = true;
 	this.animations.play("idle");
 	this.exists = true;
 	this.reset(x, y);
@@ -297,6 +312,7 @@ Enemy4.prototype.update = function() {
 	}
 	//allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.SHOOT = false;
 		this.animations.play("explosion", 20, false, true);
 
         this.boom.play();
@@ -306,7 +322,7 @@ Enemy4.prototype.update = function() {
 		this.HEALTH = this.DEFAULT;
 	}
 	//fire rate
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 97){try{this.shoot();}catch{return;}}
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 97){try{this.shoot();}catch{return;}}
 }
 
 Enemy4.prototype.shoot = function(){
@@ -338,7 +354,7 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.POINTS = 400;
 	this.HERO = false;
 	this.KEY = 4;
-
+	this.SHOOT = true;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -360,7 +376,8 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.exists = false;
 	
   	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
-  	this.animations.add("idle", "Atlas", "TurretBase");
+  	this.animations.add("idle", Phaser.Animation.generateFrameNames("TurretBase", "", "","",0), 1, true);
+	this.animations.play("idle");
 
     this.boom = game.add.audio("enemyDeath");
 
@@ -370,6 +387,8 @@ Enemy5.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy5.prototype.constructor = Enemy5;
 
 Enemy5.prototype.respawn = function(x, y) {
+	this.tint = 0xFFFFFF;
+	this.SHOOT = true;
 	this.animations.play("idle");
 	this.BARREL.exists = true;
 	this.exists = true;
@@ -394,6 +413,7 @@ Enemy5.prototype.update = function() {
 	
 	// allow player to kill with shots
 	if(this.HEALTH <= 0){
+		this.SHOOT = false;
 		this.BARREL.exists = false;
 		this.animations.play("explosion", 20, false, true);
 
@@ -406,10 +426,10 @@ Enemy5.prototype.update = function() {
 	
 	if(!this.exists){this.BARREL.exists = false;}
 	
-	if(this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this.BARREL);}catch{return;}}
 }
 
-Enemy3.prototype.shoot = function(){
+Enemy5.prototype.shoot = function(){
 	for(var i = 0; i < 2; i++){
 		this.weapon.fire(this.BARREL);
 	}
