@@ -140,6 +140,8 @@ function startTimer(key, interval){
 //handle pickups
 function handlePickup(player, pickup){
 	console.log(pickup);
+	this.yoink = game.add.audio("itemPickup");
+
 	switch(pickup.UNLOCK){
 		case 1:
 			//DOUBLE
@@ -147,6 +149,7 @@ function handlePickup(player, pickup){
 			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "projectile-blue", 32);
 			player.weapons[0].UNLOCK = true;
 			player.DOUBLE_UNLOCK = true;
+
 			break;
 		case 2:
 			//SHOTGUN
@@ -165,7 +168,9 @@ function handlePickup(player, pickup){
 			player.SHIELD = true;
 			break;
 	}
-	
+
+	this.yoink.play();
+
     pickup.kill();
 
 }
@@ -209,8 +214,9 @@ function checkPickups(player, target, pickups){
 }
 
 function spawnShield(){
-	// console.log("Spawning Shield");
 	if(game.rnd.integerInRange(1,100) > 70){
+		console.log("Spawning Shield");
+
 		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
 	}
 }
@@ -399,6 +405,7 @@ function Level_1(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
 
+
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
@@ -517,7 +524,9 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
-			game.time.events.add(1000 * 87, makeEnemy, this, this.player, 1);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+
 
 		},
 		update: function(){
@@ -593,6 +602,7 @@ function Level_3(game) {}
 		create: function(){
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
+
 			console.log("Plats length: " + this.plats.length);
 			if(this.plats.length <= 0){
 				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
@@ -634,12 +644,16 @@ function Level_3(game) {}
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
 			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
-			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
-			
-			
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 4);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+
 		},
 		update: function(){
 			this.plats[0].tilePosition.x -= 2.5;
@@ -735,6 +749,7 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 83, makeEnemy, this, this.player, 5);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
 		},
 		update: function(){
 
