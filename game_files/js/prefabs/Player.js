@@ -13,7 +13,7 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 100;
+	this.HEALTH = 1;
 	this.EQUIP = 0;
 	this.SHIELD = false;
 	this.POINTS = 0;
@@ -41,6 +41,7 @@ function Player(game, key) {
    	//player death explosion
 	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
 	this.animations.add("idle", Phaser.Animation.generateFrameNames("Blue-", 4,4,"",2));
+	this.animations.play("idle");
     this.o_noes = game.add.audio("playerDeath");
     this.o_noes.volume = 0.75;
 
