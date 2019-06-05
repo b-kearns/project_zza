@@ -113,10 +113,12 @@ Enemy2.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy2.prototype.constructor = Enemy2;
 
 Enemy2.prototype.respawn = function(x,y) {
+
+	this.exists = true;
 	this.tint = 0xFFFFFF;
 	this.SHOOT = true;
 	this.animations.play("idle");
-	this.exists = true;
+
 	this.reset(x, y);
 }
 

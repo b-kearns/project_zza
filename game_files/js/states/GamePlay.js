@@ -368,16 +368,16 @@ function Level_0(game) {}
 					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
-					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 3:
-					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 4:
-					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 5:
-					game.state.start("Zza", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 			}
 			
