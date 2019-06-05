@@ -66,7 +66,7 @@ function Player(game, key) {
     this.SHIELD_SPRITE = game.add.sprite(0,0, "Atlas", "ShipShield");
     this.SHIELD_SPRITE.anchor.set(0.5);
 	this.railSprite = game.add.sprite(10,0,"Atlas", "Rail01");
-	this.railSprite.animations.add("Rail", Phaser.Animation.generateFrameNames("Rail", 1,4,"",2),10,false);
+	this.railSprite.animations.add("Rail", Phaser.Animation.generateFrameNames("Rail", 0,3,"",2),5,false);
 	this.railSprite.exists = false;
     
 }
@@ -128,7 +128,7 @@ Player.prototype.update = function() {
       if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
           this.railSprite.exists = true;
 
-          this.railSprite.animations.play("Rail", 3, false, true);
+          this.railSprite.animations.play("Rail", 4, false, true);
       }
 			this.weapon.fire(this);
 		}
