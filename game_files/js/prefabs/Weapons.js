@@ -211,11 +211,11 @@ Railgun.prototype.fire = function(source) {
 Railgun.prototype.fireRail = function(source, bullet) {
 
 	this.SFX_2.play();
-	if(source.angle > 0){
-		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	
+	if(source.HERO){
+		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);	
 	}
 	else{
-		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);	
+		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	
 	}
 
 	this.nextFire = game.time.time + this.fireRate;

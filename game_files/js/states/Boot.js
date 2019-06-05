@@ -32,6 +32,7 @@ function Boot(game) {}
             game.load.audio("tri_shot", "assets/audio/triShot.wav");
             game.load.audio("enemyDeath", "assets/audio/enemyDeath.wav");
             game.load.audio("playerDeath", "assets/audio/playerDeath.wav");
+            game.load.audio("itemPickup", "assets/audio/ItemPickup.wav")
 		},
 		create: function(){
 			

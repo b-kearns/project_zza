@@ -40,7 +40,7 @@ function makeEnemy(player, key){
 				this.enemy = this.cache[0].getFirstExists(false);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+				this.enemy.respawn(game.world.width, game.world.centerY + (80 * game.rnd.integerInRange(-2,2)));
 				this.enemy.bringToTop();
 			}
 			catch{console.log("Spawn Case 1 Failed");return;}
@@ -72,7 +72,7 @@ function makeEnemy(player, key){
 				this.enemy = this.cache[3].getFirstExists(false);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width, game.world.centerY + (100 * game.rnd.integerInRange(-2,2)));
+				this.enemy.respawn(game.world.width, game.world.centerY + (90 * game.rnd.integerInRange(-2,2)));
 			}
 			catch{console.log("Spawn Case 4 Failed");return;}
 			break;
@@ -83,7 +83,7 @@ function makeEnemy(player, key){
 				this.enemy.scale.setTo(-1.0, 1.0);
 				this.enemy.outOfCameraBoundsKill = false;
 				this.enemy.HEALTH = this.enemy.DEFAULT;
-				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height-120);
+				this.enemy.respawn(game.world.width + 5 * game.rnd.integerInRange(1, 4), game.world.height-130);
 			}
 			catch{console.log("Spawn Case 5 Failed");return;}
 			break;
@@ -140,6 +140,8 @@ function startTimer(key, interval){
 //handle pickups
 function handlePickup(player, pickup){
 	console.log(pickup);
+	this.yoink = game.add.audio("itemPickup");
+
 	switch(pickup.UNLOCK){
 		case 1:
 			//DOUBLE
@@ -147,6 +149,7 @@ function handlePickup(player, pickup){
 			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "projectile-blue", 32);
 			player.weapons[0].UNLOCK = true;
 			player.DOUBLE_UNLOCK = true;
+
 			break;
 		case 2:
 			//SHOTGUN
@@ -165,7 +168,9 @@ function handlePickup(player, pickup){
 			player.SHIELD = true;
 			break;
 	}
-	
+
+	this.yoink.play();
+
     pickup.kill();
 
 }
@@ -209,9 +214,11 @@ function checkPickups(player, target, pickups){
 }
 
 function spawnShield(){
-	// console.log("Spawning Shield");
 	if(game.rnd.integerInRange(1,100) > 70){
-		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 4);
+
+		console.log("Spawning Shield");
+
+		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
 	}
 }
 
@@ -399,6 +406,7 @@ function Level_1(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
 
+
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
@@ -517,11 +525,20 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
-			game.time.events.add(1000 * 87, makeEnemy, this, this.player, 1);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+
 
 		},
 		update: function(){
             this.plats[0].tilePosition.x -=2;
+			
+			if(this.background[2].position.x > 0){
+				this.background[2].position.x -= 2;
+			}
+			else{
+				this.background[2].tilePosition.x -= 2;
+			}
 
 			//collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
@@ -593,6 +610,7 @@ function Level_3(game) {}
 		create: function(){
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
+
 			console.log("Plats length: " + this.plats.length);
 			if(this.plats.length <= 0){
 				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
@@ -634,16 +652,28 @@ function Level_3(game) {}
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
 			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
-			game.time.events.loop(Phaser.Timer.SECOND * 20, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
-			
-			
+
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 4);
+
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+
 		},
 		update: function(){
 			this.plats[0].tilePosition.x -= 2.5;
 			this.plats[1].tilePosition.x -= 2.5;
+			
+			if(this.background[2].position.x > 0){
+				this.background[2].position.x -= 2;
+			}
+			else{
+				this.background[2].tilePosition.x -= 2;
+			}
 
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
@@ -688,7 +718,7 @@ function Level_3(game) {}
 		nextLevel: function(){
 			CHECKPOINT++;
 			this.BGM.stop();
-			game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.plats);
+			game.state.start("Level_4", false, false, this.background,  this.player, this.enemies, this.cache, this.equipped, this.plats);
 		}
 	}
 	
@@ -712,7 +742,8 @@ function Level_4(game) {}
 			BGM = this.BGM;
 			//timer for next level
 			game.time.events.add(1000 * 90, this.nextLevel, this);
-
+			
+			console.log("Start of Level 4: " + this.plats[1]);
             game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
             game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
@@ -735,11 +766,19 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 83, makeEnemy, this, this.player, 5);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 
+			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
 		},
 		update: function(){
 
 			this.plats[0].tilePosition.x -=3;
 			this.plats[1].tilePosition.x -=3;
+			
+			if(this.background[2].position.x > 0){
+				this.background[2].position.x -= 2;
+			}
+			else{
+				this.background[2].tilePosition.x -= 2;
+			}
 
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
