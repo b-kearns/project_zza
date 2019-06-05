@@ -215,6 +215,7 @@ function checkPickups(player, target, pickups){
 
 function spawnShield(){
 	if(game.rnd.integerInRange(1,100) > 70){
+
 		console.log("Spawning Shield");
 
 		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
