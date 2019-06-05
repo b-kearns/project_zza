@@ -409,17 +409,34 @@ function Level_1(game) {}
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
-			game.time.events.add(1000 * 33, makeEnemy, this, this.player, 2);
-			game.time.events.add(1000 * 35, makeEnemy, this, this.player, 1);
-			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 1);
-			game.time.events.add(1000 * 48, makeEnemy, this, this.player, 2);
-			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 34, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 36, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 43, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 46, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 50, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 52, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 54, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 60, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 67, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 74, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 76, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 78, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 82, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 87, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 90, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 92, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 98, makeEnemy, this, this.player, 1);
+			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 102, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 107, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 1);
-			game.time.events.add(1000 * 115, makeEnemy, this, this.player, 2);
+			game.time.events.add(1000 * 112, makeEnemy, this, this.player, 2);
 
-			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
@@ -525,7 +542,7 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
 
-			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 
 		},
@@ -660,7 +677,7 @@ function Level_3(game) {}
 
 			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 4);
 
-			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
@@ -765,7 +782,7 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 83, makeEnemy, this, this.player, 5);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 
-			game.time.events.loop(Phaser.Timer.SECOND * 5, spawnShield, this);
+			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 		},
 		update: function(){
 
