@@ -368,16 +368,16 @@ function Level_0(game) {}
 					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
 					break;
 				case 2:
-					game.state.start("Level_2", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 3:
-					game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 4:
-					game.state.start("Level_4", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 5:
-					game.state.start("Zza", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 			}
 			
@@ -481,13 +481,14 @@ function Level_1(game) {}
 function Level_2(game) {}
 	
 	Level_2.prototype = {
-		init: function(background, player, enemies, cache, equipped){
+		init: function(background, player, enemies, cache, equipped, pickups, plats){
             // so the background parallax persists between states
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
+			console.log(this.equipped);
 		},
 		preload: function(){
 			console.log("Level_2: Preload");
@@ -583,7 +584,7 @@ function Level_2(game) {}
 		nextLevel: function(){
 			CHECKPOINT++;
 			this.BGM.stop();
-			game.state.start("Level_3", false, false, this.background, this.BGM, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
+			game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
 
 			game.time.events.removeAll();
 		}
@@ -594,7 +595,7 @@ function Level_3(game) {}
 	
 	Level_3.prototype = {
 
-		init: function(background, BGM, player, enemies, cache, equipped, pickups, plats){
+		init: function(background, player, enemies, cache, equipped, pickups, plats){
 
             this.background = background;
 			this.player = player;
@@ -718,7 +719,7 @@ function Level_3(game) {}
 		nextLevel: function(){
 			CHECKPOINT++;
 			this.BGM.stop();
-			game.state.start("Level_4", false, false, this.background,  this.player, this.enemies, this.cache, this.equipped, this.plats);
+			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.plats);
 		}
 	}
 	
@@ -823,7 +824,7 @@ function Level_4(game) {}
 		},
 		nextLevel: function(){
 			this.BGM.stop();
-			game.state.start("Zza", false, false, BACKGROUND, BGM, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+			game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 		}
 	}
 	
