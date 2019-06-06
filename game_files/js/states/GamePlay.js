@@ -1,7 +1,7 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
-
+var BANNER;
 var BGM;
 var BACKGROUND;
 var EQ;
@@ -11,6 +11,13 @@ var PLATS;
 var PLAYER;
 var SCORE = 0;
 var NEWGAME = true;
+
+function displayText(x, y, words, fontSize, time){
+	var sux = game.add.bitmapText(x, y, "myfont", words, fontSize);
+	sux.anchor.setTo(0.5, 0.5);
+	game.time.events.add(time, destroy, this, sux);
+}
+
 
 function sendToGameOver(cache){
 	for(var i = 0; i < cache.length-1; i++){
@@ -149,19 +156,35 @@ function handlePickup(player, pickup){
 			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "projectile-blue", 32);
 			player.weapons[0].UNLOCK = true;
 			player.DOUBLE_UNLOCK = true;
-
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 2:
 			//SHOTGUN
 			player.weapons[1].UNLOCK = true;
+			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 3:
 			//TRIBEAM
 			player.weapons[2].UNLOCK = true;
+			this.words = "New Weapon Unlocked!!!";
+			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 4:
 			//RAIL
 			player.weapons[3].UNLOCK = true;
+			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 5:
 			//SHIELD
@@ -182,7 +205,6 @@ function spawnPickup(x, y, pickups, key){
 	}
 	catch(err){console.log("Pickup Spawn Failed: " +err);return;}
 }
-//handle loading the game objects in a boot-like level
 
 function checkPickups(player, target, pickups){
 	// console.log("Checking for pickups: " +target.KEY);
@@ -352,9 +374,13 @@ function Level_0(game) {}
 		create: function(){
 			game.add.existing(this.player);
 			
-			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
-
+			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: ", 24);
 			EQ = this.equipped;
+			//weapon unlocking banner animation
+			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
+			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
+			this.banner.exists = false;
+			BANNER = this.banner;
 		},
 		update: function(){
 			this.nextLevel();
@@ -459,13 +485,13 @@ function Level_1(game) {}
 			this.background[1].position.x -= 0.03;
 			
 			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
 			}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				spawnPickup(this.pickups, 3);
+				spawnPickup(500, 100, this.pickups, 1);
 			}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;
@@ -488,10 +514,6 @@ function Level_1(game) {}
 			CHECKPOINT++;
 			this.BGM.stop();
 			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped);
-		},
-        //janky UI
-		displayText: function(string){
-			game.add.text(0,0,string, {fill: "#facade"});
 		}
 	}
 	//level 2... START!!!
@@ -581,7 +603,7 @@ function Level_2(game) {}
 				this.nextLevel();
 			}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
+				spawnPickup(500, 100, this.pickups, 1);
 			}
 			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
@@ -710,7 +732,7 @@ function Level_3(game) {}
 			this.background[1].position.x -= 0.03;
 		
 			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -815,7 +837,7 @@ function Level_4(game) {}
 			this.background[1].position.x -= 0.03;
 		
 			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
