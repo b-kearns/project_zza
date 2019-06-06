@@ -406,7 +406,6 @@ function Level_1(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
 
-
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
@@ -667,17 +666,20 @@ function Level_3(game) {}
 			console.log(this.plats);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
-			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
-			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 12, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 15, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 30, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 6);
 			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 60, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 6);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 90, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 6);
 
-			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 4);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
