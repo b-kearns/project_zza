@@ -16,7 +16,7 @@ function Player(game, key) {
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 1;
+	this.HEALTH = 100;
 	this.EQUIP = 0;
 	this.SHIELD = false;
 	this.POINTS = 0;
