@@ -19,7 +19,6 @@ Zza.prototype = {
 	create: function(){
 		
 		game.scale.setGameSize(640, 960);
-		// this.player = game.add.sprite(730, game.world.height, "Atlas", "blue_05");
 		this.player.flipPOV();
 		
 		this.Zza = game.add.sprite(200, -500, "Atlas", "OctoBoss");
@@ -55,7 +54,9 @@ Zza.prototype = {
 			this.plats[i].moveDown();
 			this.plats[i].moveDown();
 		}
-  
+		this.BGM = game.add.audio("zzaTrack");
+		this.BGM.loop = true;
+		game.time.events.add(3950, this.BGM.play, this.BGM);
 		game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
 		game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);
 		game.add.tween(this.Zza).to({y: 0}, 5000, "Linear", true, 0, 0, false);//1

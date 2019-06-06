@@ -164,7 +164,7 @@ function handlePickup(player, pickup){
 		case 2:
 			//SHOTGUN
 			player.weapons[1].UNLOCK = true;
-			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
 			BANNER.exists = true;
 			BANNER.play("weaponUnlock", 6, true, false);
 			game.time.events.add(1500, destroy, this, BANNER);
@@ -173,7 +173,7 @@ function handlePickup(player, pickup){
 			//TRIBEAM
 			player.weapons[2].UNLOCK = true;
 			this.words = "New Weapon Unlocked!!!";
-			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
 			BANNER.exists = true;
 			BANNER.play("weaponUnlock", 6, true, false);
 			game.time.events.add(1500, destroy, this, BANNER);
@@ -181,7 +181,7 @@ function handlePickup(player, pickup){
 		case 4:
 			//RAIL
 			player.weapons[3].UNLOCK = true;
-			displayText(80, 110, "New Weapon Unlocked!!!", 48, 1500);
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
 			BANNER.exists = true;
 			BANNER.play("weaponUnlock", 6, true, false);
 			game.time.events.add(1500, destroy, this, BANNER);
@@ -280,7 +280,6 @@ function Level_0(game) {}
 				this.pickups = game.add.group();
 				
 				//creating single shot enemies
-				//console.log("Spooling up single shot enemies");
 				for(var i = 0; i < 8; i++){
 					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "Dark-Grey-04");
 					game.add.existing(this.enemy);
@@ -299,7 +298,6 @@ function Level_0(game) {}
 				}
 
 				//creating shotgun enemies
-				// console.log("Spooling up shotgun enemies");
 				for(var i = 0; i < 3; i++){
 					this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "TankBase");
 					game.add.existing(this.enemy);
@@ -308,7 +306,6 @@ function Level_0(game) {}
 
 				//creating tri beam enemies
 
-				//console.log("Spooling up tribeam enemies");
 				for(var i = 0; i < 5; i++){
 					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "TriEnemy");
 
@@ -320,7 +317,6 @@ function Level_0(game) {}
 				
 				//creating rail gun enemies
 
-				//console.log("Spooling up rail gun enemies");
 				for(var i = 0; i < 2; i++){
 					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "TurretBase");
 
@@ -374,8 +370,7 @@ function Level_0(game) {}
 		create: function(){
 			game.add.existing(this.player);
 			
-			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: ", 24);
-			EQ = this.equipped;
+			EQ = this.player.equipped;
 			//weapon unlocking banner animation
 			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
@@ -466,11 +461,12 @@ function Level_1(game) {}
 
 		},
 		update: function(){
+			//debris background
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 1;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1;
 			}
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
@@ -483,8 +479,6 @@ function Level_1(game) {}
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.03;
 			
-			//UI w00t!
-//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -596,8 +590,6 @@ function Level_2(game) {}
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.03;
 		
-			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -712,10 +704,10 @@ function Level_3(game) {}
 			this.plats[1].tilePosition.x -= 2.5;
 			
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 3;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 3;
 			}
 
             //collision handling for pickups
@@ -734,8 +726,6 @@ function Level_3(game) {}
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.03;
 		
-			//UI w00t!
-//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -784,7 +774,7 @@ function Level_4(game) {}
 			this.BGM.play();
 			BGM = this.BGM;
 			//timer for next level
-			game.time.events.add(1000 * 90, this.nextLevel, this);
+			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
 			console.log("Start of Level 4: " + this.plats[1]);
             if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
@@ -834,10 +824,10 @@ function Level_4(game) {}
 			if(this.plats[1] != null){this.plats[1].tilePosition.x -=3;}
 			
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 3;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 3;
 			}
 
             //collision handling for pickups
@@ -855,9 +845,7 @@ function Level_4(game) {}
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.03;
-		
-			//UI w00t!
-//			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
 				this.nextLevel();
@@ -881,8 +869,11 @@ function Level_4(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			this.BGM.stop();
-			game.add.tween(this.plats[0]).to({y: 1000}, 3000, "Linear", true, 0, 0, false);
+			game.time.events.add(3000, BGM.stop, BGM);
+			BGM = game.add.audio("zzaStinger");
+			game.time.events.add(3000, BGM.play, BGM);
+			game.add.tween(this.background[2].position).to({x: -1990}, 4000, "Linear", true, 0, 0, false);
+			game.add.tween(this.plats[0]).to({y: 1000}, 4000, "Linear", true, 0, 0, false);
 			game.time.events.add(4000, this.startZza, this);
 		},
 		startZza: function(){

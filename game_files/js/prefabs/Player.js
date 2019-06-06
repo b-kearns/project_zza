@@ -8,8 +8,12 @@ function Player(game, key) {
 
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, "Atlas", key);
 
-	this.ICON = game.add.sprite();
+	this.ICON = game.add.sprite(game.world.width - 118, game.world.height - 58);
 	this.ICON.anchor.setTo(0.5, 0.5);
+	this.ICON.alpha = 0.70; 
+
+	this.equipped = game.add.bitmapText(game.world.width - 118, game.world.height - 108, "myfont", "Weapon:", 24);
+	this.equipped.anchor.setTo(0.5, 0.5);
 
 	//PC variables
 	this.anchor.set(0.5);
@@ -91,6 +95,8 @@ Player.prototype.flipPOV = function(){
 	this.shipTrail.setXSpeed(30, -30);
 	this.shipTrail.setYSpeed(200, 180);
 	this.WEAP_ANGLE = -90;
+	this.ICON.reset(game.world.width - 118, game.world.height - 58);
+	this.equipped.reset(game.world.width - 118, game.world.height - 108);
 }
 
 Player.prototype.update = function() {
@@ -100,10 +106,13 @@ Player.prototype.update = function() {
 
 	game.world.bringToTop(this.weapons);
 
+
 	this.SHIELD_SPRITE.bringToTop();
 
 	this.ICON.loadTexture("Atlas", this.weapon.ICON);
-	
+	this.ICON.bringToTop();
+	this.equipped.setText("Weapon:");
+
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
 
