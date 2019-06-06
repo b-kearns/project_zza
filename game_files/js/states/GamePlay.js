@@ -491,6 +491,7 @@ function Level_1(game) {}
 			}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
 				spawnPickup(500, 100, this.pickups, 1);
+
 			}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;
@@ -760,14 +761,14 @@ function Level_3(game) {}
 		nextLevel: function(){
 			CHECKPOINT++;
 			this.BGM.stop();
-			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.plats);
+			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 		}
 	}
 	
 function Level_4(game) {}
 	
 	Level_4.prototype = {
-		init: function(background, player, enemies, cache, equipped, plats){
+		init: function(background, player, enemies, cache, equipped, pickups, plats){
             this.background = background;
 			this.player = player;
 			this.enemies = enemies;
@@ -786,7 +787,24 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 90, this.nextLevel, this);
 			
 			console.log("Start of Level 4: " + this.plats[1]);
-            game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);
+            if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
+			
+			if(this.plats.length <= 0){
+				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
+
+				game.physics.enable(this.plats[0]);
+				this.plats[0].body.immovable = true;
+				this.plats[0].body.setSize(960,100,0,14);
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				this.plats[0].moveDown();
+				game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
+			}
+			
             game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 14, makeEnemy, this, this.player, 3);
@@ -813,7 +831,7 @@ function Level_4(game) {}
 		update: function(){
 
 			this.plats[0].tilePosition.x -=3;
-			this.plats[1].tilePosition.x -=3;
+			if(this.plats[1] != null){this.plats[1].tilePosition.x -=3;}
 			
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 2;
@@ -842,8 +860,7 @@ function Level_4(game) {}
 //			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
-				game.add.tween(this.plats[0]).to({y: 840}, 3000, "Linear", true, 0, 0, false);
-				game.time.events.add(Phaser.Timer.SECOND * 3, this.nextLevel, this, this.player);
+				this.nextLevel();
 			}
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
 				this.player.kill();
@@ -865,6 +882,10 @@ function Level_4(game) {}
 		},
 		nextLevel: function(){
 			this.BGM.stop();
+			game.add.tween(this.plats[0]).to({y: 1000}, 3000, "Linear", true, 0, 0, false);
+			game.time.events.add(4000, this.startZza, this);
+		},
+		startZza: function(){
 			game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 		}
 	}

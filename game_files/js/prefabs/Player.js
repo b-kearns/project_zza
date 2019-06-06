@@ -8,6 +8,9 @@ function Player(game, key) {
 
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, "Atlas", key);
 
+	this.ICON = game.add.sprite();
+	this.ICON.anchor.setTo(0.5, 0.5);
+
 	//PC variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
@@ -20,6 +23,7 @@ function Player(game, key) {
 	this.HERO = true;
 	this.DOUBLE_UNLOCK = false;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -82,6 +86,13 @@ Player.prototype.respawn = function(x,y){
 	this.reset(x,y);
 }
 
+Player.prototype.flipPOV = function(){
+	this.loadTexture("Atlas", "blue_05"); 
+	this.shipTrail.setXSpeed(30, -30);
+	this.shipTrail.setYSpeed(200, 180);
+	this.WEAP_ANGLE = -90;
+}
+
 Player.prototype.update = function() {
 	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
 
@@ -91,6 +102,7 @@ Player.prototype.update = function() {
 
 	this.SHIELD_SPRITE.bringToTop();
 
+	this.ICON.loadTexture("Atlas", this.weapon.ICON);
 	
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;

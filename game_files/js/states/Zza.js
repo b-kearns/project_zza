@@ -19,7 +19,8 @@ Zza.prototype = {
 	create: function(){
 		
 		game.scale.setGameSize(640, 960);
-		this.player = game.add.sprite(730, game.world.height, "Atlas", "blue_05");
+		// this.player = game.add.sprite(730, game.world.height, "Atlas", "blue_05");
+		this.player.flipPOV();
 		
 		this.Zza = game.add.sprite(200, -500, "Atlas", "OctoBoss");
 		
