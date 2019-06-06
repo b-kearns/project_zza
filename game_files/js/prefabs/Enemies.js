@@ -16,6 +16,7 @@ function Enemy1(game, posX, posY, key) {
 	this.HERO = false;
 	this.KEY = 0;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
 	//give it physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -93,6 +94,7 @@ function Enemy2(game, posX, posY, key) {
 	this.HERO = false;
 	this.KEY = 1;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -174,6 +176,7 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.HERO = false;
 	this.KEY = 2;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -273,6 +276,7 @@ function Enemy4(game, posX, posY, key) {
 	this.HERO = false;
 	this.KEY = 3;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;
@@ -357,6 +361,7 @@ function Enemy5(game, posX, posY, key, verticalScale) {
 	this.HERO = false;
 	this.KEY = 4;
 	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = false;

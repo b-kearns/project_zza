@@ -14,6 +14,7 @@ function SingleShot(game, posX, posY, direction, key, ammo) {
 	this.bulletSpeed = 500;
 	this.fireRate = 200;
     this.SFX = game.add.audio("weapon_fx_1");
+	this.ICON = "SingleLogo";
 	
 	for(var i = 0; i < ammo; i++){
 
@@ -33,7 +34,7 @@ SingleShot.prototype.fire = function(source) {
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX.play();
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
 }
@@ -44,6 +45,7 @@ function DoubleShot(game, posX, posY, direction, key, ammo) {
 	
 	this.UNLOCK = false;
 	this.NAME = "Double";
+	this.ICON = "DoublePickup";
 
 	this.DIRECTION = direction;
 	this.PENETRATE = false;
@@ -73,7 +75,7 @@ DoubleShot.prototype.fire = function(source) {
 	if(this.bullet === null){return;}
     this.SFX.play();
 	
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
+	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
 
 	this.nextFire = game.time.time + this.fireRate;
 	this.ALT *= -1;
@@ -92,6 +94,7 @@ function TriShot(game, posX, posY, direction, key, ammo, fireRate) {
 	this.fireRate = fireRate;
     this.SFX = game.add.audio("tri_shot");
     this.SFX.volume = 0.75;
+	this.ICON = "TriPickup";
 	
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "TriShot", this.DAMAGE, this.PENETRATE), true);
@@ -110,9 +113,9 @@ TriShot.prototype.fire = function(source) {
 	// if(this.bullet === null){return;}
     this.SFX.play();
 	try{
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
 	}
 	catch{return;}
 	
@@ -134,6 +137,7 @@ function Shotgun(game, posX, posY, direction, key, ammo) {
 	this.fireRate = 1000;
     this.SFX = game.add.audio("shotgun_fx"); 
     this.SFX.volume = 0.75;
+	this.ICON = "ShotgunPickup";
 	// add specific data to shotgun bullets
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "ShotgunShot", this.DAMAGE, this.PENETRATE), true);
@@ -185,6 +189,7 @@ function Railgun(game, posX, posY, direction, key, ammo) {
     this.SFX_2 = game.add.audio("rail_shot");
     this.SFX_1.volume = 0.75;
     this.SFX_2.volume = 0.75;
+	this.ICON = "RailPickup";
 	
 	for(var i = 0; i < ammo; i++){
 		this.add(new Bullet(game, "RailShot", this.DAMAGE, this.PENETRATE), true);
@@ -212,7 +217,7 @@ Railgun.prototype.fireRail = function(source, bullet) {
 
 	this.SFX_2.play();
 	if(source.HERO){
-		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);	
+		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);	
 	}
 	else{
 		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	
