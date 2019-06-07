@@ -3,7 +3,7 @@
 function Zza(game){}
 
 Zza.prototype = {
-	init: function(background, player, enemies, cache, equipped, pickups, plats){
+	init: function(background, player, enemies, cache, equipped, pickups, plats, scoreText){
 		this.background = background;
 		this.BGM = BGM;
 		this.player = player;
@@ -12,15 +12,15 @@ Zza.prototype = {
 		this.equipped = equipped;
 		this.pickups = pickups;
 		this.plats = plats;
+		this.scoreText = scoreText;
 	},
 	preload: function(){
 		
 	},
 	create: function(){
-		
 		game.scale.setGameSize(640, 960);
 		this.player.flipPOV();
-		
+		this.scoreText.reset(100, game.world.height - 64);
 		this.Zza = game.add.sprite(200, -500, "Atlas", "OctoBoss");
 		
 		this.Zza1Top = game.add.sprite(this.Zza.position.x + 32, this.Zza.position.y + 190, "Atlas", "tentacle top");
@@ -74,6 +74,7 @@ Zza.prototype = {
 		game.add.tween(this.Zza4Bot).to({y: 300}, 5000, "Linear", true, 0, 0, false);
 	},
 	update: function(){
+		this.scoreText.setText("Score: " + SCORE);
 		this.plats[0].tilePosition.y -=3;
 		this.plats[1].tilePosition.y -=3;
 		this.background[0].tilePosition.y -=1;
