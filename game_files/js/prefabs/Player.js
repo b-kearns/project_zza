@@ -92,11 +92,15 @@ Player.prototype.respawn = function(x,y){
 
 Player.prototype.flipPOV = function(){
 	this.loadTexture("Atlas", "blue_05"); 
+	this.anchor.setTo(0.5, 0.5);
 	this.shipTrail.setXSpeed(30, -30);
 	this.shipTrail.setYSpeed(200, 180);
 	this.WEAP_ANGLE = -90;
 	this.ICON.reset(game.world.width - 118, game.world.height - 58);
 	this.equipped.reset(game.world.width - 118, game.world.height - 108);
+	this.railSprite.reset(0, 20);
+	this.railSprite.exists = false;
+	this.railSprite.anchor.setTo(0.5, 0.5);
 }
 
 Player.prototype.update = function() {
@@ -123,8 +127,14 @@ Player.prototype.update = function() {
     
     this.SHIELD_SPRITE.position.x = this.position.x;
     this.SHIELD_SPRITE.position.y = this.position.y;
-    this.railSprite.position.x = this.position.x + 5;
-    this.railSprite.position.y = this.position.y - 15;
+	if(this.WEAP_ANGLE >= 0){
+		this.railSprite.position.x = this.position.x + 5;
+		this.railSprite.position.y = this.position.y - 15;
+	}
+	else{
+		this.railSprite.position.x = this.position.x;
+		this.railSprite.position.y = this.position.y - 15;
+	}
     if(this.SHIELD){
        this.SHIELD_SPRITE.exists = true;
     }
