@@ -170,8 +170,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 2;
-	this.DEFAULT = 2;
+	this.HEALTH = 3;
+	this.DEFAULT = 3;
 	this.POINTS = 200;
 	this.HERO = false;
 	this.KEY = 2;
