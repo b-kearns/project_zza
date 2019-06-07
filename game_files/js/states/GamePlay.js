@@ -17,8 +17,7 @@ function displayText(x, y, words, fontSize, time){
 	sux.anchor.setTo(0.5, 0.5);
 	game.time.events.add(time, destroy, this, sux);
 }
-
-
+//send to game over when player dies
 function sendToGameOver(cache){
 	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
@@ -32,11 +31,6 @@ function sendToGameOver(cache){
 
 function destroy(target){
 	target.kill();
-}
-
-function sendToZza(){
-	BGM.stop();
-	game.state.start("Zza", false, false, PLAYER, EQ, BACKGROUND);
 }
 
 function makeEnemy(player, key){
@@ -119,9 +113,9 @@ function makeEnemy(player, key){
 	}
 
 }
-
+//weapon collision
 function collisionHandle(target, weapon){
-	console.log(target);
+	//console.log(target);
 	if(target.SHIELD != null && target.SHIELD){
 	   target.SHIELD = false;
 	   if(!weapon.PENETRATE){weapon.kill();}
@@ -143,12 +137,12 @@ function checkCollision(enemy){
 }
 
 function startTimer(key, interval){
-	console.log("Start Timer: Interval " +interval +": Key " +key);
+	//console.log("Start Timer: Interval " +interval +": Key " +key);
 	game.time.events.loop(Phaser.Timer.SECOND * interval, makeEnemy, this, this.player, key);
 }
 //handle pickups
 function handlePickup(player, pickup){
-	console.log(pickup);
+	//console.log(pickup);
 	this.yoink = game.add.audio("itemPickup");
 
 	switch(pickup.UNLOCK){
@@ -207,14 +201,14 @@ function spawnPickup(x, y, pickups, key){
 	}
 	catch(err){console.log("Pickup Spawn Failed: " +err);return;}
 }
-
+//weapon unlocking
 function checkPickups(player, target, pickups){
 	// console.log("Checking for pickups: " +target.KEY);
 	switch(target.KEY){
 		case 0:
 			break;
 		case 1:
-			console.log(player.DOUBLE_UNLOCK);
+			//console.log(player.DOUBLE_UNLOCK);
 			if(!player.DOUBLE_UNLOCK){
 				spawnPickup(target.position.x, target.position.y, pickups, 1);
 			}
@@ -240,7 +234,7 @@ function checkPickups(player, target, pickups){
 function spawnShield(){
 	if(game.rnd.integerInRange(1,100) > 70){
 
-		console.log("Spawning Shield");
+		//console.log("Spawning Shield");
 
 		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
 	}
@@ -263,12 +257,12 @@ function Level_0(game) {}
 			else{NEWGAME = true;}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
-			console.log("Level 0 Transition: " + this.plats.length);
+			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
 			console.log("Level_0: Preload");
 			game.time.advancedTiming = true;
-			
+			//create player
 			if(NEWGAME){
 				this.player = new Player(game, "Blue-04");
 				PLAYER = this.player;
@@ -363,7 +357,6 @@ function Level_0(game) {}
 				this.player.respawn(64, game.world.centerY);
 				
 				this.BGM = BGM;
-
 			}
 			
 			PICKUPS = this.pickups;
@@ -385,7 +378,7 @@ function Level_0(game) {}
 		render: function(){
 		},
 		nextLevel: function(){
-			
+			//levels
 			switch(CHECKPOINT){
 				case 1:
 					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
@@ -411,7 +404,7 @@ function Level_1(game) {}
 	
 	Level_1.prototype = {
 		init: function(background, player, enemies, cache, equipped, pickups){
-            // so the background parallax, and loaded enemies persists between states
+            //make background parallax, and loaded enemies persists between states
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
@@ -518,13 +511,13 @@ function Level_2(game) {}
 	
 	Level_2.prototype = {
 		init: function(background, player, enemies, cache, equipped, pickups, plats){
-            // so the background parallax persists between states
+            //make background parallax, and loaded enemies persists between states
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
-			console.log(this.equipped);
+			//console.log(this.equipped);
 		},
 		preload: function(){
 			console.log("Level_2: Preload");
@@ -630,7 +623,7 @@ function Level_3(game) {}
 	Level_3.prototype = {
 
 		init: function(background, player, enemies, cache, equipped, pickups, plats){
-
+            //make background parallax, and loaded enemies persists between states
             this.background = background;
 			this.player = player;
 			this.enemies = enemies;
@@ -762,6 +755,7 @@ function Level_4(game) {}
 	
 	Level_4.prototype = {
 		init: function(background, player, enemies, cache, equipped, pickups, plats){
+			//make background parallax, and loaded enemies persists between states
             this.background = background;
 			this.player = player;
 			this.enemies = enemies;
@@ -815,9 +809,6 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 69, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 74, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 79, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 83, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 		},
