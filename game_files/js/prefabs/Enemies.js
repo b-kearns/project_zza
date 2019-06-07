@@ -170,8 +170,8 @@ function Enemy3(game, posX, posY, key, verticalScale) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 500;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 2;
-	this.DEFAULT = 2;
+	this.HEALTH = 3;
+	this.DEFAULT = 3;
 	this.POINTS = 200;
 	this.HERO = false;
 	this.KEY = 2;
@@ -440,4 +440,76 @@ Enemy5.prototype.shoot = function(){
 	for(var i = 0; i < 2; i++){
 		this.weapon.fire(this.BARREL);
 	}
+}
+
+function Enemy6(game, posX, posY, key, weapon_version) {
+	Phaser.Sprite.call(this, game, posX, posY, "Atlas", key);
+	// set enemy data
+	this.anchor.set(0.5);
+    // this.scale.setTo(-1, 1);
+	this.DRAG = 8000;
+	this.MAX_VELOCITY = 200;
+	this.ACCELERATION = 1500;
+	this.HEALTH = 100;
+	this.DEFAULT = 100;
+	this.POINTS = 400;
+	this.HERO = false;
+	this.KEY = 0;
+	this.SHOOT = true;
+	this.WEAP_ANGLE = 0;
+	this.ZZA = true;
+	
+	//give it physics
+	game.physics.enable(this);
+	this.body.collideWorldBounds = false;
+	this.outOfCameraBoundsKill = false;
+	this.autoCull = true;
+	this.body.drag.setTo(this.DRAG, this.DRAG);
+	this.body.maxVelocity.setTo(this.MAX_VELOCITY, 500);
+    this.body.velocity.setTo(200, 0);
+    // this.body.setSize(15, 20, 5, 10);
+
+    //explosion death effect
+	this.animations.add("explosion", Phaser.Animation.generateFrameNames("explosion", 1,11,"",4), 20, false);
+	this.animations.add("idle", Phaser.Animation.generateFrameNames("Tentacle bot", "","", "", 0), 1, true);
+	
+	this.animations.play("idle");
+    // audio object for death 
+    this.boom = game.add.audio("enemyDeath");
+	
+	this.weapon_one = new SingleShot(game, this.position.x, this.position.y, -1, "projectile-blue", 2);
+	
+	this.weapon_two = new Shotgun(game, this.position.x, this.position.y, -1, "ShotgunShot", 8);
+	
+	if(weapon_version < 2){this.weapon = this.weapon_one;}
+	else{this.weapon = this.weapon_two;}
+}
+
+Enemy6.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy6.prototype.constructor = Enemy6;
+
+Enemy6.prototype.update = function() {
+	
+	if(this.body.rotation >= 30){
+		this.body.angularVelocity = -25;
+	}
+	else if(this.body.rotation <= -30){
+		this.body.angularVelocity = 25;
+	}
+	
+	// allow player to kill with shots
+	if(this.HEALTH <= 0){
+		
+		this.SHOOT = false;
+		this.alive = false;
+		this.animations.play("explosion", 20, false, true);
+
+        this.boom.play();
+		
+		SCORE += this.POINTS;
+		
+		this.HEALTH = this.DEFAULT;
+	}
+	
+	if(this.SHOOT && this.exists && this.inCamera && game.rnd.integerInRange(1,100) > 95){try{this.weapon.fire(this);}catch{console.log("failed to fire");return;}}
 }

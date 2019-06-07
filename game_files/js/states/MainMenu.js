@@ -9,6 +9,7 @@ function MainMenu(game) {}
 			}
 		},
 		preload: function(){
+			//display scrolling background
 			this.background = [];
 			this.background[0] = game.add.tileSprite(0,0,960,640,"StarsBackground");
             this.background[1] = game.add.sprite(-200,100,"EarthBackground");
@@ -19,11 +20,11 @@ function MainMenu(game) {}
 		create: function(){
             //set up user interface
 			this.screen = [];
-			
+			//display title
 			this.title = game.add.bitmapText(game.world.centerX, game.world.centerY - 150, "myfont", "Captain SHMUP", 80);
 			this.title.anchor.setTo(0.5, 0.5);
 			this.screen.push(this.title);
-			
+			//credits button
 			this.credits = game.add.bitmapText(game.world.centerX + 200, game.world.height - 100, "myfont", "Credits", 32);
 			this.credits.anchor.setTo(0.5, 0.5);
 			this.credits.inputEnabled = true;
@@ -31,7 +32,7 @@ function MainMenu(game) {}
 			this.credits.events.onInputOver.add(this.highlight, this, this.credits);
 			this.credits.events.onInputOut.add(this.clear, this, this.credits);
 			this.screen.push(this.credits);
-			
+			//instructions button
 			this.instructions = game.add.bitmapText(game.world.centerX - 200, game.world.height - 100, "myfont", "Instructions", 32);
 			this.instructions.anchor.setTo(0.5, 0.5);
 			this.instructions.inputEnabled = true;
@@ -39,7 +40,7 @@ function MainMenu(game) {}
 			this.instructions.events.onInputOver.add(this.highlight, this, this.instructions);
 			this.instructions.events.onInputOut.add(this.clear, this, this.instructions);
 			this.screen.push(this.instructions);
-			
+			//play button
 			this.play = game.add.bitmapText(game.world.centerX, game.world.centerY + 32, "myfont", "Start!", 48);
 			this.play.anchor.setTo(0.5, 0.5);
 			this.play.anchor.setTo(0.5, 0.5);
@@ -69,10 +70,12 @@ function MainMenu(game) {}
 				// game.state.start("Level_0", false, false, this.background, this.BGM);
 			// }
 		},
+		//credits tab
 		enterCredits: function(){
 			this.clearScreen();
 			game.state.start("Credits", false, false);
 		},
+		//instructions tab
 		enterInstructions: function(){
 			this.clearScreen();
 			game.state.start("Instructions", false, false);
@@ -83,6 +86,7 @@ function MainMenu(game) {}
 		clear: function(text){
 			text.tint = 0xFFFFFF;
 		},
+		//start game
 		start: function(){
 			this.clearScreen();
 			this.menuBGM.stop();
