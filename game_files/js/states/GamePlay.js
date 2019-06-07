@@ -121,7 +121,8 @@ function makeEnemy(player, key){
 }
 
 function collisionHandle(target, weapon){
-	if(target.SHIELD){
+	console.log(target);
+	if(target.SHIELD != null && target.SHIELD){
 	   target.SHIELD = false;
 	   if(!weapon.PENETRATE){weapon.kill();}
 	   return;
@@ -136,8 +137,9 @@ function collisionHandle(target, weapon){
 }
 
 function checkCollision(enemy){
-	this.enemy = enemy;
-	game.physics.arcade.overlap(this.enemy.weapon, this.player, collisionHandle, null, this);
+	// this.enemy = enemy;
+	try{game.physics.arcade.overlap(enemy.weapon, this.player, collisionHandle, null, this);}
+	catch{return;}
 }
 
 function startTimer(key, interval){
@@ -470,6 +472,7 @@ function Level_1(game) {}
 			}
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);

@@ -31,11 +31,15 @@ SingleShot.prototype.fire = function(source) {
 	if(game.time.time < this.nextFire){
 		return;
 	}
+	
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX.play();
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
-
+	
+	if(source.body.rotation != 0){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.body.rotation - 90, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	else if(source.HERO){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	else if(source.body.rotation == 0){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	
 	this.nextFire = game.time.time + this.fireRate;
 }
 
@@ -154,7 +158,15 @@ Shotgun.prototype.fire = function(source) {
 	}
 	
     this.SFX.play();
-	if(this.DIRECTION < 0){
+	if(source.ZZA){
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) - 90, this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
+	}
+	else if(this.DIRECTION < 0){
 		try{
 			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
 				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) + 180, this.bulletSpeed * this.DIRECTION, 0, 0);
