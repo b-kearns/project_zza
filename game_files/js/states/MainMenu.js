@@ -58,17 +58,6 @@ function MainMenu(game) {}
 			}
 		},
 		update: function(){
-            // // start background movement for parallax
-            // for(var i = 1; i < this.background.length + 1; i++){
-				// this.background[i - 1].position.x -= 0.015 * i;
-			// }
-            //start music and go to gameplay
-			// if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-                
-				// this.title.kill();
-                // this.menuBGM.stop();
-				// game.state.start("Level_0", false, false, this.background, this.BGM);
-			// }
 		},
 		//credits tab
 		enterCredits: function(){

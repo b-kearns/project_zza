@@ -3,6 +3,8 @@
 //Game Title: Captain S.H.M.U.P(Strategic Human Military Uprising Protocol)
 //GITHUB :: https://github.com/b-kearns/project_zza
 
+//Dev Cheat: press ERTY at the same time for more health in level 1
+
 "use strict";
 
 var game = new Phaser.Game(960, 640, Phaser.AUTO);

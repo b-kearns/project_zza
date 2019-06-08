@@ -161,6 +161,6 @@ Zza.prototype = {
 	},
 	sendVictory: function(){
 		BGM.stop();
-		game.state.start("Victory", false, false);
+		game.state.start("Victory", false, false, this.player);
 	}
 }
