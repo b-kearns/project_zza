@@ -3,17 +3,17 @@
 function GameOver(game) {}
 	
 GameOver.prototype = {
-	init: function(background, CHECKPOINT, cache, plats){
+	init: function(background, CHECKPOINT, cache, plats, score){
 		this.background = background;
 		this.CHECKPOINT = CHECKPOINT;
 		this.cache = cache;
 		this.plats = plats;
+		this.scoreText = score;
 		console.log("GameOver: " + this.CHECKPOINT);
 	},
 	preload: function(){},
 	create: function(){
 		this.screen = [];
-			
 		this.title = game.add.bitmapText(game.world.centerX, game.world.centerY - 150, "myfont", "Game Over", 80);
 		this.title.anchor.setTo(0.5, 0.5);
 		this.screen.push(this.title);
@@ -47,12 +47,14 @@ GameOver.prototype = {
 	returnToMain: function(){
 		this.clearScreen();
 		this.Uninstall.stop();
+		SCORETEXT.kill();
 		game.state.start("MainMenu", false, false);
 	},
 	returnToCheckpoint: function(){
 		this.clearScreen();
 		this.Uninstall.stop();
-		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache, this.plats);
+		SCORETEXT.kill();
+		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache, this.plats, this.scoreText);
 	},
 	highlight: function(text){
 		text.tint = 0x5BC6FD;

@@ -10,6 +10,7 @@ var CACHE;
 var PLATS;
 var PLAYER;
 var SCORE = 0;
+var SCORETEXT;
 var NEWGAME = true;
 
 function displayText(x, y, words, fontSize, time){
@@ -18,7 +19,7 @@ function displayText(x, y, words, fontSize, time){
 	game.time.events.add(time, destroy, this, sux);
 }
 //send to game over when player dies
-function sendToGameOver(cache){
+function sendToGameOver(cache, score){
 	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
 	}
@@ -26,7 +27,7 @@ function sendToGameOver(cache){
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
-	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS);
+	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS, SCORETEXT);
 }
 
 function destroy(target){
@@ -243,7 +244,7 @@ function spawnShield(){
 function Level_0(game) {}
 
 	Level_0.prototype = {
-		init: function(background, check, cache, plats){
+		init: function(background, check, cache, plats, score){
 
 			this.background = background;
 			BACKGROUND = this.background;
@@ -257,6 +258,7 @@ function Level_0(game) {}
 			else{NEWGAME = true;}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
+			this.scoreText = score;
 			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
@@ -365,6 +367,7 @@ function Level_0(game) {}
 		create: function(){
 			game.add.existing(this.player);
 			this.scoreText = game.add.bitmapText(64, game.world.height - 64, "myfont", "Score: " + SCORE, 24);
+			SCORETEXT = this.scoreText;
 			EQ = this.player.equipped;
 			//weapon unlocking banner animation
 			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
@@ -578,7 +581,7 @@ function Level_2(game) {}
 				this.background[2].position.x -= 2;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1;
 			}
 
 			//collision handling for pickups
@@ -709,14 +712,14 @@ function Level_3(game) {}
 		},
 		update: function(){
 			this.scoreText.setText("Score: " + SCORE);
-			this.plats[0].tilePosition.x -= 2.5;
-			this.plats[1].tilePosition.x -= 2.5;
+			this.plats[0].tilePosition.x -= 2;
+			this.plats[1].tilePosition.x -= 2;
 			
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 3;
+				this.background[2].position.x -= 1.5;
 			}
 			else{
-				this.background[2].tilePosition.x -= 3;
+				this.background[2].tilePosition.x -= 1.5;
 			}
 
             //collision handling for pickups
@@ -828,14 +831,14 @@ function Level_4(game) {}
 		},
 		update: function(){
 			this.scoreText.setText("Score: " + SCORE);
-			this.plats[0].tilePosition.x -=3;
+			this.plats[0].tilePosition.x -=2;
 			if(this.plats[1] != null){this.plats[1].tilePosition.x -=3;}
 			
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 3;
+				this.background[2].position.x -= 1.5;
 			}
 			else{
-				this.background[2].tilePosition.x -= 3;
+				this.background[2].tilePosition.x -= 1.5;
 			}
 
             //collision handling for pickups
