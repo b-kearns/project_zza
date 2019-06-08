@@ -3,7 +3,9 @@
 function GameOver(game) {}
 	
 GameOver.prototype = {
+
 	init: function(background, CHECKPOINT, cache, plats, score){
+    game.scale.setGameSize(960, 640);
 		this.background = background;
 		this.CHECKPOINT = CHECKPOINT;
 		this.cache = cache;

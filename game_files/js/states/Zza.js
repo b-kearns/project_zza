@@ -1,4 +1,6 @@
 //final boss level
+var ZZA;
+var TENTS;
 
 function Zza(game){}
 
@@ -12,10 +14,12 @@ Zza.prototype = {
 		this.equipped = equipped;
 		this.pickups = pickups;
 		this.plats = plats;
+		CHECKPOINT = 5;
+
 		this.scoreText = scoreText;
 	},
 	preload: function(){
-		
+		console.log("ZZA: Preload");
 	},
 	create: function(){
 		game.scale.setGameSize(640, 960);
@@ -26,6 +30,7 @@ Zza.prototype = {
 
 		this.Zza.anchor.setTo(0.5, 0.5);
 
+		ZZA = this.Zza;
 		
 		this.Top1 = game.add.sprite(this.Zza.position.x - 64, this.Zza.position.y, "Atlas", "tentacle top");
 		this.Mid1 = game.add.sprite(this.Zza.position.x - 84, this.Zza.position.y, "Atlas", "Tentacle mid");
@@ -75,8 +80,13 @@ Zza.prototype = {
 			this.plats[i].moveDown();
 			this.plats[i].moveDown();
 		}
+		
 		this.BGM = game.add.audio("zzaTrack");
 		this.BGM.loop = true;
+		
+		BGM = this.BGM;
+		PLATS = this.plats;
+		
 		game.time.events.add(3950, this.BGM.play, this.BGM);
 		game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
 		game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);
@@ -106,8 +116,13 @@ Zza.prototype = {
 		this.Bot2.body.angularVelocity = 25;
 		this.Bot3.body.angularVelocity = -25;
 		this.Bot4.body.angularVelocity = -25;
+
+		this.weapons = [this.Bot1.weapon, this.Bot2.weapon, this.Bot3.weapon, this.Bot4.weapon];
 		
-		//console.log(this.tentacles[0][2]);
+		TENTS = this.tentacles;
+		
+		game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
+
 	},
 	update: function(){
 		this.scoreText.setText("Score: " + SCORE);
@@ -115,25 +130,37 @@ Zza.prototype = {
 		this.plats[1].tilePosition.y -=3;
 		this.background[0].tilePosition.y -=1;
 		
+		//collision handling for pickups
+		game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+		
+		game.physics.arcade.collide(this.plats, this.player);
+		
 		game.physics.arcade.overlap(this.tent_1[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_2[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_3[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_4[2], this.player.weapon, collisionHandle, null, this);
 		
-		checkCollision(this.tentacles[0][2]);
-		checkCollision(this.tentacles[1][2]);
-		checkCollision(this.tentacles[2][2]);
-		checkCollision(this.tentacles[3][2]);
+		game.physics.arcade.overlap(this.player, this.weapons, collisionHandle, null, this);
 		
 		if(!this.tent_1[2].alive){this.tent_1[0].kill();this.tent_1[1].kill();}
 		if(!this.tent_2[2].alive){this.tent_2[0].kill();this.tent_2[1].kill();}
 		if(!this.tent_3[2].alive){this.tent_3[0].kill();this.tent_3[1].kill();}
 		if(!this.tent_4[2].alive){this.tent_4[0].kill();this.tent_4[1].kill();}
-		if()
+
+		//IF ALL TENTACLES DIE, ZZA BLOWS UP, SEND TO VICTORY
+		if(!this.tent_1[2].alive && !this.tent_2[2].alive && !this.tent_3[2].alive && !this.tent_4[2].alive){
+			//ZZA BLOWS UP
+			this.sendVictory();
+		}
+
 	},
 	render: function(){
 		
 	},
 	tentacleCollision: function(tentacle, weapon){
+	},
+	sendVictory: function(){
+		BGM.stop();
+		game.state.start("Victory", false, false);
 	}
 }
