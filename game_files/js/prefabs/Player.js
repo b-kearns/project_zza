@@ -88,6 +88,10 @@ Player.prototype.respawn = function(x,y){
 	this.revive();
 	this.animations.play("idle");
 	this.reset(x,y);
+	this.tint == 0xffffff;
+	this.ICON.revive();
+	this.equipped = game.add.bitmapText(game.world.width - 118, game.world.height - 108, "myfont", "Weapon:", 24);
+	this.equipped.anchor.setTo(0.5, 0.5);
 }
 
 Player.prototype.flipPOV = function(){
@@ -107,7 +111,7 @@ Player.prototype.update = function() {
 	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
 
 	this.railSprite.bringToTop();
-
+	this.equipped.setText("Weapon:");
 	game.world.bringToTop(this.weapons);
 
 
@@ -183,6 +187,7 @@ Player.prototype.update = function() {
 		this.o_noes.play();
 		this.shipTrail.kill();
 		this.HEALTH = 1;
+		this.ICON.kill();
 		game.time.events.add(600, sendToGameOver, this, CACHE);
 	}
 	

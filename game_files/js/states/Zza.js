@@ -146,12 +146,13 @@ Zza.prototype = {
 		if(!this.tent_2[2].alive){this.tent_2[0].kill();this.tent_2[1].kill();}
 		if(!this.tent_3[2].alive){this.tent_3[0].kill();this.tent_3[1].kill();}
 		if(!this.tent_4[2].alive){this.tent_4[0].kill();this.tent_4[1].kill();}
-		
+
 		//IF ALL TENTACLES DIE, ZZA BLOWS UP, SEND TO VICTORY
 		if(!this.tent_1[2].alive && !this.tent_2[2].alive && !this.tent_3[2].alive && !this.tent_4[2].alive){
 			//ZZA BLOWS UP
 			this.sendVictory();
 		}
+
 	},
 	render: function(){
 		
