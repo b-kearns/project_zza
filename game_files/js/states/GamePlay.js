@@ -1,6 +1,7 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
+var CHECKPOINT_SCORE = 0;
 var BANNER;
 var BGM;
 var BACKGROUND;
@@ -21,6 +22,16 @@ function displayText(x, y, words, fontSize, time){
 function sendToGameOver(cache){
 	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
+	}
+	if(ZZA != null){
+		ZZA.kill();
+		if(PLATS[0] != null){PLATS[0].kill();}
+		if(PLATS[1] != null){PLATS[1].kill();}
+		for(var i = 0; i < TENTS.length; i++){
+			for(var j = 0; j < TENTS[i].length; j++){
+				TENTS[i][j].kill();
+			}
+		}
 	}
 	PLAYER.shipTrail.kill();
 	PLAYER.kill();
@@ -232,11 +243,15 @@ function checkPickups(player, target, pickups){
 }
 
 function spawnShield(){
-	if(game.rnd.integerInRange(1,100) > 70){
-
-		//console.log("Spawning Shield");
-
-		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
+	if(CHECKPOINT >= 5){
+		if(game.rnd.integerInRange(1,100) > 70){
+			spawnPickup(game.world.centerX + 200 * game.rnd.integerInRange(-1,1), game.world.height + 64, PICKUPS, 5);
+		}
+	}
+	else{
+		if(game.rnd.integerInRange(1,100) > 70){
+			spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
+		}
 	}
 }
 
@@ -244,7 +259,7 @@ function Level_0(game) {}
 
 	Level_0.prototype = {
 		init: function(background, check, cache, plats){
-
+			SCORE = CHECKPOINT_SCORE;
 			this.background = background;
 			BACKGROUND = this.background;
 			if(check != null){
@@ -379,6 +394,7 @@ function Level_0(game) {}
 		},
 		nextLevel: function(){
 			//levels
+			console.log("Return to Checkpoint: " + CHECKPOINT);
 			switch(CHECKPOINT){
 				case 1:
 					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
@@ -393,6 +409,7 @@ function Level_0(game) {}
 					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 				case 5:
+					// console.log("Checkpoint to ZZA");
 					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 					break;
 			}
@@ -411,6 +428,7 @@ function Level_1(game) {}
 			this.cache = cache;
 			this.equipped = equipped;
 			this.pickups = pickups;
+			CHECKPOINT = 1;
 		},
 		preload: function(){
 			console.log("Level_1: Preload");
@@ -501,7 +519,7 @@ function Level_1(game) {}
 		},
         //checkpoint system for level transition
 		nextLevel: function(){
-			CHECKPOINT++;
+			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
 			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped);
 		}
@@ -517,7 +535,7 @@ function Level_2(game) {}
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
-			//console.log(this.equipped);
+			CHECKPOINT = 2;
 		},
 		preload: function(){
 			console.log("Level_2: Preload");
@@ -609,7 +627,8 @@ function Level_2(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			CHECKPOINT++;
+			
+			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
 			game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
 
@@ -631,6 +650,7 @@ function Level_3(game) {}
 			this.equipped = equipped;
 			this.pickups = pickups;
             this.plats = plats;
+			CHECKPOINT = 3;
 		},
 		preload: function(){
 			console.log("Level_3: Preload");
@@ -745,7 +765,7 @@ function Level_3(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			CHECKPOINT++;
+			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
 			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
 		}
@@ -761,7 +781,8 @@ function Level_4(game) {}
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
-            this.plats = plats
+            this.plats = plats;
+			CHECKPOINT = 2;
 		},
 		preload: function(){
 			console.log("Level_4: Preload");
@@ -811,6 +832,8 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 74, makeEnemy, this, this.player, 5);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
+			
+			PLATS = this.plats;
 		},
 		update: function(){
 
@@ -863,6 +886,7 @@ function Level_4(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
+			CHECKPOINT_SCORE = SCORE;
 			game.time.events.add(3000, BGM.stop, BGM);
 			BGM = game.add.audio("zzaStinger");
 			game.time.events.add(3000, BGM.play, BGM);

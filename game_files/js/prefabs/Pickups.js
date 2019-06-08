@@ -16,15 +16,30 @@ Pickup.prototype.constructor = Pickup;
 
 Pickup.prototype.update = function(){
     //set path
-    this.body.velocity.x = -150;
-	
-    if(this.body.position.y < 310){
-        this.body.velocity.y = 30;
-    }
-    else if(this.body.position.y > 310 ){
-        this.body.velocity.y = -30;
-    }
-    else if(this.body.position.y === 310){
-        this.body.velocity.y = 0;
-    }
+	if(CHECKPOINT >= 5){
+		this.body.velocity.y = -150;
+		
+		if(this.body.position.x < game.world.centerX - 200){
+			this.body.velocity.x = 30;
+		}
+		else if(this.body.position.x > game.world.centerX + 200 ){
+			this.body.velocity.x = -30;
+		}
+		else if(this.body.position.x === game.world.centerX){
+			this.body.velocity.x = 0;
+		}
+	}
+	else{
+		this.body.velocity.x = -150;
+		
+		if(this.body.position.y < 310){
+			this.body.velocity.y = 30;
+		}
+		else if(this.body.position.y > 310 ){
+			this.body.velocity.y = -30;
+		}
+		else if(this.body.position.y === 310){
+			this.body.velocity.y = 0;
+		}
+	}
 }
