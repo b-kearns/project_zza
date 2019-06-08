@@ -150,8 +150,10 @@ function Instructions(game){}
 		},
 		create: function(){
 			this.screen = [];
-			
-			this.main = game.add.bitmapText(game.world.centerX + 250, game.world.height - 50, "myfont", "Return to Main Menu?", 32);
+
+			this.instructionText = game.add.bitmapText();
+			this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 120, "myfont", "Return to Main Menu?", 32);
+
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
 			this.main.events.onInputDown.add(this.returnToMain, this);
