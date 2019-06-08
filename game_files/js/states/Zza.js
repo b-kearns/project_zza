@@ -22,7 +22,7 @@ Zza.prototype = {
 		this.player.flipPOV();
 
 		this.scoreText.reset(100, game.world.height - 64);
-		this.Zza = game.add.sprite(200, -500, "Atlas", "OctoBoss");
+		this.Zza = game.add.sprite(game.world.centerX, -500, "Atlas", "OctoBoss");
 
 		this.Zza.anchor.setTo(0.5, 0.5);
 
@@ -107,7 +107,7 @@ Zza.prototype = {
 		this.Bot3.body.angularVelocity = -25;
 		this.Bot4.body.angularVelocity = -25;
 		
-		console.log(this.tentacles[0][2]);
+		//console.log(this.tentacles[0][2]);
 	},
 	update: function(){
 		this.scoreText.setText("Score: " + SCORE);

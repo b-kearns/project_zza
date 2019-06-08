@@ -654,7 +654,7 @@ function Level_3(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
 
-			console.log("Plats length: " + this.plats.length);
+			//console.log("Plats length: " + this.plats.length);
 			if(this.plats.length <= 0){
 				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
 
@@ -689,7 +689,7 @@ function Level_3(game) {}
 			BGM = this.BGM;
 
 			PLATS = this.plats;
-			console.log(this.plats);
+			//console.log(this.plats);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 2);
@@ -790,7 +790,7 @@ function Level_4(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
-			console.log("Start of Level 4: " + this.plats[1]);
+			//console.log("Start of Level 4: " + this.plats[1]);
             if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
 			
 			if(this.plats.length <= 0){

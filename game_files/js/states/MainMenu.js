@@ -107,8 +107,15 @@ function Credits(game){}
 		},
 		create: function(){
 			this.screen = [];
-			
-			this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 120, "myfont", "Return to Main Menu?", 32);
+
+			this.main = game.add.bitmapText(game.world.centerX-120, 50, "myfont", "--CREDITS--", 40);
+			this.main = game.add.bitmapText(game.world.centerX-400, 125, "myfont", "Corey Hunt: Sound Designer, Artist, Programmer", 32);
+			this.main = game.add.bitmapText(game.world.centerX-275, 200, "myfont", "Brandon Kearns: Lead Programmer", 32);
+			this.main = game.add.bitmapText(game.world.centerX-200, 275, "myfont", "Cole Watts: Programmer", 32);
+			this.main = game.add.bitmapText(game.world.centerX-285, 425, "myfont", "*All assets owned by developers*", 32);
+			this.main.tint = 0xfefefe;
+
+			this.main = game.add.bitmapText(game.world.centerX + 250, game.world.height - 50, "myfont", "Return to Main Menu?", 32);
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
 			this.main.events.onInputDown.add(this.returnToMain, this);
@@ -143,8 +150,10 @@ function Instructions(game){}
 		},
 		create: function(){
 			this.screen = [];
+
 			this.instructionText = game.add.bitmapText();
 			this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 120, "myfont", "Return to Main Menu?", 32);
+
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
 			this.main.events.onInputDown.add(this.returnToMain, this);
