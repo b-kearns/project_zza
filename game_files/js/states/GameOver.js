@@ -18,7 +18,7 @@ GameOver.prototype = {
 		this.title.anchor.setTo(0.5, 0.5);
 		this.screen.push(this.title);
 		
-		this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 120, "myfont", "Return to Main Menu?", 32);
+		this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 250, "myfont", "Return to Main Menu?", 32);
 		this.main.anchor.setTo(0.5, 0.5);
 		this.main.inputEnabled = true;
 		this.main.events.onInputDown.add(this.returnToMain, this);
@@ -26,7 +26,7 @@ GameOver.prototype = {
 		this.main.events.onInputOut.add(this.clear, this, this.main);
 		this.screen.push(this.main);
 		
-		this.again = game.add.bitmapText(game.world.centerX - 220, game.world.height - 120, "myfont", "Restart at Checkpoint?", 32);
+		this.again = game.add.bitmapText(game.world.centerX - 220, game.world.height - 250, "myfont", "Restart at Checkpoint?", 32);
 		this.again.anchor.setTo(0.5, 0.5);
 		this.again.inputEnabled = true;
 		this.again.events.onInputDown.add(this.returnToCheckpoint, this);
