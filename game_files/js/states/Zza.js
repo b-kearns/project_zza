@@ -5,7 +5,7 @@ var TENTS;
 function Zza(game){}
 
 Zza.prototype = {
-	init: function(background, player, enemies, cache, equipped, pickups, plats){
+	init: function(background, player, enemies, cache, equipped, pickups, plats, scoreText){
 		this.background = background;
 		this.BGM = BGM;
 		this.player = player;
@@ -15,17 +15,21 @@ Zza.prototype = {
 		this.pickups = pickups;
 		this.plats = plats;
 		CHECKPOINT = 5;
+
+		this.scoreText = scoreText;
 	},
 	preload: function(){
 		console.log("ZZA: Preload");
 	},
 	create: function(){
-		
 		game.scale.setGameSize(640, 960);
 		this.player.flipPOV();
-		
+
+		this.scoreText.reset(100, game.world.height - 64);
 		this.Zza = game.add.sprite(game.world.centerX, -500, "Atlas", "OctoBoss");
+
 		this.Zza.anchor.setTo(0.5, 0.5);
+
 		ZZA = this.Zza;
 		
 		this.Top1 = game.add.sprite(this.Zza.position.x - 64, this.Zza.position.y, "Atlas", "tentacle top");
@@ -112,14 +116,16 @@ Zza.prototype = {
 		this.Bot2.body.angularVelocity = 25;
 		this.Bot3.body.angularVelocity = -25;
 		this.Bot4.body.angularVelocity = -25;
-		
+
 		this.weapons = [this.Bot1.weapon, this.Bot2.weapon, this.Bot3.weapon, this.Bot4.weapon];
 		
 		TENTS = this.tentacles;
 		
 		game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
+
 	},
 	update: function(){
+		this.scoreText.setText("Score: " + SCORE);
 		this.plats[0].tilePosition.y -=3;
 		this.plats[1].tilePosition.y -=3;
 		this.background[0].tilePosition.y -=1;
