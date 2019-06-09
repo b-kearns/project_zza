@@ -115,7 +115,7 @@ function Credits(game){}
 			this.main = game.add.bitmapText(game.world.centerX-285, 425, "myfont", "*All assets owned by developers*", 32);
 			//this.main.tint = 0xfefefe;
 
-			this.main = game.add.bitmapText(game.world.centerX + 250, game.world.height - 50, "myfont", "Return to Main Menu?", 32);
+			this.main = game.add.bitmapText(game.world.centerX + 290, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
 			this.main.events.onInputDown.add(this.returnToMain, this);
@@ -153,21 +153,20 @@ function Instructions(game){}
 
 			//this.instructionText = game.add.bitmapText();
 			this.main = game.add.bitmapText(game.world.centerX-150, 50, "myfont", "--INSTRUCTIONS--", 40);
-			this.main = game.add.bitmapText(150, 150, "myfont", "WASD: Movement keys", 32);
-			this.main = game.add.bitmapText(150, 250, "myfont", "SPACEBAR: Fire weapon", 32);
-
-
-
-			this.main = game.add.bitmapText(150, 350, "myfont", ": Pickup for shield", 32);
-
-			this.game.add.sprite(50, 350, "Atlas", "ShieldPickup");
+			this.main = game.add.bitmapText(50, 150, "myfont", "WASD", 32);
+			this.main = game.add.bitmapText(150, 150, "myfont", ": Movement keys", 32);
+			this.main = game.add.bitmapText(50, 225, "myfont", "SPACEBAR", 32);
+			this.main = game.add.bitmapText(225, 225, "myfont", ": Fire weapon", 32);
+			this.main = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys", 32);
+			this.main = game.add.bitmapText(525, 300, "myfont", ": Cycle through weapons", 32);
+			this.main = game.add.bitmapText(150, 375, "myfont", ": Pickup for shield", 32);
+			this.game.add.sprite(50, 375, "Atlas", "ShieldPickup");
 			this.main = game.add.bitmapText(150, 450, "myfont", ": Pickup for weapon upgrade", 32);
-
 			this.game.add.sprite(50, 450, "Atlas", "DoublePickup");
 
 
 
-			this.main = game.add.bitmapText(game.world.centerX + 250, game.world.height - 50, "myfont", "Return to Main Menu?", 32);
+			this.main = game.add.bitmapText(game.world.centerX + 290, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
