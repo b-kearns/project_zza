@@ -104,7 +104,7 @@ function Credits(game){}
 			this.main = game.add.bitmapText(game.world.centerX-285, 425, "myfont", "*All assets owned by developers*", 32);
 			//this.main.tint = 0xfefefe;
 
-			this.main = game.add.bitmapText(game.world.centerX + 250, game.world.height - 50, "myfont", "Return to Main Menu?", 32);
+			this.main = game.add.bitmapText(game.world.centerX + 290, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
 			this.main.events.onInputDown.add(this.returnToMain, this);
@@ -141,6 +141,7 @@ function Instructions(game){}
 			this.screen = [];
 
 			//this.instructionText = game.add.bitmapText();
+
 			this.title = game.add.bitmapText(game.world.centerX, 50, "myfont", "--INSTRUCTIONS--", 40);
 			
 			this.title.anchor.setTo(0.5, 0.5);
@@ -164,11 +165,13 @@ function Instructions(game){}
 			this.upgradeText = game.add.bitmapText(140, 450, "myfont", ": Unlock new weapons to use against the enemy!", 30);
 			this.upgradeText.anchor.setTo(0, 0.5);
 			this.screen.push(this.upgradeText);
+      
+      this.arrows = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys : Cycle through weapons", 32);
+      this.arrows.anchor.setTo(0, 0.5);
 
 			this.pickupIcon = this.game.add.sprite(50, 455, "Atlas", "DoublePickup");
 			this.pickupIcon.anchor.setTo(0, 0.5);
-
-
+      
 			this.main = game.add.bitmapText(game.world.width - 150, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 
 			this.main.anchor.setTo(0.5, 0.5);
