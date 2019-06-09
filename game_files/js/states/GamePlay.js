@@ -282,7 +282,6 @@ function Level_0(game) {}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
 			this.scoreText = score;
-			CHECKPOINT = 1;
 			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
@@ -400,8 +399,7 @@ function Level_0(game) {}
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
 			this.banner.exists = false;
 			BANNER = this.banner;
-			
-			CHECKPOINT = 5;
+
 		},
 		update: function(){
 			this.nextLevel();
@@ -820,8 +818,8 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
-			//timer for next level 83
-			game.time.events.add(1000 * 5, this.nextLevel, this);
+			//timer for next level
+			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
 			//console.log("Start of Level 4: " + this.plats[1]);
             if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
