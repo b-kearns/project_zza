@@ -282,7 +282,6 @@ function Level_0(game) {}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
 			this.scoreText = score;
-			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
 			console.log("Level_0: Preload");
@@ -509,7 +508,7 @@ function Level_1(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
@@ -624,7 +623,7 @@ function Level_2(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 			
 			//move the background
@@ -763,7 +762,7 @@ function Level_3(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 			
 			//move the background
@@ -818,7 +817,7 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
-			//timer for next level
+      //start next level, 83 seconds
 			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
 			//console.log("Start of Level 4: " + this.plats[1]);
@@ -883,7 +882,7 @@ function Level_4(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 				
 			//move the background
@@ -891,9 +890,9 @@ function Level_4(game) {}
 			this.background[1].position.x -= 0.031;
 
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
-				this.nextLevel();
-			}
+			// if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
+				// this.nextLevel();
+			// }
 			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
 			}
