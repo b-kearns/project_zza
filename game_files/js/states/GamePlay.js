@@ -282,8 +282,6 @@ function Level_0(game) {}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
 			this.scoreText = score;
-			CHECKPOINT = 4;
-			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
 			console.log("Level_0: Preload");
@@ -400,8 +398,6 @@ function Level_0(game) {}
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
 			this.banner.exists = false;
 			BANNER = this.banner;
-			
-			CHECKPOINT = 5;
 		},
 		update: function(){
 			this.nextLevel();

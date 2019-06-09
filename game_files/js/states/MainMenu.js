@@ -102,6 +102,7 @@ function Credits(game){}
 			this.background = background;
 			this.background[0].width = game.world.width;
 			this.background[0].height = game.world.height;
+			this.backgroun[1].reset(game.world.width * 0.8, 100);
 		},
 		preload: function(){
 			console.log("Credits: Preload");
