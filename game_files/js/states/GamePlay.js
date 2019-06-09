@@ -37,7 +37,9 @@ function sendToGameOver(cache, score){
 	}
 	PLAYER.shipTrail.kill();
 	BANNER.kill();
-	//SUX.kill();
+
+	if(SUX != null){SUX.kill();}
+
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
@@ -388,14 +390,18 @@ function Level_0(game) {}
 		},
 		create: function(){
 			game.add.existing(this.player);
+			
 			this.scoreText = game.add.bitmapText(64, game.world.height - 64, "myfont", "Score: " + SCORE, 24);
 			SCORETEXT = this.scoreText;
+			
 			EQ = this.player.equipped;
 			//weapon unlocking banner animation
 			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
 			this.banner.exists = false;
 			BANNER = this.banner;
+			
+			CHECKPOINT = 5;
 		},
 		update: function(){
 			this.nextLevel();
@@ -407,19 +413,24 @@ function Level_0(game) {}
 			console.log("Return to Checkpoint: " + CHECKPOINT);
 			switch(CHECKPOINT){
 				case 1:
+					this.background[1].position.x = game.world.width * 0.8;
 					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.scoreText);
 					break;
 				case 2:
+					this.background[1].position.x = game.world.width * 0.6;
 					game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 3:
+					this.background[1].position.x = game.world.width * 0.4;
 					game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 4:
+					this.background[1].position.x = game.world.width * 0.2;
 					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 5:
-					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoretext);
+					this.background[1].position.x = game.world.width * -10;
+					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 			}
 			
@@ -504,7 +515,7 @@ function Level_1(game) {}
 			}
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.04;
+			this.background[1].position.x -= 0.031;
 			
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
@@ -593,7 +604,7 @@ function Level_2(game) {}
 
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
-
+			
 		},
 		update: function(){
 			this.scoreText.setText("Score: " + SCORE);
@@ -620,7 +631,7 @@ function Level_2(game) {}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.04;
+			this.background[1].position.x -= 0.031;
 		
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
@@ -759,7 +770,7 @@ function Level_3(game) {}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.04;
+			this.background[1].position.x -= 0.031;
 		
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
@@ -879,7 +890,7 @@ function Level_4(game) {}
 				
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.04;
+			this.background[1].position.x -= 0.031;
 
 			//debug options
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){

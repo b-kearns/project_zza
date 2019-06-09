@@ -25,8 +25,12 @@ Zza.prototype = {
 	},
 	create: function(){
 		game.scale.setGameSize(640, 960);
+		
+		this.background[0].width = game.world.width;
+		this.background[0].height = game.world.height;
+		
 		this.player.flipPOV();
-
+		
 		this.scoreText.reset(100, game.world.height - 64);
 		this.Zza = game.add.sprite(game.world.centerX, -500, "Atlas", "OctoBoss");
 
@@ -177,6 +181,6 @@ Zza.prototype = {
 	},
 	sendVictory: function(){
 		BGM.stop();
-		game.state.start("Victory", false, false, this.player);
+		game.state.start("Victory", false, false, this.player, this.background, this.plats);
 	}
 }
