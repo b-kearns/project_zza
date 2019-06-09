@@ -151,25 +151,25 @@ function Instructions(game){}
 			this.movement.anchor.setTo(0, 0.5);
 			this.screen.push(this.movement);
 			
-			this.attack = game.add.bitmapText(50, 250, "myfont", "SPACEBAR : Fire your weapon to destroy enemy ships!", 30);
+			this.attack = game.add.bitmapText(50, 225, "myfont", "SPACEBAR : Fire your weapon to destroy enemy ships!", 30);
 			this.attack.anchor.setTo(0, 0.5);
 			this.screen.push(this.attack);
 
-			this.shieldText = game.add.bitmapText(140, 350, "myfont", ": Pickup enery shields to increase your defenses!", 30);
+			this.shieldText = game.add.bitmapText(140, 375, "myfont", ": Pickup enery shields to increase your defenses!", 30);
 			this.shieldText.anchor.setTo(0, 0.5);
 			this.screen.push(this.shieldText);
 
-			this.shieldIcon = this.game.add.sprite(50, 355, "Atlas", "ShieldPickup");
+			this.shieldIcon = this.game.add.sprite(50, 400, "Atlas", "ShieldPickup");
 			this.shieldIcon.anchor.setTo(0, 0.5);
 			
-			this.upgradeText = game.add.bitmapText(140, 450, "myfont", ": Unlock new weapons to use against the enemy!", 30);
+			this.upgradeText = game.add.bitmapText(140, 475, "myfont", ": Unlock new weapons to use against the enemy!", 30);
 			this.upgradeText.anchor.setTo(0, 0.5);
 			this.screen.push(this.upgradeText);
       
-      this.arrows = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys : Cycle through weapons", 32);
-      this.arrows.anchor.setTo(0, 0.5);
+      		this.arrows = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys : Cycle through weapons", 32);
+      		this.arrows.anchor.setTo(0, 0.5);
 
-			this.pickupIcon = this.game.add.sprite(50, 455, "Atlas", "DoublePickup");
+			this.pickupIcon = this.game.add.sprite(50, 475, "Atlas", "DoublePickup");
 			this.pickupIcon.anchor.setTo(0, 0.5);
       
 			this.main = game.add.bitmapText(game.world.width - 150, game.world.height - 50, "myfont", "Return to Main Menu?", 24);

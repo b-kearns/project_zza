@@ -1,6 +1,8 @@
 //final boss level
 var ZZA;
 var TENTS;
+var bossDeath;
+var explosions;
 
 function Zza(game){}
 
@@ -123,6 +125,13 @@ Zza.prototype = {
 		
 		game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
+		this.bossDeath = game.add.emitter(this.Zza.position.x, this.Zza.position.y);
+    	this.bossDeath.width = this.Zza.width / 2;
+    	this.bossDeath.height = this.Zza.height / 2;
+		this.bossDeath.makeParticles("bigBoom", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20);
+		//this.bossDeath.setAlpha(0.9, 0, 900);
+    	this.bossDeath.setScale(1, 1.6, 1, 1.6, 1000, Phaser.Easing.Quintic.Out);
+
 	},
 	update: function(){
 		this.scoreText.setText("Score: " + SCORE);
@@ -149,6 +158,13 @@ Zza.prototype = {
 
 		//IF ALL TENTACLES DIE, ZZA BLOWS UP, SEND TO VICTORY
 		if(!this.tent_1[2].alive && !this.tent_2[2].alive && !this.tent_3[2].alive && !this.tent_4[2].alive){
+
+			this.bossDeath.x = this.Zza.x;
+        	this.bossDeath.y = this.Zza.y;
+			this.bossDeath.start(false, 1000, 100, 40);
+
+    		this.Zza.kill();
+
 			//ZZA BLOWS UP
 			this.sendVictory();
 		}
