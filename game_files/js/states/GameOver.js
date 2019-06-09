@@ -73,7 +73,7 @@ GameOver.prototype = {
 				this.plats[i].kill();
 			}
 			this.plats = [];
-			console.log("Killing Plats: " + this.plats);
+			//console.log("Killing Plats: " + this.plats);
 		}
 	}
 }
