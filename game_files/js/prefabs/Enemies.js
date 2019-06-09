@@ -450,8 +450,10 @@ function Enemy6(game, posX, posY, key, weapon_version) {
 	this.DRAG = 8000;
 	this.MAX_VELOCITY = 200;
 	this.ACCELERATION = 1500;
-	this.HEALTH = 5;
-	this.DEFAULT = 5;
+
+	this.HEALTH = 100;
+	this.DEFAULT = 100;
+
 	this.POINTS = 400;
 	this.HERO = false;
 	this.KEY = 0;

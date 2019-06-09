@@ -168,7 +168,7 @@ function Instructions(game){}
 			this.arrows.anchor.setTo(0, 0.5);
 			this.screen.push(this.arrows);
 
-			this.shieldText = game.add.bitmapText(140, 390, "myfont", ": Pickup enery shields to increase your defenses!", 30);
+			this.shieldText = game.add.bitmapText(140, 390, "myfont", ": Pickup energy shields to improve your defenses!", 30);
 			this.shieldText.anchor.setTo(0, 0.5);
 			this.screen.push(this.shieldText);
 
@@ -179,7 +179,6 @@ function Instructions(game){}
 			this.upgradeText = game.add.bitmapText(140, 470, "myfont", ": Unlock new weapons to use against the enemy!", 30);
 			this.upgradeText.anchor.setTo(0, 0.5);
 			this.screen.push(this.upgradeText);
-      
 
 			this.pickupIcon = this.game.add.sprite(50, 475, "Atlas", "DoublePickup");
 			this.pickupIcon.anchor.setTo(0, 0.5);
