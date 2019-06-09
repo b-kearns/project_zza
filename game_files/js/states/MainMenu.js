@@ -3,17 +3,16 @@
 function MainMenu(game) {}
 	
 	MainMenu.prototype = {
-		init: function(bgm){
-			if(bgm != null){
-				this.menuBGM = bgm;
-			}
+		init: function(reset){
+			this.reset = reset;
 		},
 		preload: function(){
 			//display scrolling background
 			this.background = [];
 			this.background[0] = game.add.tileSprite(0,0,960,640,"StarsBackground");
-            this.background[1] = game.add.sprite(-200,100,"EarthBackground");
+            this.background[1] = game.add.sprite(game.world.width * 0.8, 100, "EarthBackground");
             this.background[1].scale.setTo(3.5, 3.5);
+            this.background[1].anchor.setTo(1, 0);
 			this.background[2] = game.add.tileSprite(960,0,1990,640, "debrisBackground");
 			this.background[2].alpha = 0.75;
 		},
@@ -51,7 +50,7 @@ function MainMenu(game) {}
 			this.screen.push(this.play);
 			
             //load music
-			if(this.menuBGM == null){
+			if(this.menuBGM == null || this.reset){
 				this.menuBGM = game.add.audio("Menu");
 				this.menuBGM.loop = true;
 				this.menuBGM.play();
@@ -62,7 +61,7 @@ function MainMenu(game) {}
 		//credits tab
 		enterCredits: function(){
 			this.clearScreen();
-			game.state.start("Credits", false, false);
+			game.state.start("Credits", false, false, this.menuBGM);
 		},
 		//instructions tab
 		enterInstructions: function(){
@@ -91,6 +90,16 @@ function MainMenu(game) {}
 function Credits(game){}
 
 	Credits.prototype = {
+		init: function(bgm){
+			if(bgm == null){
+				this.menuBGM = game.add.audio("Menu");
+				this.menuBGM.loop = true;
+				this.menuBGM.play();
+			}
+			else{
+				this.menuBGM = bgm;
+			}
+		},
 		preload: function(){
 			console.log("Credits: Preload");
 		},
@@ -116,7 +125,7 @@ function Credits(game){}
 		},
 		returnToMain: function(){
 			this.clearScreen();
-			game.state.start("MainMenu", false, false);
+			if(this.menuBGM.isPlaying){game.state.start("MainMenu", false, false, false);}
 		},
 		clearScreen: function(){
 			for(var i = 0; i < this.screen.length; i++){
@@ -151,28 +160,32 @@ function Instructions(game){}
 			this.movement.anchor.setTo(0, 0.5);
 			this.screen.push(this.movement);
 			
-			this.attack = game.add.bitmapText(50, 250, "myfont", "SPACEBAR : Fire your weapon to destroy enemy ships!", 30);
+			this.attack = game.add.bitmapText(50, 230, "myfont", "SPACEBAR : Fire your weapon to destroy enemy ships!", 30);
 			this.attack.anchor.setTo(0, 0.5);
 			this.screen.push(this.attack);
+			
+			this.arrows = game.add.bitmapText(50, 310, "myfont", "Left / Right Arrow Keys : Cycle through weapons", 30);
+			this.arrows.anchor.setTo(0, 0.5);
+			this.screen.push(this.arrows);
 
-			this.shieldText = game.add.bitmapText(140, 350, "myfont", ": Pickup enery shields to increase your defenses!", 30);
+			this.shieldText = game.add.bitmapText(140, 390, "myfont", ": Pickup enery shields to increase your defenses!", 30);
 			this.shieldText.anchor.setTo(0, 0.5);
 			this.screen.push(this.shieldText);
 
-			this.shieldIcon = this.game.add.sprite(50, 355, "Atlas", "ShieldPickup");
+			this.shieldIcon = this.game.add.sprite(50, 395, "Atlas", "ShieldPickup");
 			this.shieldIcon.anchor.setTo(0, 0.5);
+			this.screen.push(this.shieldIcon);
 			
-			this.upgradeText = game.add.bitmapText(140, 450, "myfont", ": Unlock new weapons to use against the enemy!", 30);
+			this.upgradeText = game.add.bitmapText(140, 470, "myfont", ": Unlock new weapons to use against the enemy!", 30);
 			this.upgradeText.anchor.setTo(0, 0.5);
 			this.screen.push(this.upgradeText);
       
-      this.arrows = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys : Cycle through weapons", 32);
-      this.arrows.anchor.setTo(0, 0.5);
 
-			this.pickupIcon = this.game.add.sprite(50, 455, "Atlas", "DoublePickup");
+			this.pickupIcon = this.game.add.sprite(50, 475, "Atlas", "DoublePickup");
 			this.pickupIcon.anchor.setTo(0, 0.5);
+			this.screen.push(this.pickupIcon);
       
-			this.main = game.add.bitmapText(game.world.width - 150, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
+			this.main = game.add.bitmapText(game.world.width - 170, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
