@@ -21,11 +21,11 @@ Victory.prototype = {
 		//game.add.tween(this.player).to({y: 500}, 2000, "Linear", true, 3000, 0, false);
 		//game.add.tween(this.player).to({y: 300}, 1000, "Linear", true, 5000, 0, false);
 		game.add.tween(this.player).to({y: -200}, 1000, "Linear", true, 3000, 0, false);
-		game.time.events.add(5000, this.playerKill, this, this.player);
+		game.time.events.add(4000, this.playerKill, this, this.player);
 		game.time.events.add(4000, this.gameText, this);
-		game.time.events.add(30000, this.enterCredits, this);
+		game.time.events.add(60000, this.enterCredits, this);
 		
-		this.credits = game.add.bitmapText(game.world.centerX, game.world.height - 100, "myfont", "Credits", 32);
+		this.credits = game.add.bitmapText(game.world.centerX, game.world.height - 200, "myfont", "Credits", 34);
 		this.credits.anchor.setTo(0.5, 0.5);
 		this.credits.inputEnabled = true;
 		this.credits.events.onInputDown.add(this.enterCredits, this);
@@ -63,7 +63,7 @@ Victory.prototype = {
 		this.bgm.stop();
 		this.clearScreen();
 		game.scale.setGameSize(960, 640);
-		game.state.start("Credits", false, false, null);
+		game.state.start("Credits", false, false, null, this.background);
 	},
 	clearScreen: function(){
 		for(var i = 0; i < this.screen.length; i++){
