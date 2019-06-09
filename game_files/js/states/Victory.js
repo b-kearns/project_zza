@@ -23,9 +23,9 @@ Victory.prototype = {
 		game.add.tween(this.player).to({y: -200}, 1000, "Linear", true, 3000, 0, false);
 		game.time.events.add(4000, this.playerKill, this, this.player);
 		game.time.events.add(4000, this.gameText, this);
-		game.time.events.add(30000, this.enterCredits, this);
+		game.time.events.add(60000, this.enterCredits, this);
 		
-		this.credits = game.add.bitmapText(game.world.centerX, game.world.height - 100, "myfont", "Credits", 32);
+		this.credits = game.add.bitmapText(game.world.centerX, game.world.height - 200, "myfont", "Credits", 34);
 		this.credits.anchor.setTo(0.5, 0.5);
 		this.credits.inputEnabled = true;
 		this.credits.events.onInputDown.add(this.enterCredits, this);

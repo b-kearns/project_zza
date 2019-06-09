@@ -3,8 +3,9 @@
 function MainMenu(game) {}
 	
 	MainMenu.prototype = {
-		init: function(reset){
+		init: function(reset, bgm){
 			this.reset = reset;
+			if(bgm != null){this.menuBGM = bgm;}
 		},
 		preload: function(){
 			//display scrolling background
@@ -61,7 +62,7 @@ function MainMenu(game) {}
 		//credits tab
 		enterCredits: function(){
 			this.clearScreen();
-			game.state.start("Credits", false, false, this.menuBGM);
+			game.state.start("Credits", false, false, this.menuBGM, this.background);
 		},
 		//instructions tab
 		enterInstructions: function(){
@@ -102,7 +103,7 @@ function Credits(game){}
 			this.background = background;
 			this.background[0].width = game.world.width;
 			this.background[0].height = game.world.height;
-			this.backgroun[1].reset(game.world.width * 0.8, 100);
+			this.background[1].reset(game.world.width * 0.8, 100);
 		},
 		preload: function(){
 			console.log("Credits: Preload");
@@ -129,7 +130,7 @@ function Credits(game){}
 		},
 		returnToMain: function(){
 			this.clearScreen();
-			if(this.menuBGM.isPlaying){game.state.start("MainMenu", false, false, false);}
+			if(this.menuBGM.isPlaying){game.state.start("MainMenu", false, false, false, this.menuBGM);}
 		},
 		clearScreen: function(){
 			for(var i = 0; i < this.screen.length; i++){
