@@ -503,15 +503,15 @@ function Level_1(game) {}
 			}
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.04;
 			
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
 				this.nextLevel();
 			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				spawnPickup(500, 100, this.pickups, 1);
-
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
 			}
             if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
 				this.debug = !this.debug;
@@ -619,14 +619,11 @@ function Level_2(game) {}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.04;
 		
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				spawnPickup(500, 100, this.pickups, 1);
 			}
 			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
@@ -761,14 +758,11 @@ function Level_3(game) {}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.04;
 		
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
 			}
 			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;
@@ -803,7 +797,7 @@ function Level_4(game) {}
 			this.cache = cache;
 			this.equipped = equipped;
             this.plats = plats;
-			CHECKPOINT = 2;
+			CHECKPOINT = 4;
             this.plats = plats
 			this.scoreText = score;
 		},
@@ -884,14 +878,11 @@ function Level_4(game) {}
 				
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.04;
 
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
 			}
 			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
 				this.debug = !this.debug;

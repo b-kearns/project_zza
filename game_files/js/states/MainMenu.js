@@ -58,17 +58,6 @@ function MainMenu(game) {}
 			}
 		},
 		update: function(){
-            // // start background movement for parallax
-            // for(var i = 1; i < this.background.length + 1; i++){
-				// this.background[i - 1].position.x -= 0.015 * i;
-			// }
-            //start music and go to gameplay
-			// if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-                
-				// this.title.kill();
-                // this.menuBGM.stop();
-				// game.state.start("Level_0", false, false, this.background, this.BGM);
-			// }
 		},
 		//credits tab
 		enterCredits: function(){
@@ -152,21 +141,38 @@ function Instructions(game){}
 			this.screen = [];
 
 			//this.instructionText = game.add.bitmapText();
-			this.main = game.add.bitmapText(game.world.centerX-150, 50, "myfont", "--INSTRUCTIONS--", 40);
-			this.main = game.add.bitmapText(50, 150, "myfont", "WASD", 32);
-			this.main = game.add.bitmapText(150, 150, "myfont", ": Movement keys", 32);
-			this.main = game.add.bitmapText(50, 225, "myfont", "SPACEBAR", 32);
-			this.main = game.add.bitmapText(225, 225, "myfont", ": Fire weapon", 32);
-			this.main = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys", 32);
-			this.main = game.add.bitmapText(525, 300, "myfont", ": Cycle through weapons", 32);
-			this.main = game.add.bitmapText(150, 375, "myfont", ": Pickup for shield", 32);
-			this.game.add.sprite(50, 375, "Atlas", "ShieldPickup");
-			this.main = game.add.bitmapText(150, 450, "myfont", ": Pickup for weapon upgrade", 32);
-			this.game.add.sprite(50, 450, "Atlas", "DoublePickup");
 
+			this.title = game.add.bitmapText(game.world.centerX, 50, "myfont", "--INSTRUCTIONS--", 40);
+			
+			this.title.anchor.setTo(0.5, 0.5);
+			this.screen.push(this.title);
+			
+			this.movement = game.add.bitmapText(50, 150, "myfont", "WASD : Use movement keys to avoid projectiles!", 30);
+			this.movement.anchor.setTo(0, 0.5);
+			this.screen.push(this.movement);
+			
+			this.attack = game.add.bitmapText(50, 250, "myfont", "SPACEBAR : Fire your weapon to destroy enemy ships!", 30);
+			this.attack.anchor.setTo(0, 0.5);
+			this.screen.push(this.attack);
 
+			this.shieldText = game.add.bitmapText(140, 350, "myfont", ": Pickup enery shields to increase your defenses!", 30);
+			this.shieldText.anchor.setTo(0, 0.5);
+			this.screen.push(this.shieldText);
 
-			this.main = game.add.bitmapText(game.world.centerX + 290, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
+			this.shieldIcon = this.game.add.sprite(50, 355, "Atlas", "ShieldPickup");
+			this.shieldIcon.anchor.setTo(0, 0.5);
+			
+			this.upgradeText = game.add.bitmapText(140, 450, "myfont", ": Unlock new weapons to use against the enemy!", 30);
+			this.upgradeText.anchor.setTo(0, 0.5);
+			this.screen.push(this.upgradeText);
+      
+      this.arrows = game.add.bitmapText(50, 300, "myfont", "Left and Right Arrow Keys : Cycle through weapons", 32);
+      this.arrows.anchor.setTo(0, 0.5);
+
+			this.pickupIcon = this.game.add.sprite(50, 455, "Atlas", "DoublePickup");
+			this.pickupIcon.anchor.setTo(0, 0.5);
+      
+			this.main = game.add.bitmapText(game.world.width - 150, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
