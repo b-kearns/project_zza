@@ -50,7 +50,7 @@ GameOver.prototype = {
 		this.clearScreen();
 		this.Uninstall.stop();
 		SCORETEXT.kill();
-		game.state.start("MainMenu", false, false);
+		game.state.start("MainMenu", false, false, true);
 	},
 	returnToCheckpoint: function(){
 		this.clearScreen();
