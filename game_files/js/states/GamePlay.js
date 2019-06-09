@@ -398,6 +398,7 @@ function Level_0(game) {}
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
 			this.banner.exists = false;
 			BANNER = this.banner;
+
 		},
 		update: function(){
 			this.nextLevel();
@@ -816,7 +817,7 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
-			//timer for next level 83
+      //start next level, 83 seconds
 			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
 			//console.log("Start of Level 4: " + this.plats[1]);
