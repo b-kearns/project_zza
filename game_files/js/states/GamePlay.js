@@ -9,15 +9,16 @@ var EQ;
 var PICKUPS;
 var CACHE;
 var PLATS;
+var SUX;
 var PLAYER;
 var SCORE = 0;
 var SCORETEXT;
 var NEWGAME = true;
 
 function displayText(x, y, words, fontSize, time){
-	var sux = game.add.bitmapText(x, y, "myfont", words, fontSize);
-	sux.anchor.setTo(0.5, 0.5);
-	game.time.events.add(time, destroy, this, sux);
+	SUX = game.add.bitmapText(x, y, "myfont", words, fontSize);
+	SUX.anchor.setTo(0.5, 0.5);
+	game.time.events.add(time, destroy, this, SUX);
 }
 //send to game over when player dies
 function sendToGameOver(cache, score){
@@ -35,6 +36,8 @@ function sendToGameOver(cache, score){
 		}
 	}
 	PLAYER.shipTrail.kill();
+	BANNER.kill();
+	SUX.kill();
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
