@@ -90,7 +90,7 @@ function MainMenu(game) {}
 function Credits(game){}
 
 	Credits.prototype = {
-		init: function(bgm){
+		init: function(bgm, background){
 			if(bgm == null){
 				this.menuBGM = game.add.audio("Menu");
 				this.menuBGM.loop = true;
@@ -99,6 +99,9 @@ function Credits(game){}
 			else{
 				this.menuBGM = bgm;
 			}
+			this.background = background;
+			this.background[0].width = game.world.width;
+			this.background[0].height = game.world.height;
 		},
 		preload: function(){
 			console.log("Credits: Preload");
