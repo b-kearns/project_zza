@@ -282,7 +282,7 @@ function Level_0(game) {}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
 			this.scoreText = score;
-			CHECKPOINT = 4;
+			CHECKPOINT = 1;
 			//console.log("Level 0 Transition: " + this.plats.length);
 		},
 		preload: function(){
