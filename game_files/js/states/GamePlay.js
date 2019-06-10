@@ -1,37 +1,62 @@
 "use strict";
 // where the magic happens
 var CHECKPOINT;
-
+var CHECKPOINT_SCORE = 0;
+var BANNER;
 var BGM;
 var BACKGROUND;
 var EQ;
 var PICKUPS;
 var CACHE;
 var PLATS;
+var SUX;
 var PLAYER;
 var SCORE = 0;
+var SCORETEXT;
 var NEWGAME = true;
 
-function sendToGameOver(cache){
+function displayText(x, y, words, fontSize, time){
+	SUX = game.add.bitmapText(x, y, "myfont", words, fontSize);
+	SUX.anchor.setTo(0.5, 0.5);
+	game.time.events.add(time, destroy, this, SUX);
+}
+//send to game over when player dies
+function sendToGameOver(cache, score){
+	//DESTROY ALL ENEMY SPRITES
 	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
 	}
+	//REMOVES ZZA ON PLAYER DEATH
+	if(ZZA != null){
+		ZZA.kill();
+		if(PLATS[0] != null){PLATS[0].kill();}
+		if(PLATS[1] != null){PLATS[1].kill();}
+		for(var i = 0; i < TENTS.length; i++){
+			for(var j = 0; j < TENTS[i].length; j++){
+				TENTS[i][j].kill();
+			}
+		}
+	}
+	//KILLS PLAYER THRUSTER EFFECT
 	PLAYER.shipTrail.kill();
+	BANNER.kill();
+	
+	//CLEANS UP SCREEN
+	if(SUX != null){SUX.kill();}
+
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
-	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS);
+	//SEND TO GAMEOVER
+	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS, SCORETEXT);
 }
 
+//USED FOR DELAYED SPRITE DESTRUCTION
 function destroy(target){
 	target.kill();
 }
 
-function sendToZza(){
-	BGM.stop();
-	game.state.start("Zza", false, false, PLAYER, EQ, BACKGROUND);
-}
-
+//FUNCTION HANDLES SPAWNING ENEMIES, USED IN TIMERS
 function makeEnemy(player, key){
 	switch(key){
 	//basic p-shot enemy
@@ -113,8 +138,10 @@ function makeEnemy(player, key){
 
 }
 
+//weapon collision
 function collisionHandle(target, weapon){
-	if(target.SHIELD){
+	//console.log(target);
+	if(target.SHIELD != null && target.SHIELD){
 	   target.SHIELD = false;
 	   if(!weapon.PENETRATE){weapon.kill();}
 	   return;
@@ -128,18 +155,22 @@ function collisionHandle(target, weapon){
 	if(!weapon.PENETRATE){weapon.kill();}			
 }
 
+//HANDLES ENEMY WEAPON COLLISON WITH PLAYER
 function checkCollision(enemy){
-	this.enemy = enemy;
-	game.physics.arcade.overlap(this.enemy.weapon, this.player, collisionHandle, null, this);
+	// this.enemy = enemy;
+	try{game.physics.arcade.overlap(enemy.weapon, this.player, collisionHandle, null, this);}
+	catch{return;}
 }
 
+//DELAYS TIEMR EVENTS
 function startTimer(key, interval){
-	console.log("Start Timer: Interval " +interval +": Key " +key);
+	//console.log("Start Timer: Interval " +interval +": Key " +key);
 	game.time.events.loop(Phaser.Timer.SECOND * interval, makeEnemy, this, this.player, key);
 }
+
 //handle pickups
 function handlePickup(player, pickup){
-	console.log(pickup);
+	//console.log(pickup);
 	this.yoink = game.add.audio("itemPickup");
 
 	switch(pickup.UNLOCK){
@@ -149,19 +180,35 @@ function handlePickup(player, pickup){
 			player.weapons[0] = new DoubleShot(game, PLAYER.position.x, PLAYER.position.y, 1, "projectile-blue", 32);
 			player.weapons[0].UNLOCK = true;
 			player.DOUBLE_UNLOCK = true;
-
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 2:
 			//SHOTGUN
 			player.weapons[1].UNLOCK = true;
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 3:
 			//TRIBEAM
 			player.weapons[2].UNLOCK = true;
+			this.words = "New Weapon Unlocked!!!";
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 4:
 			//RAIL
 			player.weapons[3].UNLOCK = true;
+			displayText(480, 160, "New Weapon Unlocked!!!", 48, 1500);
+			BANNER.exists = true;
+			BANNER.play("weaponUnlock", 6, true, false);
+			game.time.events.add(1500, destroy, this, BANNER);
 			break;
 		case 5:
 			//SHIELD
@@ -175,6 +222,7 @@ function handlePickup(player, pickup){
 
 }
 
+//RECYCLES PICKUPS FOR SPAWNING
 function spawnPickup(x, y, pickups, key){
 	try{
 		pickups.getFirst("UNLOCK", key).revive();
@@ -182,15 +230,15 @@ function spawnPickup(x, y, pickups, key){
 	}
 	catch(err){console.log("Pickup Spawn Failed: " +err);return;}
 }
-//handle loading the game objects in a boot-like level
 
+//weapon unlocking
 function checkPickups(player, target, pickups){
 	// console.log("Checking for pickups: " +target.KEY);
 	switch(target.KEY){
 		case 0:
 			break;
 		case 1:
-			console.log(player.DOUBLE_UNLOCK);
+			//console.log(player.DOUBLE_UNLOCK);
 			if(!player.DOUBLE_UNLOCK){
 				spawnPickup(target.position.x, target.position.y, pickups, 1);
 			}
@@ -213,38 +261,56 @@ function checkPickups(player, target, pickups){
 	}
 }
 
+//USES RNG TO SPAWN SHIELD OFF SCREEN
 function spawnShield(){
-	if(game.rnd.integerInRange(1,100) > 70){
-
-		console.log("Spawning Shield");
-
-		spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
+	if(CHECKPOINT >= 5){
+		if(game.rnd.integerInRange(1,100) > 70){
+			spawnPickup(game.world.centerX + 200 * game.rnd.integerInRange(-1,1), game.world.height + 64, PICKUPS, 5);
+		}
+	}
+	else{
+		if(game.rnd.integerInRange(1,100) > 70){
+			spawnPickup(game.world.width + 64, game.world.centerY + 200 * game.rnd.integerInRange(-1,1), PICKUPS, 5);
+		}
 	}
 }
 
+//BUFFER LEVEL THAT HANDLES CHECKPOINT SYSTEM AND BASIC SETUP FOR OTHER LEVELS
 function Level_0(game) {}
 
 	Level_0.prototype = {
-		init: function(background, check, cache, plats){
+			
 
+		init: function(background, check, cache, plats, score){
+			//SETS CURRETN SCORE TO LAST SAVED SCORE
+			SCORE = CHECKPOINT_SCORE;
+			
+			//SETS BACKGROUND
 			this.background = background;
 			BACKGROUND = this.background;
+			
+			//DETERMINES CHECKPOINT VALUE
 			if(check != null){
 				CHECKPOINT = check;
 			}
 			else {
 				CHECKPOINT = 1;
 			}
+			
+			//HANDLE OTHER PARAMETERS
 			if(cache != null){this.cache = cache;}
 			else{NEWGAME = true;}
+			
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
-			console.log("Level 0 Transition: " + this.plats.length);
-		},
+			
+			this.scoreText = score;
+			},
 		preload: function(){
 			console.log("Level_0: Preload");
 			game.time.advancedTiming = true;
 			
+			//NEWGAME SETUP VS CHECKPOINT SETUP, NEWGAME CREATES MORE ENTITIES AND IS HEAVIER
 			if(NEWGAME){
 				this.player = new Player(game, "Blue-04");
 				PLAYER = this.player;
@@ -258,7 +324,6 @@ function Level_0(game) {}
 				this.pickups = game.add.group();
 				
 				//creating single shot enemies
-				//console.log("Spooling up single shot enemies");
 				for(var i = 0; i < 8; i++){
 					this.enemy = new Enemy1(game, game.world.width, game.world.centerY, "Dark-Grey-04");
 					game.add.existing(this.enemy);
@@ -277,7 +342,6 @@ function Level_0(game) {}
 				}
 
 				//creating shotgun enemies
-				// console.log("Spooling up shotgun enemies");
 				for(var i = 0; i < 3; i++){
 					this.enemy = new Enemy3(game, game.world.width, game.world.centerY, "TankBase");
 					game.add.existing(this.enemy);
@@ -286,7 +350,6 @@ function Level_0(game) {}
 
 				//creating tri beam enemies
 
-				//console.log("Spooling up tribeam enemies");
 				for(var i = 0; i < 5; i++){
 					this.enemy = new Enemy4(game, game.world.width, game.world.centerY, "TriEnemy");
 
@@ -298,7 +361,6 @@ function Level_0(game) {}
 				
 				//creating rail gun enemies
 
-				//console.log("Spooling up rail gun enemies");
 				for(var i = 0; i < 2; i++){
 					this.enemy = new Enemy5(game, game.world.width, game.world.centerY, "TurretBase");
 
@@ -343,70 +405,96 @@ function Level_0(game) {}
 				this.player.respawn(64, game.world.centerY);
 				
 				this.BGM = BGM;
-
 			}
 			
+			//SET GLOBAL VARIABLES, FORGIVE ME FATHER FOR I HAVE SINNED
 			PICKUPS = this.pickups;
 			CACHE = this.cache;
 		},
 		create: function(){
+			//TRACK PLAYER
 			game.add.existing(this.player);
 			
-			this.equipped = game.add.bitmapText(game.world.width - 256, game.world.height - 64, "myfont", "Weapon: " + this.player.weapon.NAME, 24);
+			//DISPLAY SCORE
+			this.scoreText = game.add.bitmapText(64, game.world.height - 64, "myfont", "Score: " + SCORE, 24);
+			SCORETEXT = this.scoreText;
+			
+			EQ = this.player.equipped;
+			
+			//weapon unlocking banner animation
+			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
+			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
+			this.banner.exists = false;
+			BANNER = this.banner;
 
-			EQ = this.equipped;
 		},
 		update: function(){
+			//SEND TO LEVEL
 			this.nextLevel();
 		},
 		render: function(){
 		},
 		nextLevel: function(){
-			
+			//THIS FUNCTION DETERMINES WHICH LEVEL TO SEND THE PLAYER TO AND RESETS THE BACKGROUND
+			console.log("Return to Checkpoint: " + CHECKPOINT);
 			switch(CHECKPOINT){
 				case 1:
-					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups);
+					this.background[1].position.x = game.world.width * 0.8;
+					game.state.start("Level_1", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.scoreText);
 					break;
 				case 2:
-					game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					this.background[1].position.x = game.world.width * 0.6;
+					game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 3:
-					game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					this.background[1].position.x = game.world.width * 0.4;
+					game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 4:
-					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					this.background[1].position.x = game.world.width * 0.2;
+					game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 				case 5:
-					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+					this.background[1].position.x = game.world.width * -10;
+					game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 					break;
 			}
 			
 		}
 	}
 
+//FIRST LEVEL, SINGLESHOT ENEMIES AND DOUBLESHOT ENEMIES
 function Level_1(game) {}
 	
 	Level_1.prototype = {
-		init: function(background, player, enemies, cache, equipped, pickups){
-            // so the background parallax, and loaded enemies persists between states
+
+		init: function(background, player, enemies, cache, equipped, pickups, score){
+            
+			//HANDLE PARAMETER PASSING
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
 			this.pickups = pickups;
+			
+			//SET CHECKPOINT
+			CHECKPOINT = 1;
+			this.scoreText = score;
 		},
 		preload: function(){
 			console.log("Level_1: Preload");
 		},
 		create: function(){
+			//START MUSIC
 			this.BGM = game.add.audio("MainTrack1");
 			this.BGM.play();
 			BGM = this.BGM;
+			
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
-
-
+			
+			//LEVEL LAYOUT VIA TIMERS, LAST PARAMETER IS THE ENEMY TYPE
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
@@ -436,75 +524,88 @@ function Level_1(game) {}
 			game.time.events.add(1000 * 107, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 112, makeEnemy, this, this.player, 2);
-
+			
+			//SPAWN SHIELD EVERY 7 SECONDS, RNG DETERMINES IF TRUE / FALSE
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
+			this.scoreText.setText("Score: " + SCORE);
+			
+			//SCROLL DEBRIS
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 1;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1;
 			}
+			
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
+			
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
+			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.031;
 			
-			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
-			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			//DEV CHEATS, SORRY FOR STUDENT DIFFICULTY
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
 				this.nextLevel();
 			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-			}
-            if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
-				this.debug = !this.debug;
-            }
         },
         render: function(){
 			//handle debug info
+			//HAS NOT BEEN UPDATED, DO NOT USE
 			if(this.debug){
 				game.debug.body(this.player);
 				this.player.weapon.forEachAlive(this.renderGroup, this);
-
            }
 		},
         //debug stuff
+		//OUTDATED
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
         //checkpoint system for level transition
 		nextLevel: function(){
-			CHECKPOINT++;
+			//SAVES SCORE IN CASE OF DEATH
+			CHECKPOINT_SCORE = SCORE;
+			//STOP MUSIC
 			this.BGM.stop();
-			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped);
-		},
-        //janky UI
-		displayText: function(string){
-			game.add.text(0,0,string, {fill: "#facade"});
+			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, null, this.scoreText);
 		}
 	}
-	//level 2... START!!!
+	
+//level 2... START!!!
+//PREVIOUS ENEMIES PLUS SHOTGUN TURRETS
 function Level_2(game) {}
 	
 	Level_2.prototype = {
-		init: function(background, player, enemies, cache, equipped, pickups, plats){
+
+		init: function(background, player, enemies, cache, equipped, pickups, plats, score){
             // so the background parallax persists between states
+
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
-			console.log(this.equipped);
+			
+			//SET CHECKPOINT
+			CHECKPOINT = 2;
+			this.scoreText = score;
 		},
 		preload: function(){
 			console.log("Level_2: Preload");
@@ -512,7 +613,8 @@ function Level_2(game) {}
 		create: function(){
 			//timer for next level
 			game.time.events.add(1000 * 90, this.nextLevel, this);
-
+			
+			//CREATE PLATFORMS
 			this.plats = [];
 			PLATS = this.plats;
 
@@ -530,9 +632,12 @@ function Level_2(game) {}
             this.plats[0].moveDown();
 			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 
+			//START MUSIC
 			this.BGM = game.add.audio("MainTrack2");
 			this.BGM.play();
 			BGM = this.BGM;
+			
+			//LEVEL PAYOUT VIA TIMERS
 			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
@@ -542,19 +647,25 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
-
+			
+			//SPAWN SHIELDS
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
-
+			
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
+			this.scoreText.setText("Score: " + SCORE);
+			
+			//MOVE PLATFORM TILE SPRITES
             this.plats[0].tilePosition.x -=2;
 			
+			//DEBRIS BG
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 2;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1;
 			}
 
 			//collision handling for pickups
@@ -566,24 +677,22 @@ function Level_2(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.031;
 		
-			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
-			}
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
 			}
         },
         render: function(){
@@ -594,25 +703,28 @@ function Level_2(game) {}
 				this.player.weapon.forEachAlive(this.renderGroup, this);
 			}
         },
+		//OUTDATED
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			CHECKPOINT++;
+			//SAVE SCORE
+			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
-			game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, this.plats);
-
+			game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, this.plats, this.scoreText);
+			//CLEAR TIMER, LEGACY? IT WORKS
 			game.time.events.removeAll();
 		}
 		
 	}
 
+//LEVEL 3, PREVIOUS ENEMIES, TURRETS ON TOP AND BOTTOM
 function Level_3(game) {}
 	
 	Level_3.prototype = {
 
-		init: function(background, player, enemies, cache, equipped, pickups, plats){
 
+		init: function(background, player, enemies, cache, equipped, pickups, plats, score){
             this.background = background;
 			this.player = player;
 			this.enemies = enemies;
@@ -620,6 +732,11 @@ function Level_3(game) {}
 			this.equipped = equipped;
 			this.pickups = pickups;
             this.plats = plats;
+			
+			//SET CHECKPOINT
+			CHECKPOINT = 3;
+			this.scoreText = score;
+
 		},
 		preload: function(){
 			console.log("Level_3: Preload");
@@ -628,7 +745,7 @@ function Level_3(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
 
-			console.log("Plats length: " + this.plats.length);
+			//CHECK IF PLATS EXIST, IF NOT CREATE THEM AND TWEEN THEM
 			if(this.plats.length <= 0){
 				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
 
@@ -657,39 +774,50 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
-
+			
+			//PLAY MUSIC
 			this.BGM = game.add.audio("MainTrack3");
 			this.BGM.play();
 			BGM = this.BGM;
-
+			
+			//SET GLOBAL PLATFROM VARIABLE
 			PLATS = this.plats;
-			console.log(this.plats);
-
+			//console.log(this.plats);
+			
+			//LEVEL LAYOUT VIA TIMERS
 			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
-			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
-			game.time.events.loop(Phaser.Timer.SECOND * 13, makeEnemy, this, this.player, 3);
-			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 6);
-			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 40, makeEnemy, this, this.player, 4);
+			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 2);
+			game.time.events.loop(Phaser.Timer.SECOND * 12, makeEnemy, this, this.player, 3);
+			game.time.events.add(1000 * 15, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 25, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 30, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 45, makeEnemy, this, this.player, 6);
 			game.time.events.add(1000 * 55, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 70, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 60, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 6);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
-			game.time.events.add(1000 * 95, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 90, makeEnemy, this, this.player, 6);
+			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 4);
+			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 6);
 
-			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 4);
-
+			//SPAWN SHIELDS
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
-			this.plats[0].tilePosition.x -= 2.5;
-			this.plats[1].tilePosition.x -= 2.5;
+			//UPDATE SCORE TEXT
+			this.scoreText.setText("Score: " + SCORE);
 			
+			//MOVE PLATFORMS
+			this.plats[0].tilePosition.x -= 2;
+			this.plats[1].tilePosition.x -= 2;
+			
+			//DEBRIS BG
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 1.5;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1.5;
 			}
 
             //collision handling for pickups
@@ -701,24 +829,22 @@ function Level_3(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
+			this.background[1].position.x -= 0.031;
 		
-			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
-			}
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
 			}
         },
         render: function(){
@@ -733,22 +859,29 @@ function Level_3(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			CHECKPOINT++;
+			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
-			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+			game.state.start("Level_4", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 		}
 	}
 	
+//FINAL SIDESCROLLER LEVEL, PREVIOUS ENEMIES AND RAILGUN TURRETS
 function Level_4(game) {}
 	
 	Level_4.prototype = {
-		init: function(background, player, enemies, cache, equipped, pickups, plats){
+
+		init: function(background, player, enemies, cache, equipped, pickups, plats, score){
             this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
+            this.plats = plats;
+			
+			//SET CHECKPOINT
+			CHECKPOINT = 4;
             this.plats = plats
+			this.scoreText = score;
 		},
 		preload: function(){
 			console.log("Level_4: Preload");
@@ -757,10 +890,10 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
-			//timer for next level
-			game.time.events.add(1000 * 90, this.nextLevel, this);
+			//start next level, 83 seconds
+			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
-			console.log("Start of Level 4: " + this.plats[1]);
+			//CHECKS FOR PLATS ON CHECKPOINT ENTRY
             if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
 			
 			if(this.plats.length <= 0){
@@ -779,6 +912,7 @@ function Level_4(game) {}
 				game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 			}
 			
+			//LEVEL LAYOUT VIA TIMERS
             game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 14, makeEnemy, this, this.player, 3);
@@ -796,22 +930,25 @@ function Level_4(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 69, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 74, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 79, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 83, makeEnemy, this, this.player, 5);
-			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 4);
 
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
+			
+			PLATS = this.plats;
 		},
 		update: function(){
-
-			this.plats[0].tilePosition.x -=3;
+			//UPDATE SCORE TEXT
+			this.scoreText.setText("Score: " + SCORE);
+			
+			//MOVE PLATFORMS
+			this.plats[0].tilePosition.x -=2;
 			if(this.plats[1] != null){this.plats[1].tilePosition.x -=3;}
 			
+			//MOVE DEBRIS
 			if(this.background[2].position.x > 0){
-				this.background[2].position.x -= 2;
+				this.background[2].position.x -= 1.5;
 			}
 			else{
-				this.background[2].tilePosition.x -= 2;
+				this.background[2].tilePosition.x -= 1.5;
 			}
 
             //collision handling for pickups
@@ -823,24 +960,22 @@ function Level_4(game) {}
 			//collision handling for bullets
 			for(var i = 0; i < this.cache.length - 1; i++){
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
-				this.cache[i].forEachExists(checkCollision, this);
+				this.cache[i].forEach(checkCollision, this);
 			}
 				
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
-			this.background[1].position.x -= 0.03;
-		
-			//UI w00t!
-			this.equipped.setText("Weapon: " + this.player.weapon.NAME);
+			this.background[1].position.x -= 0.031;
+
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.T)){
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
 				this.nextLevel();
-			}
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-				this.player.kill();
-			}
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
 			}
         },
         render: function(){
@@ -855,12 +990,17 @@ function Level_4(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			this.BGM.stop();
-			game.add.tween(this.plats[0]).to({y: 1000}, 3000, "Linear", true, 0, 0, false);
+			//THIS FUNCTION DELAYS THE ENTRY TO THE BOSS AND TRANSITIONS OUT SOME EXTRA ASSETS
+			CHECKPOINT_SCORE = SCORE;
+			game.time.events.add(3000, BGM.stop, BGM);
+			BGM = game.add.audio("zzaStinger");
+			game.time.events.add(3000, BGM.play, BGM);
+			game.add.tween(this.background[2].position).to({x: -1990}, 4000, "Linear", true, 0, 0, false);
+			game.add.tween(this.plats[0]).to({y: 1000}, 4000, "Linear", true, 0, 0, false);
 			game.time.events.add(4000, this.startZza, this);
 		},
 		startZza: function(){
-			game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats);
+			game.state.start("Zza", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, this.pickups, this.plats, this.scoreText);
 		}
 	}
 	

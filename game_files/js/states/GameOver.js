@@ -3,22 +3,25 @@
 function GameOver(game) {}
 	
 GameOver.prototype = {
-	init: function(background, CHECKPOINT, cache, plats){
+
+	init: function(background, CHECKPOINT, cache, plats, score){
+		//JUST IN CASE ZZA KILLS YOU
+		game.scale.setGameSize(960, 640);
 		this.background = background;
 		this.CHECKPOINT = CHECKPOINT;
 		this.cache = cache;
 		this.plats = plats;
+		this.scoreText = score;
 		console.log("GameOver: " + this.CHECKPOINT);
 	},
-	preload: function(){},
 	create: function(){
+		//DISPLAY TEXT ON SCREEN, RETRY AT LAST CHECKPOINT OR RETURN TO MENU
 		this.screen = [];
-			
 		this.title = game.add.bitmapText(game.world.centerX, game.world.centerY - 150, "myfont", "Game Over", 80);
 		this.title.anchor.setTo(0.5, 0.5);
 		this.screen.push(this.title);
 		
-		this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 120, "myfont", "Return to Main Menu?", 32);
+		this.main = game.add.bitmapText(game.world.centerX + 220, game.world.height - 250, "myfont", "Return to Main Menu?", 32);
 		this.main.anchor.setTo(0.5, 0.5);
 		this.main.inputEnabled = true;
 		this.main.events.onInputDown.add(this.returnToMain, this);
@@ -26,7 +29,7 @@ GameOver.prototype = {
 		this.main.events.onInputOut.add(this.clear, this, this.main);
 		this.screen.push(this.main);
 		
-		this.again = game.add.bitmapText(game.world.centerX - 220, game.world.height - 120, "myfont", "Restart at Checkpoint?", 32);
+		this.again = game.add.bitmapText(game.world.centerX - 220, game.world.height - 250, "myfont", "Restart at Checkpoint?", 32);
 		this.again.anchor.setTo(0.5, 0.5);
 		this.again.inputEnabled = true;
 		this.again.events.onInputDown.add(this.returnToCheckpoint, this);
@@ -47,12 +50,14 @@ GameOver.prototype = {
 	returnToMain: function(){
 		this.clearScreen();
 		this.Uninstall.stop();
-		game.state.start("MainMenu", false, false);
+		SCORETEXT.kill();
+		game.state.start("MainMenu", false, false, true);
 	},
 	returnToCheckpoint: function(){
 		this.clearScreen();
 		this.Uninstall.stop();
-		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache, this.plats);
+		SCORETEXT.kill();
+		game.state.start("Level_0", false, false, this.background, this.CHECKPOINT, this.cache, this.plats, this.scoreText);
 	},
 	highlight: function(text){
 		text.tint = 0x5BC6FD;
@@ -69,7 +74,7 @@ GameOver.prototype = {
 				this.plats[i].kill();
 			}
 			this.plats = [];
-			console.log("Killing Plats: " + this.plats);
+			//console.log("Killing Plats: " + this.plats);
 		}
 	}
 }

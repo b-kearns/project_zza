@@ -9,10 +9,12 @@ function Boot(game) {}
 			game.load.bitmapFont("myfont", "assets/imgs/pixel_fantasy.png", "assets/imgs/pixel_fantasy.fnt");
 			game.load.atlas("Atlas", "assets/imgs/CaptainAtlas.png","assets/imgs/atlas.json");
 
-			
-             game.load.image("EarthBackground", "assets/imgs/earth.png");
-             game.load.image("StarsBackground", "assets/imgs/stars.png");
-             game.load.image("debrisBackground", "assets/imgs/debrisBackground.png");
+			game.load.spritesheet("bigBoom", "assets/imgs/explosion_animation.png", 46, 46);
+
+			//scrolling background
+            game.load.image("EarthBackground", "assets/imgs/earth.png");
+            game.load.image("StarsBackground", "assets/imgs/stars.png");
+            game.load.image("debrisBackground", "assets/imgs/debrisBackground.png");
             
 			//bgms
 			game.load.audio("MainTrack1","assets/audio/mainBGM1.wav");
@@ -34,11 +36,8 @@ function Boot(game) {}
             game.load.audio("playerDeath", "assets/audio/playerDeath.wav");
             game.load.audio("itemPickup", "assets/audio/ItemPickup.wav")
 		},
-		create: function(){
-			
-		},
 		update: function(){
+			//start main menu state
 			game.state.start("MainMenu", true, false);
 		},
-		render: function(){}
 	}

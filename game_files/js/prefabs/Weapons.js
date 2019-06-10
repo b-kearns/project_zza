@@ -31,11 +31,15 @@ SingleShot.prototype.fire = function(source) {
 	if(game.time.time < this.nextFire){
 		return;
 	}
+	
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX.play();
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
-
+	
+	if(source.body.rotation != 0){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.body.rotation - 90, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	else if(source.HERO){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	else if(source.body.rotation == 0){this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, 0, this.bulletSpeed * this.DIRECTION, 0, 0);}
+	
 	this.nextFire = game.time.time + this.fireRate;
 }
 
@@ -74,8 +78,12 @@ DoubleShot.prototype.fire = function(source) {
 	this.bullet = this.getFirstExists(false);
 	if(this.bullet === null){return;}
     this.SFX.play();
-	
-	this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+	if(source.WEAP_ANGLE == null || source.WEAP_ANGLE >= 0){
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20, source.position.y - 10 * this.ALT, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+	}
+	else if(source.WEAP_ANGLE < 0){
+		this.getFirstExists(false).fire(this.DIRECTION, source.position.x + 20 * this.ALT, source.position.y - 10, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+	}
 
 	this.nextFire = game.time.time + this.fireRate;
 	this.ALT *= -1;
@@ -112,12 +120,23 @@ TriShot.prototype.fire = function(source) {
 	// this.bullet = this.getFirstExists(false);
 	// if(this.bullet === null){return;}
     this.SFX.play();
-	try{
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
-		this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
+	if(source.WEAP_ANGLE == null || source.WEAP_ANGLE >= 0){
+		try{
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, -this.bulletSpeed/2);
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, this.bulletSpeed/2);
+		}
+		catch{return;}
 	}
-	catch{return;}
+	else if(source.WEAP_ANGLE < 0){
+		try{
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, -this.bulletSpeed/2, 0);
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+			this.getFirstExists(false).fire(this.DIRECTION, source.position.x, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, this.bulletSpeed/2, 0);
+		}
+		catch{return;}
+	}
+	
 	
 	this.nextFire = game.time.time + this.fireRate;
 	
@@ -154,7 +173,23 @@ Shotgun.prototype.fire = function(source) {
 	}
 	
     this.SFX.play();
-	if(this.DIRECTION < 0){
+	if(source.ZZA){
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) - 90, this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
+	}
+	if(source.WEAP_ANGLE < 0){
+		try{
+			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
+				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) - 90, this.bulletSpeed * this.DIRECTION, 0, 0);
+			}
+		}
+		catch{this.nextFire = game.time.time + this.fireRate; return;}
+	}
+	else if(this.DIRECTION < 0){
 		try{
 			for(var i = 0; i < Math.floor(this.children.length/4); i++) {
 				this.getFirstExists(false).fire(this.DIRECTION, source.position.x + game.rnd.integerInRange(10, 15), source.position.y + game.rnd.integerInRange(-10, 10), (game.rnd.integerInRange(-20, 20) + source.angle) + 180, this.bulletSpeed * this.DIRECTION, 0, 0);
@@ -216,8 +251,12 @@ Railgun.prototype.fire = function(source) {
 Railgun.prototype.fireRail = function(source, bullet) {
 
 	this.SFX_2.play();
-	if(source.HERO){
-		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);	
+	if(source.HERO && source.WEAP_ANGLE >= 0){
+		bullet.fire(this.DIRECTION, source.position.x + 20, source.position.y, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);	
+	}
+	else if(source.HERO && source.WEAP_ANGLE < 0){
+		bullet.fire(this.DIRECTION, source.position.x, source.position.y + 20, source.WEAP_ANGLE, this.bulletSpeed * this.DIRECTION, 0, 0);
+		console.log("Rail fire 2");
 	}
 	else{
 		bullet.fire(this.DIRECTION, source.position.x + 15, source.position.y, source.angle + 180, this.bulletSpeed * this.DIRECTION, 0, 0);	

@@ -8,10 +8,15 @@ function Player(game, key) {
 
 	Phaser.Sprite.call(this,game, 64, game.world.centerY, "Atlas", key);
 
-	this.ICON = game.add.sprite();
+	//DISPLAY EQUIPPED WEAPON
+	this.ICON = game.add.sprite(game.world.width - 118, game.world.height - 58);
 	this.ICON.anchor.setTo(0.5, 0.5);
+	this.ICON.alpha = 0.70; 
+	
+	this.equipped = game.add.bitmapText(game.world.width - 118, game.world.height - 108, "myfont", "Weapon:", 24);
+	this.equipped.anchor.setTo(0.5, 0.5);
 
-	//PC variables
+	//PLAYER variables
 	this.anchor.set(0.5);
 	this.DRAG = 1000;
 	this.MAX_VELOCITY = 400;
@@ -24,6 +29,7 @@ function Player(game, key) {
 	this.DOUBLE_UNLOCK = false;
 	this.SHOOT = true;
 	this.WEAP_ANGLE = 0;
+	
     //spin up physics
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
@@ -64,12 +70,14 @@ function Player(game, key) {
 	this.weapons[2] = new TriShot(game, this.position.x, this.position.y, 1, "TriShot", 32, 400);
 	this.weapons[3] = new Railgun(game, this.position.x, this.position.y, 1, "RailShot", 1);
 	
+	//CURRENT WEAPON
 	this.weapon = this.weapons[this.EQUIP];
 	
-	this.blinkDrive = new BlinkDrive(game);
     //handles the shield sprite
     this.SHIELD_SPRITE = game.add.sprite(0,0, "Atlas", "ShipShield");
     this.SHIELD_SPRITE.anchor.set(0.5);
+	
+	//SPRITE FOR RAILGUN ANIMATION
 	this.railSprite = game.add.sprite(10,0,"Atlas", "Rail01");
 	this.railSprite.animations.add("Rail", Phaser.Animation.generateFrameNames("Rail", 0,3,"",2),5,false);
 	this.railSprite.exists = false;
@@ -79,49 +87,76 @@ function Player(game, key) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
+//CUSTOM RESPAWN FUNCTION
 Player.prototype.respawn = function(x,y){
 	this.SHOOT = true;
 	this.revive();
 	this.animations.play("idle");
 	this.reset(x,y);
+	this.tint == 0xffffff;
+	this.ICON.revive();
+	this.equipped = game.add.bitmapText(game.world.width - 118, game.world.height - 108, "myfont", "Weapon:", 24);
+	this.equipped.anchor.setTo(0.5, 0.5);
 }
 
+//HANDLES CHANGE TO VERTICAL ASPECT RATIO
 Player.prototype.flipPOV = function(){
 	this.loadTexture("Atlas", "blue_05"); 
+	this.anchor.setTo(0.5, 0.5);
 	this.shipTrail.setXSpeed(30, -30);
 	this.shipTrail.setYSpeed(200, 180);
 	this.WEAP_ANGLE = -90;
+	this.ICON.reset(game.world.width - 118, game.world.height - 58);
+	this.equipped.reset(game.world.width - 118, game.world.height - 108);
+	this.railSprite.reset(0, 20);
+	this.railSprite.exists = false;
+	this.railSprite.anchor.setTo(0.5, 0.5);
 }
 
 Player.prototype.update = function() {
 	if(!this.shipTrail.alive && this.exists){this.shipTrail.revive();}
 
 	this.railSprite.bringToTop();
-
+	this.equipped.setText("Weapon:");
 	game.world.bringToTop(this.weapons);
 
-	this.SHIELD_SPRITE.bringToTop();
 
-	this.ICON.loadTexture("Atlas", this.weapon.ICON);
+	this.SHIELD_SPRITE.bringToTop();
 	
+	//DISPLAY EQUIPPED WEAPON
+	this.ICON.loadTexture("Atlas", this.weapon.ICON);
+	this.ICON.bringToTop();
+	this.equipped.setText("Weapon:");
+	
+	//TRACK PLAYER THRUSTER
 	this.shipTrail.x = this.position.x;
 	this.shipTrail.y = this.position.y;
-
+	
+	//HANDLES EQUIPPED WEAPON
 	this.weapon = this.weapons[this.EQUIP];
 	
     // movement data
 	this.body.acceleration.setTo(0,0);
     
+	//TRACK SHIELD AND RAIL SPRITE TO PLAYER
     this.SHIELD_SPRITE.position.x = this.position.x;
     this.SHIELD_SPRITE.position.y = this.position.y;
-    this.railSprite.position.x = this.position.x + 5;
-    this.railSprite.position.y = this.position.y - 15;
+	if(this.WEAP_ANGLE >= 0){
+		this.railSprite.position.x = this.position.x + 5;
+		this.railSprite.position.y = this.position.y - 15;
+	}
+	else{
+		this.railSprite.position.x = this.position.x;
+		this.railSprite.position.y = this.position.y - 15;
+	}
+	//DISPALY SHIELD SPRITE
     if(this.SHIELD){
        this.SHIELD_SPRITE.exists = true;
     }
     else{
        this.SHIELD_SPRITE.exists = false;
     }
+	//CAN LOCK PLAYER MOVEMENT
 	if(this.alive) {
 		if(this.cursors.left.isDown){
 			this.body.acceleration.x = -this.ACCELERATION;
@@ -138,17 +173,13 @@ Player.prototype.update = function() {
     }
 
 		if(this.SHOOT && game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-      if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
-          this.railSprite.exists = true;
+			if(this.EQUIP === 3 && this.weapon.nextFire < game.time.time){
+				this.railSprite.exists = true;
 
-          this.railSprite.animations.play("Rail", 4, false, true);
-      }
+				this.railSprite.animations.play("Rail", 4, false, true);
+			}
 			this.weapon.fire(this);
 		}
-		
-		// if(game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)){
-			// this.blinkDrive.jump(this);
-		// }
 		
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.RIGHT)){
 			this.swap(false);
@@ -157,18 +188,19 @@ Player.prototype.update = function() {
 			this.swap(true);
 		}
 	}
-
+	//PLAYER DEATH
 	if(this.HEALTH <= 0) {
 		this.SHOOT = false;
 		this.animations.play("explosion", 20, false, true);
 		this.o_noes.play();
 		this.shipTrail.kill();
 		this.HEALTH = 1;
+		this.ICON.kill();
 		game.time.events.add(600, sendToGameOver, this, CACHE);
 	}
 	
 }
-
+//HANDLES WEAPON SWAPPING, CANT SWAP TO WEAPON IF LOCKED
 Player.prototype.swap = function(direction) {
 	//SWAP LEFT
 	if(direction){
