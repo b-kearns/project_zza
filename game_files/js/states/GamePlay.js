@@ -305,7 +305,7 @@ function Level_0(game) {}
 			else{this.plats = [];}
 			
 			this.scoreText = score;
-		},
+			},
 		preload: function(){
 			console.log("Level_0: Preload");
 			game.time.advancedTiming = true;
