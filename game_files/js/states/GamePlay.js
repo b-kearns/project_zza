@@ -559,6 +559,11 @@ function Level_1(game) {}
 				PLAYER.HEALTH = 50;
 				console.log("cheater");
 			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
+				this.nextLevel();
+			}
         },
         render: function(){
 			//handle debug info
@@ -683,6 +688,11 @@ function Level_2(game) {}
 			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
 				PLAYER.HEALTH = 50;
 				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
+				this.nextLevel();
 			}
         },
         render: function(){
@@ -831,6 +841,11 @@ function Level_3(game) {}
 				PLAYER.HEALTH = 50;
 				console.log("cheater");
 			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
+				this.nextLevel();
+			}
         },
         render: function(){
 			//handle debug info
@@ -956,6 +971,11 @@ function Level_4(game) {}
 			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
 				PLAYER.HEALTH = 50;
 				console.log("cheater");
+			}
+			
+			//MAKE YOUR LIFE EASIER
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.ENTER)){
+				this.nextLevel();
 			}
         },
         render: function(){

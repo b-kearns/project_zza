@@ -451,8 +451,8 @@ function Enemy6(game, posX, posY, key, weapon_version) {
 	this.MAX_VELOCITY = 200;
 	this.ACCELERATION = 1500;
 
-	this.HEALTH = 100;
-	this.DEFAULT = 100;
+	this.HEALTH = 60;
+	this.DEFAULT = 60;
 
 	this.POINTS = 400;
 	this.HERO = false;

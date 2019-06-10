@@ -17,6 +17,8 @@ Zza.prototype = {
 		this.pickups = pickups;
 		this.plats = plats;
 		this.scoreText = scoreText;
+		
+		CHECKPOINT = 5;
 	},
 	preload: function(){
 		console.log("ZZA: Preload");
@@ -98,7 +100,7 @@ Zza.prototype = {
 		//START ZZA MUSIC
 		this.BGM = game.add.audio("zzaTrack");
 		this.BGM.loop = true;
-		game.tim
+		this.BGM.play();
 		
 		BGM = this.BGM;
 		PLATS = this.plats;
