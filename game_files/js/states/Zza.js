@@ -22,14 +22,20 @@ Zza.prototype = {
 		console.log("ZZA: Preload");
 	},
 	create: function(){
+		//RESET WINDOW SIZE, VETICAL ASPECT RATIO
 		game.scale.setGameSize(640, 960);
 		
+		//RESET TILESPRITE
 		this.background[0].width = game.world.width;
 		this.background[0].height = game.world.height;
 		
+		//RESET PLAYER POV
 		this.player.flipPOV();
 		
+		//MOVE SCORE TEXT
 		this.scoreText.reset(100, game.world.height - 64);
+		
+		//CREATE ZZA
 		this.Zza = game.add.sprite(game.world.centerX, -500, "Atlas", "OctoBoss");
 
 		this.Zza.anchor.setTo(0.5, 0.5);
@@ -56,6 +62,7 @@ Zza.prototype = {
 		this.Bot4 = new Enemy6(game, this.Zza.position.x + 84, this.Zza.position.y, "Tentacle bot", 1);
 		game.add.existing(this.Bot4);
 		
+		//ORGANIZE THIS CHAOS
 		this.tent_1 = [this.Top1, this.Mid1, this.Bot1];
 		this.tent_2 = [this.Top2, this.Mid2, this.Bot2];
 		this.tent_3 = [this.Top3, this.Mid3, this.Bot3];
@@ -63,16 +70,19 @@ Zza.prototype = {
 		
 		this.tentacles = [this.tent_1, this.tent_2, this.tent_3, this.tent_4];
 		
+		//ANCHOR SPRITES
 		for(var i = 0; i < this.tentacles.length; i++){
 			for(var j = 0; j < this.tentacles[i].length; j++){
 				this.tentacles[i][j].anchor.setTo(0.5, 0);
 			}
 		}
 		
+		//CREATE VERTICAL PLATFORMS
 		this.plats = [];
 		this.plats[0]= game.add.tileSprite(-100,0,100,game.world.height,"Atlas", "leftPlat");
 		this.plats[1]= game.add.tileSprite(640,0,70,game.world.height,"Atlas", "rightPlat");
 		
+		//RENDER ORDERING
 		for(var i = 0; i < 2; i++){
 			game.physics.enable(this.plats[i]);
 			this.plats[i].body.immovable = true;
@@ -85,13 +95,15 @@ Zza.prototype = {
 			this.plats[i].moveDown();
 		}
 		
+		//START ZZA MUSIC
 		this.BGM = game.add.audio("zzaTrack");
 		this.BGM.loop = true;
+		game.tim
 		
 		BGM = this.BGM;
 		PLATS = this.plats;
 		
-		game.time.events.add(3950, this.BGM.play, this.BGM);
+		//TWEEN ZZA ON SCREEN
 		game.add.tween(this.plats[0]).to({x: -30}, 3000, "Linear", true, 0, 0, false);
 		game.add.tween(this.plats[1]).to({x: 570}, 3000, "Linear", true, 0, 0, false);
 		
@@ -113,6 +125,7 @@ Zza.prototype = {
 		game.add.tween(this.Mid4).to({y: 275}, 5000, "Linear", true, 0, 0, false);
 		game.add.tween(this.Bot4).to({y: 330}, 5000, "Linear", true, 0, 0, false);
 		
+		//BEGIN ZZA ANIMATION
 		this.Top1.angle = 30;
 		this.Top4.angle = -30;
 		
@@ -125,8 +138,10 @@ Zza.prototype = {
 		
 		TENTS = this.tentacles;
 		
+		//SPAWN SHIELDS
 		game.time.events.loop(Phaser.Timer.SECOND * 3, spawnShield, this);
 
+    //ZZA GOES BOOM
 		this.bossDeath = game.add.emitter(this.Zza.position.x, this.Zza.position.y);
     	this.bossDeath.width = this.Zza.width / 2;
     	this.bossDeath.height = this.Zza.height / 2;
@@ -136,7 +151,10 @@ Zza.prototype = {
 
 	},
 	update: function(){
+		//UPDATE SCORE TEXT
 		this.scoreText.setText("Score: " + SCORE);
+		
+		//SCROLL PLATFORMS AND BG
 		this.plats[0].tilePosition.y -=3;
 		this.plats[1].tilePosition.y -=3;
 		this.background[0].tilePosition.y -=1;
@@ -144,13 +162,16 @@ Zza.prototype = {
 		//collision handling for pickups
 		game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
 		
+		//COLLIDE WITH PLATFORMS
 		game.physics.arcade.collide(this.plats, this.player);
 		
+		//TENTACLE COLLISION WITH PLAYER WEAPON
 		game.physics.arcade.overlap(this.tent_1[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_2[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_3[2], this.player.weapon, collisionHandle, null, this);
 		game.physics.arcade.overlap(this.tent_4[2], this.player.weapon, collisionHandle, null, this);
 		
+		//TENTACLE PROJECTILE COLLSION WITH PLAYER
 		game.physics.arcade.overlap(this.player, this.weapons, collisionHandle, null, this);
 		
 		if(!this.tent_1[2].alive){this.tent_1[0].kill();this.tent_1[1].kill();}
@@ -171,11 +192,6 @@ Zza.prototype = {
 			this.sendVictory();
 		}
 
-	},
-	render: function(){
-		
-	},
-	tentacleCollision: function(tentacle, weapon){
 	},
 	sendVictory: function(){
 		BGM.stop();
