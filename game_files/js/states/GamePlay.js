@@ -282,7 +282,7 @@ function Level_0(game) {}
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
 			this.scoreText = score;
-		},
+			},
 		preload: function(){
 			console.log("Level_0: Preload");
 			game.time.advancedTiming = true;
