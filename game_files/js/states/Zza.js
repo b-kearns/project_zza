@@ -16,8 +16,6 @@ Zza.prototype = {
 		this.equipped = equipped;
 		this.pickups = pickups;
 		this.plats = plats;
-		CHECKPOINT = 5;
-
 		this.scoreText = scoreText;
 	},
 	preload: function(){
@@ -127,7 +125,7 @@ Zza.prototype = {
 		
 		TENTS = this.tentacles;
 		
-		game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
+		game.time.events.loop(Phaser.Timer.SECOND * 3, spawnShield, this);
 
 		this.bossDeath = game.add.emitter(this.Zza.position.x, this.Zza.position.y);
     	this.bossDeath.width = this.Zza.width / 2;
