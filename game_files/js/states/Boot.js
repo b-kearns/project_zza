@@ -36,12 +36,8 @@ function Boot(game) {}
             game.load.audio("playerDeath", "assets/audio/playerDeath.wav");
             game.load.audio("itemPickup", "assets/audio/ItemPickup.wav")
 		},
-		create: function(){
-			
-		},
 		update: function(){
 			//start main menu state
 			game.state.start("MainMenu", true, false);
 		},
-		render: function(){}
 	}

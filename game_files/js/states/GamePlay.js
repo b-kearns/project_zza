@@ -22,9 +22,11 @@ function displayText(x, y, words, fontSize, time){
 }
 //send to game over when player dies
 function sendToGameOver(cache, score){
+	//DESTROY ALL ENEMY SPRITES
 	for(var i = 0; i < cache.length-1; i++){
 		cache[i].forEachExists(destroy, this);
 	}
+	//REMOVES ZZA ON PLAYER DEATH
 	if(ZZA != null){
 		ZZA.kill();
 		if(PLATS[0] != null){PLATS[0].kill();}
@@ -35,21 +37,26 @@ function sendToGameOver(cache, score){
 			}
 		}
 	}
+	//KILLS PLAYER THRUSTER EFFECT
 	PLAYER.shipTrail.kill();
 	BANNER.kill();
-
+	
+	//CLEANS UP SCREEN
 	if(SUX != null){SUX.kill();}
 
 	PLAYER.kill();
 	EQ.kill();
 	BGM.stop();
+	//SEND TO GAMEOVER
 	game.state.start("GameOver", false, false, BACKGROUND, CHECKPOINT, cache, PLATS, SCORETEXT);
 }
 
+//USED FOR DELAYED SPRITE DESTRUCTION
 function destroy(target){
 	target.kill();
 }
 
+//FUNCTION HANDLES SPAWNING ENEMIES, USED IN TIMERS
 function makeEnemy(player, key){
 	switch(key){
 	//basic p-shot enemy
@@ -130,6 +137,7 @@ function makeEnemy(player, key){
 	}
 
 }
+
 //weapon collision
 function collisionHandle(target, weapon){
 	//console.log(target);
@@ -147,16 +155,19 @@ function collisionHandle(target, weapon){
 	if(!weapon.PENETRATE){weapon.kill();}			
 }
 
+//HANDLES ENEMY WEAPON COLLISON WITH PLAYER
 function checkCollision(enemy){
 	// this.enemy = enemy;
 	try{game.physics.arcade.overlap(enemy.weapon, this.player, collisionHandle, null, this);}
 	catch{return;}
 }
 
+//DELAYS TIEMR EVENTS
 function startTimer(key, interval){
 	//console.log("Start Timer: Interval " +interval +": Key " +key);
 	game.time.events.loop(Phaser.Timer.SECOND * interval, makeEnemy, this, this.player, key);
 }
+
 //handle pickups
 function handlePickup(player, pickup){
 	//console.log(pickup);
@@ -211,6 +222,7 @@ function handlePickup(player, pickup){
 
 }
 
+//RECYCLES PICKUPS FOR SPAWNING
 function spawnPickup(x, y, pickups, key){
 	try{
 		pickups.getFirst("UNLOCK", key).revive();
@@ -218,6 +230,7 @@ function spawnPickup(x, y, pickups, key){
 	}
 	catch(err){console.log("Pickup Spawn Failed: " +err);return;}
 }
+
 //weapon unlocking
 function checkPickups(player, target, pickups){
 	// console.log("Checking for pickups: " +target.KEY);
@@ -248,6 +261,7 @@ function checkPickups(player, target, pickups){
 	}
 }
 
+//USES RNG TO SPAWN SHIELD OFF SCREEN
 function spawnShield(){
 	if(CHECKPOINT >= 5){
 		if(game.rnd.integerInRange(1,100) > 70){
@@ -261,32 +275,42 @@ function spawnShield(){
 	}
 }
 
+//BUFFER LEVEL THAT HANDLES CHECKPOINT SYSTEM AND BASIC SETUP FOR OTHER LEVELS
 function Level_0(game) {}
 
 	Level_0.prototype = {
 			
 
 		init: function(background, check, cache, plats, score){
-
-      SCORE = CHECKPOINT_SCORE;
+			//SETS CURRETN SCORE TO LAST SAVED SCORE
+			SCORE = CHECKPOINT_SCORE;
+			
+			//SETS BACKGROUND
 			this.background = background;
 			BACKGROUND = this.background;
+			
+			//DETERMINES CHECKPOINT VALUE
 			if(check != null){
 				CHECKPOINT = check;
 			}
 			else {
 				CHECKPOINT = 1;
 			}
+			
+			//HANDLE OTHER PARAMETERS
 			if(cache != null){this.cache = cache;}
 			else{NEWGAME = true;}
+			
 			if(plats != null){this.plats = plats;}
 			else{this.plats = [];}
+			
 			this.scoreText = score;
 		},
 		preload: function(){
 			console.log("Level_0: Preload");
 			game.time.advancedTiming = true;
-			//create player
+			
+			//NEWGAME SETUP VS CHECKPOINT SETUP, NEWGAME CREATES MORE ENTITIES AND IS HEAVIER
 			if(NEWGAME){
 				this.player = new Player(game, "Blue-04");
 				PLAYER = this.player;
@@ -383,16 +407,20 @@ function Level_0(game) {}
 				this.BGM = BGM;
 			}
 			
+			//SET GLOBAL VARIABLES, FORGIVE ME FATHER FOR I HAVE SINNED
 			PICKUPS = this.pickups;
 			CACHE = this.cache;
 		},
 		create: function(){
+			//TRACK PLAYER
 			game.add.existing(this.player);
 			
+			//DISPLAY SCORE
 			this.scoreText = game.add.bitmapText(64, game.world.height - 64, "myfont", "Score: " + SCORE, 24);
 			SCORETEXT = this.scoreText;
 			
 			EQ = this.player.equipped;
+			
 			//weapon unlocking banner animation
 			this.banner = game.add.sprite(0,100,"Atlas", "weaponUnlock0");
 			this.banner.animations.add("weaponUnlock", Phaser.Animation.generateFrameNames("weaponUnlock", 0,1,"",1),5,false);
@@ -401,12 +429,13 @@ function Level_0(game) {}
 
 		},
 		update: function(){
+			//SEND TO LEVEL
 			this.nextLevel();
 		},
 		render: function(){
 		},
 		nextLevel: function(){
-			//levels
+			//THIS FUNCTION DETERMINES WHICH LEVEL TO SEND THE PLAYER TO AND RESETS THE BACKGROUND
 			console.log("Return to Checkpoint: " + CHECKPOINT);
 			switch(CHECKPOINT){
 				case 1:
@@ -434,19 +463,22 @@ function Level_0(game) {}
 		}
 	}
 
+//FIRST LEVEL, SINGLESHOT ENEMIES AND DOUBLESHOT ENEMIES
 function Level_1(game) {}
 	
 	Level_1.prototype = {
 
 		init: function(background, player, enemies, cache, equipped, pickups, score){
-            // so the background parallax, and loaded enemies persists between states
-
+            
+			//HANDLE PARAMETER PASSING
 			this.background = background;
 			this.player = player;
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
 			this.pickups = pickups;
+			
+			//SET CHECKPOINT
 			CHECKPOINT = 1;
 			this.scoreText = score;
 		},
@@ -454,12 +486,15 @@ function Level_1(game) {}
 			console.log("Level_1: Preload");
 		},
 		create: function(){
+			//START MUSIC
 			this.BGM = game.add.audio("MainTrack1");
 			this.BGM.play();
 			BGM = this.BGM;
+			
 			//timer for next level
 			game.time.events.add(1000 * 125, this.nextLevel, this);
-
+			
+			//LEVEL LAYOUT VIA TIMERS, LAST PARAMETER IS THE ENEMY TYPE
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 19, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 27, makeEnemy, this, this.player, 1);
@@ -489,19 +524,23 @@ function Level_1(game) {}
 			game.time.events.add(1000 * 107, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 110, makeEnemy, this, this.player, 1);
 			game.time.events.add(1000 * 112, makeEnemy, this, this.player, 2);
-
+			
+			//SPAWN SHIELD EVERY 7 SECONDS, RNG DETERMINES IF TRUE / FALSE
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
 			this.scoreText.setText("Score: " + SCORE);
-			//debris background
+			
+			//SCROLL DEBRIS
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 1;
 			}
 			else{
 				this.background[2].tilePosition.x -= 1;
 			}
+			
             //collision handling for pickups
 			game.physics.arcade.overlap(this.cache[5], this.player, handlePickup, null, this);
 			
@@ -510,42 +549,42 @@ function Level_1(game) {}
 				game.physics.arcade.overlap(this.cache[i], this.player.weapon, collisionHandle, null, this);
 				this.cache[i].forEach(checkCollision, this);
 			}
+			
 			//move the background
 			this.background[0].tilePosition.x -= 0.015;
 			this.background[1].position.x -= 0.031;
 			
-			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
-				this.nextLevel();
-			}
+			//DEV CHEATS, SORRY FOR STUDENT DIFFICULTY
 			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
 				PLAYER.HEALTH = 50;
 				console.log("cheater");
 			}
-            if(this.input.keyboard.justPressed(Phaser.Keyboard.P)){
-				this.debug = !this.debug;
-            }
         },
         render: function(){
 			//handle debug info
+			//HAS NOT BEEN UPDATED, DO NOT USE
 			if(this.debug){
 				game.debug.body(this.player);
 				this.player.weapon.forEachAlive(this.renderGroup, this);
-
            }
 		},
         //debug stuff
+		//OUTDATED
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
         //checkpoint system for level transition
 		nextLevel: function(){
+			//SAVES SCORE IN CASE OF DEATH
 			CHECKPOINT_SCORE = SCORE;
+			//STOP MUSIC
 			this.BGM.stop();
 			game.state.start("Level_2", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, null, this.scoreText);
 		}
 	}
-	//level 2... START!!!
+	
+//level 2... START!!!
+//PREVIOUS ENEMIES PLUS SHOTGUN TURRETS
 function Level_2(game) {}
 	
 	Level_2.prototype = {
@@ -558,7 +597,8 @@ function Level_2(game) {}
 			this.enemies = enemies;
 			this.cache = cache;
 			this.equipped = equipped;
-
+			
+			//SET CHECKPOINT
 			CHECKPOINT = 2;
 			this.scoreText = score;
 		},
@@ -568,7 +608,8 @@ function Level_2(game) {}
 		create: function(){
 			//timer for next level
 			game.time.events.add(1000 * 90, this.nextLevel, this);
-
+			
+			//CREATE PLATFORMS
 			this.plats = [];
 			PLATS = this.plats;
 
@@ -586,9 +627,12 @@ function Level_2(game) {}
             this.plats[0].moveDown();
 			game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 
+			//START MUSIC
 			this.BGM = game.add.audio("MainTrack2");
 			this.BGM.play();
 			BGM = this.BGM;
+			
+			//LEVEL PAYOUT VIA TIMERS
 			game.time.events.loop(Phaser.Timer.SECOND * 5, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 9, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 20, makeEnemy, this, this.player, 3);
@@ -598,15 +642,20 @@ function Level_2(game) {}
 			game.time.events.add(1000 * 65, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 75, makeEnemy, this, this.player, 3);
 			game.time.events.add(1000 * 85, makeEnemy, this, this.player, 3);
-
+			
+			//SPAWN SHIELDS
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 			
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
 			this.scoreText.setText("Score: " + SCORE);
+			
+			//MOVE PLATFORM TILE SPRITES
             this.plats[0].tilePosition.x -=2;
 			
+			//DEBRIS BG
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 2;
 			}
@@ -631,11 +680,9 @@ function Level_2(game) {}
 			this.background[1].position.x -= 0.031;
 		
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
-				this.nextLevel();
-			}
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
 			}
         },
         render: function(){
@@ -646,20 +693,22 @@ function Level_2(game) {}
 				this.player.weapon.forEachAlive(this.renderGroup, this);
 			}
         },
+		//OUTDATED
 		renderGroup: function(member){
 			game.debug.body(member);
 		},
 		nextLevel: function(){
-			
+			//SAVE SCORE
 			CHECKPOINT_SCORE = SCORE;
 			this.BGM.stop();
 			game.state.start("Level_3", false, false, this.background, this.player, this.enemies, this.cache, this.equipped, null, this.plats, this.scoreText);
-
+			//CLEAR TIMER, LEGACY? IT WORKS
 			game.time.events.removeAll();
 		}
 		
 	}
 
+//LEVEL 3, PREVIOUS ENEMIES, TURRETS ON TOP AND BOTTOM
 function Level_3(game) {}
 	
 	Level_3.prototype = {
@@ -673,7 +722,8 @@ function Level_3(game) {}
 			this.equipped = equipped;
 			this.pickups = pickups;
             this.plats = plats;
-
+			
+			//SET CHECKPOINT
 			CHECKPOINT = 3;
 			this.scoreText = score;
 
@@ -685,7 +735,7 @@ function Level_3(game) {}
 			//timer for next level
 			game.time.events.add(1000 * 120, this.nextLevel, this);
 
-			//console.log("Plats length: " + this.plats.length);
+			//CHECK IF PLATS EXIST, IF NOT CREATE THEM AND TWEEN THEM
 			if(this.plats.length <= 0){
 				this.plats[0]= game.add.tileSprite(0,640,960,110, "Atlas", "space plat");
 
@@ -714,14 +764,17 @@ function Level_3(game) {}
             this.plats[1].moveDown();
             this.plats[1].moveDown();
 			game.add.tween(this.plats[1]).to({y: 0}, 2000, "Linear", true, 0, 0, false);
-
+			
+			//PLAY MUSIC
 			this.BGM = game.add.audio("MainTrack3");
 			this.BGM.play();
 			BGM = this.BGM;
-
+			
+			//SET GLOBAL PLATFROM VARIABLE
 			PLATS = this.plats;
 			//console.log(this.plats);
-
+			
+			//LEVEL LAYOUT VIA TIMERS
 			game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 8, makeEnemy, this, this.player, 2);
 			game.time.events.loop(Phaser.Timer.SECOND * 12, makeEnemy, this, this.player, 3);
@@ -737,15 +790,19 @@ function Level_3(game) {}
 			game.time.events.add(1000 * 100, makeEnemy, this, this.player, 4);
 			game.time.events.add(1000 * 105, makeEnemy, this, this.player, 6);
 
-
+			//SPAWN SHIELDS
 			game.time.events.loop(Phaser.Timer.SECOND * 7, spawnShield, this);
 
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
 			this.scoreText.setText("Score: " + SCORE);
+			
+			//MOVE PLATFORMS
 			this.plats[0].tilePosition.x -= 2;
 			this.plats[1].tilePosition.x -= 2;
 			
+			//DEBRIS BG
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 1.5;
 			}
@@ -770,11 +827,9 @@ function Level_3(game) {}
 			this.background[1].position.x -= 0.031;
 		
 			//debug options
-			if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
-				this.nextLevel();
-			}
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
 			}
         },
         render: function(){
@@ -795,6 +850,7 @@ function Level_3(game) {}
 		}
 	}
 	
+//FINAL SIDESCROLLER LEVEL, PREVIOUS ENEMIES AND RAILGUN TURRETS
 function Level_4(game) {}
 	
 	Level_4.prototype = {
@@ -806,6 +862,8 @@ function Level_4(game) {}
 			this.cache = cache;
 			this.equipped = equipped;
             this.plats = plats;
+			
+			//SET CHECKPOINT
 			CHECKPOINT = 4;
             this.plats = plats
 			this.scoreText = score;
@@ -817,10 +875,10 @@ function Level_4(game) {}
 			this.BGM = game.add.audio("MainTrack4");
 			this.BGM.play();
 			BGM = this.BGM;
-      //start next level, 83 seconds
+			//start next level, 83 seconds
 			game.time.events.add(1000 * 83, this.nextLevel, this);
 			
-			//console.log("Start of Level 4: " + this.plats[1]);
+			//CHECKS FOR PLATS ON CHECKPOINT ENTRY
             if(this.plats[1] != null){game.add.tween(this.plats[1]).to({y: -110}, 2000, "Linear", true, 0, 0, false);}
 			
 			if(this.plats.length <= 0){
@@ -839,6 +897,7 @@ function Level_4(game) {}
 				game.add.tween(this.plats[0]).to({y: 530}, 2000, "Linear", true, 0, 0, false);
 			}
 			
+			//LEVEL LAYOUT VIA TIMERS
             game.time.events.loop(Phaser.Timer.SECOND * 4, makeEnemy, this, this.player, 1);
 			game.time.events.loop(Phaser.Timer.SECOND * 10, makeEnemy, this, this.player, 2);
 			game.time.events.add(1000 * 14, makeEnemy, this, this.player, 3);
@@ -862,10 +921,14 @@ function Level_4(game) {}
 			PLATS = this.plats;
 		},
 		update: function(){
+			//UPDATE SCORE TEXT
 			this.scoreText.setText("Score: " + SCORE);
+			
+			//MOVE PLATFORMS
 			this.plats[0].tilePosition.x -=2;
 			if(this.plats[1] != null){this.plats[1].tilePosition.x -=3;}
 			
+			//MOVE DEBRIS
 			if(this.background[2].position.x > 0){
 				this.background[2].position.x -= 1.5;
 			}
@@ -890,11 +953,9 @@ function Level_4(game) {}
 			this.background[1].position.x -= 0.031;
 
 			//debug options
-			// if(game.input.keyboard.justPressed(Phaser.Keyboard.O)){
-				// this.nextLevel();
-			// }
-			if(this.input.keyboard.justPressed(Phaser.Keyboard.P)) {
-				this.debug = !this.debug;
+			if(game.input.keyboard.isDown(Phaser.Keyboard.E) && game.input.keyboard.isDown(Phaser.Keyboard.R) && game.input.keyboard.isDown(Phaser.Keyboard.T) && game.input.keyboard.isDown(Phaser.Keyboard.Y)){
+				PLAYER.HEALTH = 50;
+				console.log("cheater");
 			}
         },
         render: function(){
@@ -909,6 +970,7 @@ function Level_4(game) {}
 			game.debug.body(member);
 		},
 		nextLevel: function(){
+			//THIS FUNCTION DELAYS THE ENTRY TO THE BOSS AND TRANSITIONS OUT SOME EXTRA ASSETS
 			CHECKPOINT_SCORE = SCORE;
 			game.time.events.add(3000, BGM.stop, BGM);
 			BGM = game.add.audio("zzaStinger");

@@ -110,14 +110,15 @@ function Credits(game){}
 		},
 		create: function(){
 			this.screen = [];
-
-			this.main = game.add.bitmapText(game.world.centerX-120, 50, "myfont", "--CREDITS--", 40);
-			this.main = game.add.bitmapText(game.world.centerX-400, 125, "myfont", "Corey Hunt: Sound Designer, Artist, Programmer", 32);
-			this.main = game.add.bitmapText(game.world.centerX-275, 200, "myfont", "Brandon Kearns: Lead Programmer", 32);
-			this.main = game.add.bitmapText(game.world.centerX-200, 275, "myfont", "Cole Watts: Programmer", 32);
-			this.main = game.add.bitmapText(game.world.centerX-285, 425, "myfont", "*All assets owned by developers*", 32);
+			//DISPLAY CREDITS
+			this.TITLE = game.add.bitmapText(game.world.centerX-120, 50, "myfont", "--CREDITS--", 40);
+			this.COREY = game.add.bitmapText(game.world.centerX-400, 125, "myfont", "Corey Hunt: Sound Designer, Artist, Programmer", 32);
+			this.BRAN = game.add.bitmapText(game.world.centerX-275, 200, "myfont", "Brandon Kearns: Lead Programmer", 32);
+			this.COLE = game.add.bitmapText(game.world.centerX-200, 275, "myfont", "Cole Watts: Programmer", 32);
+			this.ASSETS = game.add.bitmapText(game.world.centerX-285, 425, "myfont", "*All assets owned by developers*", 32);
 			//this.main.tint = 0xfefefe;
-
+			
+			//RETURN TO MAIN MENU
 			this.main = game.add.bitmapText(game.world.centerX + 290, game.world.height - 50, "myfont", "Return to Main Menu?", 24);
 			this.main.anchor.setTo(0.5, 0.5);
 			this.main.inputEnabled = true;
@@ -125,8 +126,11 @@ function Credits(game){}
 			this.main.events.onInputOver.add(this.highlight, this, this.main);
 			this.main.events.onInputOut.add(this.clear, this, this.main);
 			this.screen.push(this.main);
-		},
-		update: function(){
+			this.screen.push(this.TITLE);
+			this.screen.push(this.COREY);
+			this.screen.push(this.BRAN);
+			this.screen.push(this.COLE);
+			this.screen.push(this.ASSETS);
 		},
 		returnToMain: function(){
 			this.clearScreen();
@@ -137,6 +141,7 @@ function Credits(game){}
 				this.screen[i].kill();
 			}
 		},
+		//THESE TWO FUNCTIONS HIGHLIGHT CLICKABLE TEXT WHEN YOU HOVER OVER IT
 		highlight: function(text){
 			text.tint = 0x5BC6FD;
 		},
@@ -155,7 +160,7 @@ function Instructions(game){}
 			this.screen = [];
 
 			//this.instructionText = game.add.bitmapText();
-
+			//DISPLAY INSTRUCTIONS
 			this.title = game.add.bitmapText(game.world.centerX, 50, "myfont", "--INSTRUCTIONS--", 40);
 			
 			this.title.anchor.setTo(0.5, 0.5);

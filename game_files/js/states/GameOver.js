@@ -5,7 +5,8 @@ function GameOver(game) {}
 GameOver.prototype = {
 
 	init: function(background, CHECKPOINT, cache, plats, score){
-    game.scale.setGameSize(960, 640);
+		//JUST IN CASE ZZA KILLS YOU
+		game.scale.setGameSize(960, 640);
 		this.background = background;
 		this.CHECKPOINT = CHECKPOINT;
 		this.cache = cache;
@@ -13,8 +14,8 @@ GameOver.prototype = {
 		this.scoreText = score;
 		console.log("GameOver: " + this.CHECKPOINT);
 	},
-	preload: function(){},
 	create: function(){
+		//DISPLAY TEXT ON SCREEN, RETRY AT LAST CHECKPOINT OR RETURN TO MENU
 		this.screen = [];
 		this.title = game.add.bitmapText(game.world.centerX, game.world.centerY - 150, "myfont", "Game Over", 80);
 		this.title.anchor.setTo(0.5, 0.5);
